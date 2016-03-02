@@ -1,0 +1,172 @@
+menu_atlas.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+darkness_footer
+  rotate: false
+  xy: 662, 1025
+  size: 1007, 157
+  orig: 1007, 157
+  offset: 0, 0
+  index: -1
+bg_table
+  rotate: false
+  xy: 662, 809
+  size: 878, 214
+  orig: 878, 214
+  offset: 0, 0
+  index: -1
+exit_button
+  rotate: false
+  xy: 1419, 2
+  size: 254, 254
+  orig: 254, 254
+  offset: 0, 0
+  index: 2
+exit
+  rotate: false
+  xy: 760, 1563
+  size: 377, 377
+  orig: 377, 377
+  offset: 0, 0
+  index: 2
+music_on_plus
+  rotate: false
+  xy: 1417, 523
+  size: 281, 185
+  orig: 281, 185
+  offset: 0, 0
+  index: -1
+icon_jumps
+  rotate: false
+  xy: 1518, 1794
+  size: 116, 144
+  orig: 116, 144
+  offset: 0, 0
+  index: -1
+play_text
+  rotate: false
+  xy: 500, 1701
+  size: 237, 164
+  orig: 237, 164
+  offset: 0, 0
+  index: -1
+buy_button
+  rotate: false
+  xy: 1419, 258
+  size: 240, 246
+  orig: 240, 246
+  offset: 0, 0
+  index: 2
+music_off
+  rotate: false
+  xy: 1139, 1184
+  size: 377, 377
+  orig: 377, 377
+  offset: 0, 0
+  index: -1
+exit
+  rotate: false
+  xy: 1139, 1563
+  size: 377, 377
+  orig: 377, 377
+  offset: 0, 0
+  index: 1
+shop_text
+  rotate: false
+  xy: 500, 1867
+  size: 251, 143
+  orig: 251, 143
+  offset: 0, 0
+  index: -1
+crystals_panel_bg
+  rotate: false
+  xy: 662, 523
+  size: 753, 284
+  orig: 753, 284
+  offset: 0, 0
+  index: -1
+icon_speed
+  rotate: false
+  xy: 1518, 1650
+  size: 134, 142
+  orig: 134, 142
+  offset: 0, 0
+  index: -1
+sound_on
+  rotate: false
+  xy: 2, 1322
+  size: 377, 377
+  orig: 377, 377
+  offset: 0, 0
+  index: -1
+buy_button
+  rotate: false
+  xy: 258, 1701
+  size: 240, 246
+  orig: 240, 246
+  offset: 0, 0
+  index: 1
+icon_timelapse
+  rotate: false
+  xy: 1518, 1495
+  size: 125, 153
+  orig: 125, 153
+  offset: 0, 0
+  index: -1
+icon_sharp_shield
+  rotate: false
+  xy: 1518, 1342
+  size: 165, 151
+  orig: 165, 151
+  offset: 0, 0
+  index: -1
+icon_shield
+  rotate: false
+  xy: 1518, 1184
+  size: 155, 156
+  orig: 155, 156
+  offset: 0, 0
+  index: -1
+island
+  rotate: false
+  xy: 662, 2
+  size: 755, 519
+  orig: 755, 519
+  offset: 0, 0
+  index: -1
+shop
+  rotate: false
+  xy: 2, 2
+  size: 658, 658
+  orig: 658, 658
+  offset: 0, 0
+  index: -1
+exit_button
+  rotate: false
+  xy: 2, 1701
+  size: 254, 254
+  orig: 254, 254
+  offset: 0, 0
+  index: 1
+play
+  rotate: false
+  xy: 2, 662
+  size: 658, 658
+  orig: 658, 658
+  offset: 0, 0
+  index: -1
+music_on
+  rotate: false
+  xy: 760, 1184
+  size: 377, 377
+  orig: 377, 377
+  offset: 0, 0
+  index: -1
+sound_off
+  rotate: false
+  xy: 381, 1322
+  size: 377, 377
+  orig: 377, 377
+  offset: 0, 0
+  index: -1

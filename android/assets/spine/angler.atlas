@@ -1,0 +1,54 @@
+
+angler.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+langolieger1_0000_O
+  rotate: false
+  xy: 436, 11
+  size: 149, 149
+  orig: 149, 149
+  offset: 0, 0
+  index: -1
+langolieger1_0001_chuckle
+  rotate: false
+  xy: 587, 72
+  size: 162, 88
+  orig: 162, 88
+  offset: 0, 0
+  index: -1
+langolieger1_0002_body
+  rotate: false
+  xy: 2, 7
+  size: 261, 153
+  orig: 261, 153
+  offset: 0, 0
+  index: -1
+langolieger1_0003_TAIL
+  rotate: false
+  xy: 265, 2
+  size: 169, 158
+  orig: 169, 158
+  offset: 0, 0
+  index: -1
+langolieger1_0004_~3
+  rotate: false
+  xy: 789, 63
+  size: 21, 97
+  orig: 21, 97
+  offset: 0, 0
+  index: -1
+langolieger1_0005_~2
+  rotate: false
+  xy: 587, 39
+  size: 74, 31
+  orig: 74, 31
+  offset: 0, 0
+  index: -1
+langolieger1_0006_~1
+  rotate: false
+  xy: 751, 75
+  size: 36, 85
+  orig: 36, 85
+  offset: 0, 0
+  index: -1

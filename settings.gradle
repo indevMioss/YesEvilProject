@@ -1,0 +1,2 @@
+include 'desktop', 'android', 'core', 'ios', 'spine-libgdx'
+project(':spine-libgdx').projectDir = new File('libs', 'spine-libgdx')

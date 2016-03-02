@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    <string name="ga_trackingId">UA-49743708-2</string>
+    <string name="ga_sampleFrequency">100.0</string>
+    <integer name="ga_sessionTimeout">1800</integer>
+    <bool name="ga_autoActivityTracking">true</bool>
+    <bool name="ga_anonymizeIp">false</bool>
+    <bool name="ga_reportUncaughtExceptions">true</bool>
+    <int name="ga_dispatchPeriod">5</int>
+
+    <screenName name="com.interdev.game.android.AndroidLauncher">AndroidLauncher</screenName>
+    <screenName name="com.interdev.game.core.MotioGame">MotioGame</screenName>
+</resources>

@@ -1,0 +1,47 @@
+
+cloud_demon.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+_0003_央铋-10
+  rotate: false
+  xy: 366, 360
+  size: 310, 291
+  orig: 310, 291
+  offset: 0, 0
+  index: -1
+_0004_央铋-7
+  rotate: false
+  xy: 310, 70
+  size: 259, 268
+  orig: 259, 268
+  offset: 0, 0
+  index: -1
+_0005_央铋-9
+  rotate: false
+  xy: 2, 16
+  size: 306, 322
+  orig: 306, 322
+  offset: 0, 0
+  index: -1
+_0006_央铋-8
+  rotate: false
+  xy: 2, 340
+  size: 362, 311
+  orig: 362, 311
+  offset: 0, 0
+  index: -1
+ch
+  rotate: false
+  xy: 310, 2
+  size: 133, 66
+  orig: 133, 66
+  offset: 0, 0
+  index: -1
+head
+  rotate: false
+  xy: 571, 229
+  size: 123, 129
+  orig: 123, 129
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="54" height="55" tilewidth="64" tileheight="64" backgroundcolor="#000000" nextobjectid="48">
+ <tileset firstgid="1" name="2" tilewidth="64" tileheight="64" tilecount="20">
+  <image source="map1_textures/horiz_wall.png" width="640" height="128"/>
+ </tileset>
+ <tileset firstgid="21" name="32" tilewidth="64" tileheight="64" tilecount="20">
+  <image source="map1_textures/vert_wall.png" width="128" height="640"/>
+ </tileset>
+ <tileset firstgid="41" name="cloud1" tilewidth="64" tileheight="64" tilecount="16">
+  <image source="map1_textures/cloud1.png" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="57" name="cloud3" tilewidth="64" tileheight="64" tilecount="16">
+  <image source="map1_textures/cloud3.png" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="73" name="cloud2" tilewidth="64" tileheight="64" tilecount="16">
+  <image source="map1_textures/cloud2.png" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="89" name="star1" tilewidth="64" tileheight="64" tilecount="1">
+  <image source="map1_textures/star1.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="90" name="star2" tilewidth="64" tileheight="64" tilecount="1">
+  <image source="map1_textures/star2.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="91" name="star3" tilewidth="64" tileheight="64" tilecount="1">
+  <image source="map1_textures/star3.png" width="64" height="64"/>
+ </tileset>
+ <layer name="Platforms" width="54" height="55">
+  <data encoding="base64" compression="zlib">
+   eJztmNeuxCAQQ7m99957+f8vvN6HSFHECIZxYKLLkfy0yq7FwhgnhE6n0ynjCrpubcKA5P8Neq/shYnk/wP6rOyFieT/C/qu7IWJ5P8Guq3shYnk/w66r+yFieT/AXrM/I41aJ/miIPk/wl6zvyOA+jS6IO9NpL/F+iV+DspGGszRvLf88snmvwqOQOrZ9ahvYJnLWjyq+QMrJ45hC4KnrXgOb8sM5KRX3NhmZGM/PJISX61mgUaSvKLNQuG9dmAdgN3nVrm17A+R9B54M7M3r+Whef8mqKZV57za4pmXqXyy2NnzCGVX+xeVAuP/YuxRzz2L8Ye6fnFZe47Zqv8mrtvlubX+M66Ce0E/t3VQmn/Gt9Zj6GzwL+7Wvaql/eHMSx71WN+MUjl1xK6cYxUfrV6T2ZlSf1rOoO3oO0Qn8VL6l/TGXwCnYb4LF5S/9KgyS/NPmhNTn4NvUGzD1qTk1/a3iD1p5r/9xz9S1qHmv/3f+tfP9BvZS9MJP85Z8H757GzmnMWvH/uZTZ3OgN/glUgrQ==
+  </data>
+ </layer>
+ <layer name="Clouds" width="54" height="55">
+  <data encoding="base64" compression="zlib">
+   eJztmulOwkAURvs6VVxwQQE3VEBQNhHw/Z/E88eEkJB02t65A/lOcn5O7qSZ5etts0wIIYTYzwjH+IlfJcYWoY0d7OJDYI2yTHCKM5wb1XjEJ3zGF6Mau89rgd+4xB+jmj18xTd8Dxxbdj2tcI0b/A2sWZQ+DnCIH4FjY6wnD2KsJw9irCchRDpUyTIpU9fds53XQp6PVX7zvnus8pv33VMlv6VMlfwmRBFyPMFTbDjPpU7O8Bwv8NJ5LnXSxCu8xptINWOcPbfYwju8j1DvmNGetsMiG3rs6V0ssmEKe/pQsmHo+5uyoRDp492jscoC3t8HrLKAd4/GKgt492hSyAIibXLvCQiR6awScSj6P1FdbPcuhPDiv3dxiPwB2tMthA==
+  </data>
+ </layer>
+ <layer name="Stars" width="54" height="55">
+  <data encoding="base64" compression="zlib">
+   eJztmksOwzAIRHPN1ve/R9WdVdUf8IAZm7fJIgnmMxAnyvO0eXfOaShge6i1/50rg3sk9l8CO7P2tbm0roHUvqQuq7576g+5FkI/1qBr9QUVd6u/ozMTv0WeGXJjSS/vDL2Y3MftPdvDIjeZ7zuxfjawPF9G+pe+P0VnFEurbtJ6stRfQx3bSdpAc7IGEn7to74L7tS5JoYZf7N394D+Vl3D3K/evo/0b1knJpBzgnXmeGjTKzeRZsTpPdbKdaQaRCTzk5yAZqaXn+MuP1jJ2eHDTZrScuOezpKIca7UOGI8nkSK39sX7Xo5U/qc+E7JWotZUHte6b+zK9dpkPx7yLC/stYlupdbOa3X+QD79SGB
+  </data>
+ </layer>
+ <objectgroup name="Objects">
+  <object id="8" x="154" y="3248" width="3142" height="76"/>
+  <object id="11" x="688" y="2278" width="412" height="50"/>
+  <object id="12" x="494" y="2862" width="554" height="44"/>
+  <object id="16" x="1522" y="2980" width="532" height="50"/>
+  <object id="17" x="2560" y="2662" width="514" height="52"/>
+  <object id="18" x="1796" y="1444" width="250" height="52"/>
+  <object id="19" x="1336" y="1062" width="142" height="50"/>
+  <object id="20" x="634" y="1378" width="136" height="52"/>
+  <object id="21" x="302" y="2534" width="158" height="56"/>
+  <object id="22" x="2290" y="2340" width="148" height="52"/>
+  <object id="24" x="1708" y="2148" width="168" height="50"/>
+  <object id="25" x="486" y="1068" width="48" height="30"/>
+  <object id="26" x="294" y="1834" width="54" height="36"/>
+  <object id="27" x="870" y="742" width="50" height="42"/>
+  <object id="28" x="1956" y="808" width="56" height="40"/>
+  <object id="33" x="2272" y="1192" width="58" height="36"/>
+  <object id="35" x="2544" y="1698" width="158" height="52"/>
+  <object id="42" x="162" y="114" width="52" height="3118"/>
+  <object id="43" x="3248" y="114" width="52" height="3116"/>
+  <object id="44" x="162" y="26" width="3140" height="76"/>
+  <object id="45" x="2147" y="1962" width="54" height="36"/>
+  <object id="46" x="353" y="2922" width="54" height="36"/>
+  <object id="47" x="1127" y="2978" width="54" height="36"/>
+ </objectgroup>
+</map>

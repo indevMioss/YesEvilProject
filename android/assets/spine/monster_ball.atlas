@@ -1,0 +1,40 @@
+
+monster_ball.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+black
+  rotate: false
+  xy: 279, 166
+  size: 193, 115
+  orig: 193, 115
+  offset: 0, 0
+  index: -1
+body
+  rotate: false
+  xy: 2, 2
+  size: 275, 279
+  orig: 275, 279
+  offset: 0, 0
+  index: -1
+eyes
+  rotate: false
+  xy: 474, 174
+  size: 178, 107
+  orig: 178, 107
+  offset: 0, 0
+  index: -1
+teeth_bottom
+  rotate: false
+  xy: 279, 82
+  size: 182, 82
+  orig: 182, 82
+  offset: 0, 0
+  index: -1
+teeth_up
+  rotate: false
+  xy: 279, 9
+  size: 204, 71
+  orig: 204, 71
+  offset: 0, 0
+  index: -1

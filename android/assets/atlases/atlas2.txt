@@ -1,0 +1,179 @@
+atlas2.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+particle
+  rotate: false
+  xy: 0, 276
+  size: 271, 135
+  orig: 321, 185
+  offset: 48, 22
+  index: 16
+particle
+  rotate: false
+  xy: 271, 272
+  size: 229, 131
+  orig: 321, 185
+  offset: 89, 37
+  index: 12
+particle
+  rotate: false
+  xy: 536, 0
+  size: 269, 125
+  orig: 321, 185
+  offset: 49, 36
+  index: 7
+particle
+  rotate: false
+  xy: 1263, 232
+  size: 273, 107
+  orig: 321, 185
+  offset: 45, 36
+  index: 22
+particle
+  rotate: false
+  xy: 1251, 117
+  size: 243, 115
+  orig: 321, 185
+  offset: 75, 31
+  index: 3
+particle
+  rotate: false
+  xy: 263, 0
+  size: 273, 129
+  orig: 321, 185
+  offset: 45, 20
+  index: 17
+particle
+  rotate: false
+  xy: 253, 139
+  size: 239, 133
+  orig: 321, 185
+  offset: 79, 33
+  index: 13
+particle
+  rotate: false
+  xy: 500, 258
+  size: 265, 125
+  orig: 321, 185
+  offset: 53, 40
+  index: 8
+particle
+  rotate: false
+  xy: 1494, 113
+  size: 251, 109
+  orig: 321, 185
+  offset: 67, 36
+  index: 0
+particle
+  rotate: false
+  xy: 273, 403
+  size: 273, 109
+  orig: 321, 185
+  offset: 45, 36
+  index: 23
+particle
+  rotate: false
+  xy: 1070, 0
+  size: 251, 117
+  orig: 321, 185
+  offset: 67, 31
+  index: 4
+particle
+  rotate: false
+  xy: 717, 125
+  size: 273, 123
+  orig: 321, 185
+  offset: 45, 22
+  index: 18
+particle
+  rotate: false
+  xy: 546, 383
+  size: 231, 125
+  orig: 321, 185
+  offset: 87, 43
+  index: 10
+particle
+  rotate: false
+  xy: 0, 139
+  size: 253, 137
+  orig: 321, 185
+  offset: 66, 28
+  index: 14
+particle
+  rotate: false
+  xy: 765, 248
+  size: 251, 123
+  orig: 321, 185
+  offset: 67, 44
+  index: 9
+particle
+  rotate: false
+  xy: 1319, 339
+  size: 273, 103
+  orig: 321, 185
+  offset: 45, 34
+  index: 20
+particle
+  rotate: false
+  xy: 1494, 0
+  size: 251, 113
+  orig: 321, 185
+  offset: 67, 33
+  index: 1
+particle
+  rotate: false
+  xy: 1050, 357
+  size: 269, 109
+  orig: 321, 185
+  offset: 49, 36
+  index: 24
+particle
+  rotate: false
+  xy: 990, 123
+  size: 261, 119
+  orig: 321, 185
+  offset: 57, 32
+  index: 5
+particle
+  rotate: false
+  xy: 777, 371
+  size: 273, 115
+  orig: 321, 185
+  offset: 45, 26
+  index: 19
+particle
+  rotate: false
+  xy: 492, 129
+  size: 225, 129
+  orig: 321, 185
+  offset: 93, 40
+  index: 11
+particle
+  rotate: false
+  xy: 0, 0
+  size: 263, 139
+  orig: 321, 185
+  offset: 56, 23
+  index: 15
+particle
+  rotate: false
+  xy: 805, 0
+  size: 265, 123
+  orig: 321, 185
+  offset: 53, 33
+  index: 6
+particle
+  rotate: false
+  xy: 0, 411
+  size: 273, 101
+  orig: 321, 185
+  offset: 45, 37
+  index: 21
+particle
+  rotate: false
+  xy: 1016, 242
+  size: 247, 115
+  orig: 321, 185
+  offset: 71, 31
+  index: 2

@@ -1,0 +1,33 @@
+
+creepy.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+arm3
+  rotate: false
+  xy: 477, 213
+  size: 418, 114
+  orig: 418, 114
+  offset: 0, 0
+  index: -1
+fist3
+  rotate: false
+  xy: 477, 2
+  size: 225, 209
+  orig: 225, 209
+  offset: 0, 0
+  index: -1
+hand3
+  rotate: false
+  xy: 477, 329
+  size: 421, 124
+  orig: 421, 124
+  offset: 0, 0
+  index: -1
+head
+  rotate: false
+  xy: 2, 10
+  size: 473, 443
+  orig: 473, 443
+  offset: 0, 0
+  index: -1

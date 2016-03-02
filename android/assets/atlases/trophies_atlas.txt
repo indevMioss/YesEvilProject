@@ -1,0 +1,144 @@
+trophies_atlas.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+shield_bg
+  rotate: false
+  xy: 205, 247
+  size: 195, 195
+  orig: 195, 195
+  offset: 0, 0
+  index: -1
+inf_bg
+  rotate: false
+  xy: 429, 2
+  size: 173, 173
+  orig: 173, 173
+  offset: 0, 0
+  index: -1
+cross
+  rotate: false
+  xy: 919, 326
+  size: 120, 141
+  orig: 120, 141
+  offset: 0, 0
+  index: -1
+trophy_lives_bottle
+  rotate: false
+  xy: 746, 168
+  size: 128, 159
+  orig: 128, 159
+  offset: 0, 0
+  index: -1
+trophy_resurrect_bottle
+  rotate: false
+  xy: 737, 2
+  size: 130, 164
+  orig: 130, 164
+  offset: 0, 0
+  index: -1
+live
+  rotate: false
+  xy: 583, 177
+  size: 161, 150
+  orig: 161, 150
+  offset: 0, 0
+  index: -1
+bomb_rotor
+  rotate: false
+  xy: 1021, 2
+  size: 129, 125
+  orig: 129, 125
+  offset: 0, 0
+  index: -1
+trophy_blue_cry
+  rotate: false
+  xy: 1041, 129
+  size: 134, 178
+  orig: 134, 178
+  offset: 0, 0
+  index: -1
+speed_sign
+  rotate: false
+  xy: 876, 134
+  size: 163, 190
+  orig: 163, 190
+  offset: 0, 0
+  index: -1
+trophy_power_bottle
+  rotate: false
+  xy: 662, 329
+  size: 126, 158
+  orig: 126, 158
+  offset: 0, 0
+  index: -1
+wind_bg
+  rotate: false
+  xy: 247, 2
+  size: 180, 180
+  orig: 180, 180
+  offset: 0, 0
+  index: -1
+trophy_red_cry
+  rotate: false
+  xy: 1041, 309
+  size: 100, 166
+  orig: 100, 166
+  offset: 0, 0
+  index: -1
+trophy_time_bottle
+  rotate: false
+  xy: 604, 2
+  size: 131, 164
+  orig: 131, 164
+  offset: 0, 0
+  index: -1
+speed_bg
+  rotate: false
+  xy: 2, 247
+  size: 201, 201
+  orig: 201, 201
+  offset: 0, 0
+  index: -1
+bomb_sign
+  rotate: false
+  xy: 402, 365
+  size: 130, 122
+  orig: 130, 122
+  offset: 0, 0
+  index: -1
+wind
+  rotate: false
+  xy: 869, 2
+  size: 150, 130
+  orig: 150, 130
+  offset: 0, 0
+  index: -1
+inf_sign
+  rotate: false
+  xy: 534, 365
+  size: 126, 91
+  orig: 126, 91
+  offset: 0, 0
+  index: -1
+cross_bg
+  rotate: false
+  xy: 2, 2
+  size: 243, 243
+  orig: 243, 243
+  offset: 0, 0
+  index: -1
+inf_whirl
+  rotate: false
+  xy: 790, 329
+  size: 127, 138
+  orig: 127, 138
+  offset: 0, 0
+  index: -1
+bomb_bg
+  rotate: false
+  xy: 402, 184
+  size: 179, 179
+  orig: 179, 179
+  offset: 0, 0
+  index: -1
