@@ -21,7 +21,7 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file("C:\\GP_Keystore/key")
+            //storeFile file("C:\\GP_Keystore/key")
             storePassword "135qwe"
             keyAlias "amaz245"
             keyPassword "135qwe"
