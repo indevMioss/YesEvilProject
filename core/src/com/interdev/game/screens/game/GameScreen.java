@@ -237,7 +237,7 @@ public class GameScreen implements Screen {
 
         controlsInput = new ControlsInput(player, gui.movePad, inputMultiplexer);
         Gdx.input.setInputProcessor(inputMultiplexer);
-        musicSystem.play();
+       // musicSystem.play();
         spineSystem = new SpineSystem(world, player);
 
 
@@ -264,7 +264,7 @@ public class GameScreen implements Screen {
 
         postProcessor.addEffect(vignette);
         postProcessor.addEffect(bloom);
-      //  postProcessor.addEffect(blur);
+        //  postProcessor.addEffect(blur);
 
         bloom.setEnabled(true);
         postProcessor.setEnabled(false);
@@ -274,22 +274,6 @@ public class GameScreen implements Screen {
         final InterlevelScene interlevelScene = new InterlevelScene();
         hudStage.addActor(interlevelScene);
 
-        Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                System.out.println("interlevelScene.show();");
-                interlevelScene.show();
-            }
-        }, 5);
-
-
-        Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                System.out.println("interlevelScene.hide();");
-                interlevelScene.hide();
-            }
-        }, 10);
 
     }
 

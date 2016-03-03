@@ -82,7 +82,9 @@ public class LevelsSystem {
 
         updateAllowedDemons();
 
-        currentLevel = roll();
+        launchKillLevel();
+        return;
+     /*   currentLevel = roll();
         switch (currentLevel) {
             case KILL:
                 launchKillLevel();
@@ -91,7 +93,7 @@ public class LevelsSystem {
                 launchCollectLevel();
                 break;
             case SURVIVE:
-                launchSurviveLevel();
+                launchSurviveLevel();gb
                 break;
             case BOSS:
                 launchBossLevel();
@@ -99,7 +101,7 @@ public class LevelsSystem {
             case REWARD:
                 launchRewardLevel();
                 break;
-        }
+        } */
     }
 
     private void updateAllowedDemons() {
@@ -141,8 +143,8 @@ public class LevelsSystem {
     private float intervalDecrease = 0.04f;
 
     private void launchKillLevel() {
-        spawnInterval = 10f;
-        monstersToSpawn = 60;
+        spawnInterval = 5f;
+        monstersToSpawn = 15;
         intervalDecrease = 0.3f;
         currentLevel = Type.KILL;
 

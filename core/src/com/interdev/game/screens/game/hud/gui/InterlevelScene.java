@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Timer;
+import com.interdev.game.screens.game.GameScreen;
 import com.interdev.game.screens.game.levels.LevelsSystem;
 import com.interdev.game.tools.Utils;
 
@@ -28,7 +29,7 @@ public class InterlevelScene extends Group {
         blackBg.setScale(10);
         addActor(blackBg);
 
-        FreeTypeFontGenerator generatorLB = new FreeTypeFontGenerator(Gdx.files.internal("fonts/lb.ttf"));
+        FreeTypeFontGenerator generatorLB = new FreeTypeFontGenerator(Gdx.files.internal("fonts/lbd.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameterLB = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
         parameterLB.size = 256;
@@ -37,6 +38,8 @@ public class InterlevelScene extends Group {
 
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.font = levelFont;
+
+        levelTextButton = new TextButton("", textButtonStyle);
 
         setLevelText();
 
@@ -47,7 +50,7 @@ public class InterlevelScene extends Group {
 
     private void setLevelText() {
         levelTextButton.setText("Level " + LevelsSystem.levelsPassed);
-        levelTextButton.setPosition(-levelTextButton.getWidth() / 2, -levelTextButton.getHeight() / 2);
+        levelTextButton.setPosition(GameScreen.hudWidth/2 - levelTextButton.getWidth() / 2, GameScreen.hudHeight/2 - levelTextButton.getHeight() / 2);
     }
 
     public void show() {
