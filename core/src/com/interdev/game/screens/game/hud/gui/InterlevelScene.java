@@ -8,14 +8,16 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.Timer;
 import com.interdev.game.screens.game.levels.LevelsSystem;
 import com.interdev.game.tools.Utils;
 
 public class InterlevelScene extends Group {
     public static InterlevelScene inst;
 
-    private TextButton levelText;
-    private Image blackBg;//hkjjhk
+    private TextButton levelTextButton;
+
+    private Image blackBg;
 
     public InterlevelScene() {
         inst = this;
@@ -30,28 +32,55 @@ public class InterlevelScene extends Group {
         FreeTypeFontGenerator.FreeTypeFontParameter parameterLB = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
         parameterLB.size = 256;
-        BitmapFont plusFont = generatorLB.generateFont(parameterLB);
-        Utils.applyLinearFilter(plusFont.getRegion().getTexture());
+        BitmapFont levelFont = generatorLB.generateFont(parameterLB);
+        Utils.applyLinearFilter(levelFont.getRegion().getTexture());
 
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.font = plusFont;
+        textButtonStyle.font = levelFont;
 
-        levelText = new TextButton("LEVEL 0", textButtonStyle);
-        addActor(levelText);
+        setLevelText();
+
+        addActor(levelTextButton);
 
         setVisible(false);
     }
 
     private void setLevelText() {
-        levelText.setText("Level " + LevelsSystem.levelsPassed);
-        levelText.setPosition(-levelText.getWidth() / 2, -levelText.getHeight() / 2);
-
-        setVisible(true);
+        levelTextButton.setText("Level " + LevelsSystem.levelsPassed);
+        levelTextButton.setPosition(-levelTextButton.getWidth() / 2, -levelTextButton.getHeight() / 2);
     }
 
     public void show() {
+        blackBg.setColor(1f, 1f, 1f, 0);
+        levelTextButton.setColor(1f, 1f, 1f, 0);
+        setVisible(true);
 
+        Utils.graduallyChangeAlpha(blackBg, 3f, 1f);
+
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                Utils.graduallyChangeAlpha(levelTextButton, 1f, 1f);
+            }
+        }, 3.5f);
     }
 
 
+    public void hide() {
+        Utils.graduallyChangeAlpha(levelTextButton, 2f, 0f);
+
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                Utils.graduallyChangeAlpha(blackBg, 2f, 0);
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        blackBg.setVisible(false);
+                        levelTextButton.setVisible(false);
+                    }
+                }, 2f);
+            }
+        }, 2.5f);
+    }
 }

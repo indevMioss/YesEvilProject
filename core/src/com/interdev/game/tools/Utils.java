@@ -3,6 +3,7 @@ package com.interdev.game.tools;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Timer;
 import com.interdev.game.GameMain;
 import com.interdev.game.screens.game.GameScreen;
@@ -102,7 +103,8 @@ public class Utils {
     }
 
     public static void dynamicSchedule(final Timer.Task task, final float interval, final float intervalDifference, final float stopThreshold) {
-        if (intervalDifference < 0 && interval < stopThreshold || intervalDifference > 0 && interval > stopThreshold) return;
+        if (intervalDifference < 0 && interval < stopThreshold || intervalDifference > 0 && interval > stopThreshold)
+            return;
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
@@ -110,6 +112,39 @@ public class Utils {
                 dynamicSchedule(task, interval + intervalDifference, intervalDifference, stopThreshold);
             }
         }, interval);
+    }
+
+
+    public static void graduallyChangeAlpha(final Actor actor, float forTime, final float destAlpha) {
+        graduallyChangeAlpha(actor, forTime, destAlpha, 0);
+    }
+
+
+    public static void graduallyChangeAlpha(final Actor actor, float forTime, final float destAlpha, final float delay) {
+        graduallyChangeAlpha(actor, forTime, destAlpha, delay, 0.01f);
+    }
+
+
+    public static void graduallyChangeAlpha(final Actor actor, float forTime, final float destAlpha, final float delay, final float interval) {
+        final float deltaAlpha = destAlpha - actor.getColor().a;
+        final float alphaIncrement = deltaAlpha * interval / forTime;
+        if (deltaAlpha == 0) return;
+        System.out.println("dest alpha" + destAlpha);
+        System.out.println("deltaAlpha alpha" + deltaAlpha);
+        System.out.println("alphaInc alpha" + alphaIncrement);
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                float blackAlpha = actor.getColor().a;
+                blackAlpha += alphaIncrement;
+                if ((alphaIncrement > 0 && blackAlpha >= destAlpha) ||
+                        (alphaIncrement < 0 && blackAlpha <= destAlpha)) {
+                    cancel();
+                }
+                System.out.println("new ALPHA " + blackAlpha);
+                actor.setColor(1f, 1f, 1f, blackAlpha);
+            }
+        }, delay, interval);
     }
 
 

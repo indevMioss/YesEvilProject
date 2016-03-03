@@ -268,7 +268,28 @@ public class GameScreen implements Screen {
 
         bloom.setEnabled(true);
         postProcessor.setEnabled(false);
+
         levelsSystem = new LevelsSystem();
+
+        final InterlevelScene interlevelScene = new InterlevelScene();
+        hudStage.addActor(interlevelScene);
+
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                System.out.println("interlevelScene.show();");
+                interlevelScene.show();
+            }
+        }, 5);
+
+
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                System.out.println("interlevelScene.hide();");
+                interlevelScene.hide();
+            }
+        }, 10);
 
     }
 
