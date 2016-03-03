@@ -9,13 +9,12 @@ import com.interdev.game.screens.game.entities.demons.FlyDemon;
 import com.interdev.game.screens.game.entities.demons.SpineDemon;
 
 public class Monsters {
-
     public static class Values {
         public float DEFAULT_LIVES = 100f;
         public float DEFAULT_DAMAGE = 0.5f;
-        public float DEFAULT_CHASING_IMPULSE = 3f;
+        public float DEFAULT_CHASING_IMPULSE = 10f;
         public float DEFAULT_MAX_SPEED = 3f;
-        public float DEFAULT_BODY_SHAPE_RADIUS = 60;
+        public float DEFAULT_BODY_SHAPE_RADIUS = 40;
         public float DEFAULT_MASS = 10f;
         public float DEFAULT_SCALE = 1f;
     }
@@ -24,8 +23,9 @@ public class Monsters {
         private static Values values = new Values();
 
         static {
-            values.DEFAULT_SCALE = 0.75f;
-            values.DEFAULT_BODY_SHAPE_RADIUS = 40;
+            values.DEFAULT_SCALE = 1.0f;
+            values.DEFAULT_MASS = 20;
+            values.DEFAULT_CHASING_IMPULSE = 20f;
         }
 
         public SimpleRed(TextureAtlas atlasWithAnimation, Pool<? extends Demon> myPool) {
@@ -37,8 +37,7 @@ public class Monsters {
         private static Values values = new Values();
 
         static {
-            values.DEFAULT_SCALE = 0.75f;
-            values.DEFAULT_BODY_SHAPE_RADIUS = 80;
+
         }
 
         public AnglerGray(TextureAtlas atlasWithSkeleton, SkeletonRenderer skeletonRenderer, Pool<? extends Demon> myPool) {
@@ -50,7 +49,6 @@ public class Monsters {
         private static Values values = new Values();
 
         static {
-            values.DEFAULT_SCALE = 0.75f;
         }
 
         public AnglerPurple(TextureAtlas atlasWithSkeleton, SkeletonRenderer skeletonRenderer, Pool<? extends Demon> myPool) {
@@ -75,6 +73,7 @@ public class Monsters {
         private static Values values = new Values();
 
         static {
+            values.DEFAULT_SCALE = 0.5f;
             values.DEFAULT_MAX_SPEED = 4;
             values.DEFAULT_BODY_SHAPE_RADIUS = 100;
             values.DEFAULT_DAMAGE = 0.3f;
@@ -83,7 +82,6 @@ public class Monsters {
 
         public BallGray(TextureAtlas atlasWithSkeleton, SkeletonRenderer skeletonRenderer, Pool<? extends Demon> myPool) {
             super(values, "spine/monster_ball.json", atlasWithSkeleton, skeletonRenderer, myPool);
-            byDefaultFacingRight = true;
         }
     }
 
@@ -97,7 +95,6 @@ public class Monsters {
 
         public BallPurple(TextureAtlas atlasWithSkeleton, SkeletonRenderer skeletonRenderer, Pool<? extends Demon> myPool) {
             super(values, "spine/monster_ball_purple.json", atlasWithSkeleton, skeletonRenderer, myPool);
-            byDefaultFacingRight = false;
         }
     }
 
@@ -110,7 +107,6 @@ public class Monsters {
 
         public BallRed(TextureAtlas atlasWithSkeleton, SkeletonRenderer skeletonRenderer, Pool<? extends Demon> myPool) {
             super(values, "spine/monster_ball_red.json", atlasWithSkeleton, skeletonRenderer, myPool);
-            byDefaultFacingRight = false;
         }
     }
 

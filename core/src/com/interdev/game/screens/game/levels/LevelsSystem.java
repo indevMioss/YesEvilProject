@@ -1,8 +1,11 @@
 package com.interdev.game.screens.game.levels;
 
+import com.badlogic.gdx.utils.Timer;
 import com.interdev.game.screens.game.entities.demons.Demon;
 import com.interdev.game.screens.game.entities.demons.DemonsSystem;
 import com.interdev.game.screens.game.hud.directionsigns.DirectionSignFactory;
+import com.interdev.game.screens.game.hud.gui.InterlevelScene;
+import com.interdev.game.tools.ActionListener;
 import com.interdev.game.tools.Utils;
 
 import java.util.ArrayList;
@@ -21,6 +24,7 @@ public class LevelsSystem {
     private Random random = new Random();
 
     private ArrayList<DemonsSystem.DemonType> allowedTypes = new ArrayList<DemonsSystem.DemonType>();
+    private int monstersToSpawn;
 
     public LevelsSystem() {
 
@@ -31,58 +35,24 @@ public class LevelsSystem {
         typeChancesMap.put(Type.REWARD, 1f);//10
 
         updateAllowedDemons();
-        launchKillLevel();
     }
 
 
-    private float spawnInterval;
-    private float timePassed;
-
-    public void update(float delta) {
-        timePassed += delta;
-        if (currentLevel == Type.KILL) {
-            if (timePassed >= spawnInterval) {
-                spawnInterval -= intervalDecrease;
-                timePassed = 0;
-                spawn();
-            }
-        }
+    public void start() {
+        nextLevel();
     }
-
-    private void spawn() {
-        if (Utils.roll(0.9f)) {
-            spawnOne();
-        } else {
-            spawnBigOne();
-        }
-        monstersToSpawn--;
-        if (monstersToSpawn <= 0) currentLevel = Type.BREAK;
-    }
-
-
-
-    private void spawnOne() {
-        DemonsSystem.DemonType type = allowedTypes.get(Utils.randInt(0, allowedTypes.size()));
-        float size = Utils.getRand(0.25f, 0.5f);
-        Demon demon = DemonsSystem.inst.createDemon(type, size);
-        DirectionSignFactory.inst.createDirectionSign(demon);
-    }
-
-    private void spawnBigOne() {
-        DemonsSystem.DemonType type = allowedTypes.get(Utils.randInt(0, allowedTypes.size()));
-        float size = Utils.getRand(0.75f, 1f);
-        Demon demon = DemonsSystem.inst.createDemon(type, size);
-        demon.setAdditionalStr(size);
-        DirectionSignFactory.inst.createDirectionSign(demon);
-    }
-
 
     public void nextLevel() {
         levelsPassed++;
-
-        updateAllowedDemons();
-
-        launchKillLevel();
+        InterlevelScene.inst.setLevelText();
+        InterlevelScene.inst.setSceneEndListener(new ActionListener() {
+            @Override
+            public void actionPerformed() {
+                updateAllowedDemons();
+                launchKillLevel();
+            }
+        });
+        InterlevelScene.inst.show();
         return;
      /*   currentLevel = roll();
         switch (currentLevel) {
@@ -104,6 +74,64 @@ public class LevelsSystem {
         } */
     }
 
+    private float spawnInterval;
+    private float timePassed;
+
+    public void update(float delta) {
+        timePassed += delta;
+        if (currentLevel == Type.KILL) {
+            if (monstersToSpawn <= 0 && DemonsSystem.inst.getDemonsAmount() == 0) {
+                onLevelDone();
+                return;
+            }
+
+            if (timePassed >= spawnInterval && monstersToSpawn > 0){
+                timePassed = 0;
+                spawn();
+            }
+        }
+    }
+
+    private void onLevelDone() {
+        currentLevel = Type.BREAK;
+        System.out.println("onLevelDone");
+        final float pauseTime = 5f;
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                nextLevel();
+            }
+        }, pauseTime);
+    }
+
+    private void spawn() {
+        if (Utils.roll(0.95f)) {
+            spawnOne();
+        } else {
+            spawnBigOne();
+        }
+        monstersToSpawn--;
+    }
+
+
+    private void spawnOne() {
+        DemonsSystem.DemonType type = allowedTypes.get(Utils.randInt(0, allowedTypes.size()));
+        System.out.println(type.toString());
+        float size =  1;//Utils.getRand(0.5f, 1f);
+        System.out.println("size " + size);
+        Demon demon = DemonsSystem.inst.createDemon(type, size);
+        DirectionSignFactory.inst.createDirectionSign(demon);
+    }
+
+    private void spawnBigOne() {
+        DemonsSystem.DemonType type = allowedTypes.get(Utils.randInt(0, allowedTypes.size()));
+        float size = Utils.getRand(1f, 1.5f);
+        Demon demon = DemonsSystem.inst.createDemon(type, size);
+        demon.setAdditionalStr(size);
+        DirectionSignFactory.inst.createDirectionSign(demon);
+    }
+
+
     private void updateAllowedDemons() {
         allowedTypes.clear();
 
@@ -124,28 +152,25 @@ public class LevelsSystem {
         allowedTypes.add(DemonsSystem.DemonType.CLOUD_RED);
 */
 
-        allowedTypes.add(DemonsSystem.DemonType.BALL_GRAY);
+       // allowedTypes.add(DemonsSystem.DemonType.BALL_GRAY);
+        //allowedTypes.add(DemonsSystem.DemonType.ANGLER_PURPLE);
+        allowedTypes.add(DemonsSystem.DemonType.SIMPLE_RED);
+        //allowedTypes.add(DemonsSystem.DemonType.ANGLER_RED);
 
         if (levelsPassed >= 2) {
-            allowedTypes.add(DemonsSystem.DemonType.ANGLER_PURPLE);
         }
         if (levelsPassed >= 3) {
-            allowedTypes.add(DemonsSystem.DemonType.SIMPLE_RED);
         }
         if (levelsPassed >= 4) {
-            allowedTypes.add(DemonsSystem.DemonType.ANGLER_RED);
         }
 
     }
 
-
-    private int monstersToSpawn;
-    private float intervalDecrease = 0.04f;
-
     private void launchKillLevel() {
-        spawnInterval = 5f;
-        monstersToSpawn = 15;
-        intervalDecrease = 0.3f;
+        spawnInterval = 5 - (levelsPassed * 0.25f);
+        System.out.println("spawnInterval" + spawnInterval);
+        monstersToSpawn = 1;//4 * (levelsPassed);
+        System.out.println("monstersToSpawn" + monstersToSpawn);
         currentLevel = Type.KILL;
 
     }

@@ -72,7 +72,6 @@ public class AmmoVisual extends Group {
 
         setPosition(GameScreen.hudWidth / 2 + offsetX * GameMain.PPM / GameScreen.zoom,
                 GameScreen.hudHeight / 2 + offsetY * GameMain.PPM / GameScreen.zoom);
-        System.out.println(getX() + " !! " + getY());
     }
 
     public static class WeaponEffectVis extends Actor {

@@ -11,14 +11,23 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Timer;
 import com.interdev.game.screens.game.GameScreen;
 import com.interdev.game.screens.game.levels.LevelsSystem;
+import com.interdev.game.tools.ActionListener;
 import com.interdev.game.tools.Utils;
 
 public class InterlevelScene extends Group {
+    private static final float SKIP_RATE = 4f;
+
+    private static final float APPEARING_BG_TIME = 2f / SKIP_RATE;
+    private static final float APPEARING_TEXT_TIME = 0.5f / SKIP_RATE;
+    private static final float SHOW_TIME = 1f / SKIP_RATE;
+    private static final float DISAPPEARING_TEXT_TIME = 1f / SKIP_RATE;
+    private static final float DISAPPEARING_BG_TIME = 1.5f / SKIP_RATE;
+
     public static InterlevelScene inst;
-
     private TextButton levelTextButton;
-
     private Image blackBg;
+    private ActionListener sceneEndListener;
+
 
     public InterlevelScene() {
         inst = this;
@@ -48,42 +57,53 @@ public class InterlevelScene extends Group {
         setVisible(false);
     }
 
-    private void setLevelText() {
+    public void setLevelText() {
         levelTextButton.setText("Level " + LevelsSystem.levelsPassed);
-        levelTextButton.setPosition(GameScreen.hudWidth/2 - levelTextButton.getWidth() / 2, GameScreen.hudHeight/2 - levelTextButton.getHeight() / 2);
+        levelTextButton.setPosition(GameScreen.hudWidth / 2 - levelTextButton.getWidth() / 2, GameScreen.hudHeight / 2 - levelTextButton.getHeight() / 2);
     }
+
 
     public void show() {
         blackBg.setColor(1f, 1f, 1f, 0);
         levelTextButton.setColor(1f, 1f, 1f, 0);
         setVisible(true);
 
-        Utils.graduallyChangeAlpha(blackBg, 3f, 1f);
+        Utils.graduallyChangeAlpha(blackBg, APPEARING_BG_TIME, 1f);
 
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                Utils.graduallyChangeAlpha(levelTextButton, 1f, 1f);
-            }
-        }, 3.5f);
-    }
-
-
-    public void hide() {
-        Utils.graduallyChangeAlpha(levelTextButton, 2f, 0f);
-
-        Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                Utils.graduallyChangeAlpha(blackBg, 2f, 0);
+                Utils.graduallyChangeAlpha(levelTextButton, APPEARING_TEXT_TIME, 1f);
                 Timer.schedule(new Timer.Task() {
                     @Override
                     public void run() {
-                        blackBg.setVisible(false);
-                        levelTextButton.setVisible(false);
+                        hide();
+                    }
+                }, SHOW_TIME);
+            }
+        }, APPEARING_BG_TIME);
+    }
+
+
+    private void hide() {
+        Utils.graduallyChangeAlpha(levelTextButton, DISAPPEARING_TEXT_TIME, 0f);
+
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                Utils.graduallyChangeAlpha(blackBg, DISAPPEARING_BG_TIME, 0);
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        setVisible(false);
+                        sceneEndListener.actionPerformed();
                     }
                 }, 2f);
             }
-        }, 2.5f);
+        }, DISAPPEARING_TEXT_TIME / 2);
+    }
+
+    public void setSceneEndListener(ActionListener sceneEndListener) {
+        this.sceneEndListener = sceneEndListener;
     }
 }

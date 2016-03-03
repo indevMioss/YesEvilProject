@@ -22,8 +22,7 @@ public abstract class AnimatedDemon extends Demon {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
         TextureAtlas.AtlasSprite spriteFrame = getFrame(timePassed);
-        spriteFrame.setBounds(getX() - getWidth() / 2, getY() - getHeight() / 2,
-                getWidth(), getHeight());
+        spriteFrame.setBounds(getX() - getWidth() / 2, getY() - getHeight() / 2, getWidth(), getHeight());
         spriteFrame.draw(batch);
     }
 
@@ -44,9 +43,9 @@ public abstract class AnimatedDemon extends Demon {
 
     @Override
     public void setScale(float scale) {
-        super.setScale(scale);
-        setSize(animation.getKeyFrame(0).getRegionWidth() * scale / GameMain.PPM,
-                animation.getKeyFrame(0).getRegionHeight() * scale / GameMain.PPM);
+        super.setScale(scale * defaultScale);
+        setSize(animation.getKeyFrame(0).getRegionWidth() * scale * defaultScale / GameMain.PPM,
+                animation.getKeyFrame(0).getRegionHeight() * scale * defaultScale / GameMain.PPM);
     }
 
 }

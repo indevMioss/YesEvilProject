@@ -39,7 +39,7 @@ public class Demon extends Actor implements Pool.Poolable {
     private float defaultMaxSpeed = 2f;
     private float defaultBodyShapeRadius;
     private float defaultMass;
-    private float defaultScale;
+    protected float defaultScale;
     ////////////
 
     private float damage;
@@ -84,7 +84,9 @@ public class Demon extends Actor implements Pool.Poolable {
         lives = defaultLives * scale;
         damage = defaultDamage * scale;
         scaleBody(scale);
-        setMass(defaultMass * scale);
+        float mass = defaultMass * scale;
+        System.out.println("mass" + mass);
+        setMass(mass);
         resetSpeed();
     }
 
@@ -96,7 +98,8 @@ public class Demon extends Actor implements Pool.Poolable {
     private void setMass(float mass) {
         MassData massData = new MassData();
         massData.mass = mass;
-        massData.center.set(body.getFixtureList().get(0).getShape().getRadius(), body.getFixtureList().get(0).getShape().getRadius());
+        massData.center.set(body.getFixtureList().get(0).getShape().getRadius(),
+                body.getFixtureList().get(0).getShape().getRadius());
         body.setMassData(massData);
     }
 
@@ -207,6 +210,8 @@ public class Demon extends Actor implements Pool.Poolable {
     public void act(float delta) {
         if (!isVisible()) return;
         super.act(delta);
+
+        System.out.println(getX() + " " + getY());
         timeFromLastCrawl += delta;
         checkDirectionTime += delta;
 

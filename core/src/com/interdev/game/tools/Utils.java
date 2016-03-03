@@ -129,9 +129,6 @@ public class Utils {
         final float deltaAlpha = destAlpha - actor.getColor().a;
         final float alphaIncrement = deltaAlpha * interval / forTime;
         if (deltaAlpha == 0) return;
-        System.out.println("dest alpha" + destAlpha);
-        System.out.println("deltaAlpha alpha" + deltaAlpha);
-        System.out.println("alphaInc alpha" + alphaIncrement);
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
@@ -141,7 +138,6 @@ public class Utils {
                         (alphaIncrement < 0 && blackAlpha <= destAlpha)) {
                     cancel();
                 }
-                System.out.println("new ALPHA " + blackAlpha);
                 actor.setColor(1f, 1f, 1f, blackAlpha);
             }
         }, delay, interval);

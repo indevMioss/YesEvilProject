@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 
 public class StaminaOrbits extends Group {
-    private static final int MAX_SLOTS_IN_ORBIT = 8;
+    private static final int MAX_SLOTS_IN_ORBIT = 4;
     private static final float OFFSET_FROM_ORBIT = 0;
     private static final float ROTATION_SPEED = -25; //degrees/sec
 

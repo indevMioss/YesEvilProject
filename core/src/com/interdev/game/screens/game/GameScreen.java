@@ -237,7 +237,7 @@ public class GameScreen implements Screen {
 
         controlsInput = new ControlsInput(player, gui.movePad, inputMultiplexer);
         Gdx.input.setInputProcessor(inputMultiplexer);
-       // musicSystem.play();
+        // musicSystem.play();
         spineSystem = new SpineSystem(world, player);
 
 
@@ -274,7 +274,7 @@ public class GameScreen implements Screen {
         final InterlevelScene interlevelScene = new InterlevelScene();
         hudStage.addActor(interlevelScene);
 
-
+        levelsSystem.start();
     }
 
     public static void addAfterWorldStepRunnable(Runnable runnable) {
@@ -374,7 +374,7 @@ public class GameScreen implements Screen {
         postProcessor.render();
 
         //fpsLogger.log();
-        //  box2DDebugRenderer.render(world, camera.combined);
+        box2DDebugRenderer.render(world, camera.combined);
     }
 
     private FPSLogger fpsLogger = new FPSLogger();

@@ -13,7 +13,7 @@ public class SpineDemon extends Demon {
     private final AnimationState animationState;
     private final Skeleton skeleton;
     private final SkeletonRenderer skeletonRenderer;
-    protected boolean byDefaultFacingRight = false;
+    protected boolean byDefaultFacingRight = true;
 
     public SpineDemon(Monsters.Values values,
                       String jsonPath, TextureAtlas atlasWithSkeleton,
@@ -37,10 +37,8 @@ public class SpineDemon extends Demon {
 
     @Override
     public void setScale(float scale) {
-        super.setScale(scale);
-        Log.log("set SCALE spine", Log.tag.E);
-
-        skeleton.getBones().get(0).setScale(scale);
+        super.setScale(scale*defaultScale);
+        skeleton.getBones().get(0).setScale(scale*defaultScale);
     }
 
     @Override
