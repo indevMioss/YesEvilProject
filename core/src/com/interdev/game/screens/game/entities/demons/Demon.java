@@ -40,13 +40,15 @@ public class Demon extends Actor implements Pool.Poolable {
     private float defaultBodyShapeRadius;
     private float defaultMass;
     protected float defaultScale;
+    protected float minScale;
+    protected float maxScale;
     ////////////
 
     private float damage;
     protected float chasingImpulse;
     private float bodyShapeRadius;
 
-    private float hitInterval = 2f;
+    private float hitInterval = 1f;
 
     public float velocityTimeSlowFactor = 1f;
     private Pool<Demon> myPool;
@@ -67,6 +69,8 @@ public class Demon extends Actor implements Pool.Poolable {
         bodyShapeRadius = defaultBodyShapeRadius;
         defaultMass = values.DEFAULT_MASS;
         defaultScale = values.DEFAULT_SCALE;
+        minScale = values.MIN_SCALE;
+        maxScale = values.MAX_SCALE;
 
         this.myPool = (Pool<Demon>) myPool;
         defineBody(values.DEFAULT_BODY_SHAPE_RADIUS);
@@ -76,6 +80,12 @@ public class Demon extends Actor implements Pool.Poolable {
     public void setAdditionalStr(float addHardness) {
         lives = defaultLives * (1 + addHardness);
         damage = defaultDamage * (1 + addHardness);
+    }
+
+    public void setRelScale(float factor) {
+       // factor = Utils.trimValue(0, 1f, factor);
+        float scale = minScale + (maxScale - minScale) * factor;
+        setScale(scale);
     }
 
     @Override
@@ -152,8 +162,6 @@ public class Demon extends Actor implements Pool.Poolable {
         if (bullet.type.punchForce > 0) {
             Vector2 delta = new Vector2(bullet.body.getLinearVelocity().x, bullet.body.getLinearVelocity().y);
             //float angle = (float) Math.toDegrees(Math.atan2(deltaDist.y, deltaDist.x));
-            System.out.println("x " + delta.x);
-            System.out.println("y " + delta.y);
             delta.nor();
             delta.scl(bullet.type.punchForce);
             body.applyLinearImpulse(delta, new Vector2(bodyShapeRadius, bodyShapeRadius), true);
@@ -211,7 +219,6 @@ public class Demon extends Actor implements Pool.Poolable {
         if (!isVisible()) return;
         super.act(delta);
 
-        System.out.println(getX() + " " + getY());
         timeFromLastCrawl += delta;
         checkDirectionTime += delta;
 
@@ -304,7 +311,7 @@ public class Demon extends Actor implements Pool.Poolable {
 
     public void resetSpeed() {
         float revScale = 1 - getScaleX();
-        chasingImpulse = defaultChasingImpulse * (1 + revScale * 1.5f) * Utils.getRand(0.8f, 1.2f);
+        chasingImpulse = defaultChasingImpulse;//* (1 + revScale * 1.5f) * Utils.getRand(0.8f, 1.2f);
         XYSpeedRatio = Utils.getRand(0.25f, 0.75f);
     }
 

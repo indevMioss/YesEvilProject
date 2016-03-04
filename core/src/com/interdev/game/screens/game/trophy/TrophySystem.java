@@ -97,6 +97,8 @@ public class TrophySystem extends Group {
 
        // spawn(11, 8, null);
         inst = this;
+
+        getCorrespondingTrophy(Trophy.Type.SHIELD_BONUS).go(15,5);
     }
 
     public void setLivesAddListener(OneFloatChangeListener livesAddListener) {
@@ -265,7 +267,7 @@ public class TrophySystem extends Group {
                 break;
             case SHIELD_BONUS:
                 SoundSystem.inst.playSound(SoundSystem.Sounds.SHIELD_PICK_UP);
-                Player.hasShield = true;
+                Player.inst.activateShield();
                 break;
             case SHARP_SHIELD_BONUS:
                 SoundSystem.inst.playSound(SoundSystem.Sounds.SHARP_SHIELD_PICK_UP);

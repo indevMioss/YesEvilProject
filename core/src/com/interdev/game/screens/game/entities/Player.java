@@ -34,7 +34,10 @@ public class Player extends AnimatedB2dActor {
     private static final float FEET_FRICTION_RATE = 0.95f;
     private static final float BODY_SHAPE_RADIUS = 30f;
     private static final float BODY_SHIELD_RADIUS = 80f;
-    private static final float SHARP_SHIELD_TIME = 10f;
+
+    private static final float SHARP_SHIELD_TIME = 4;
+    private static final float SHIELD_TIME = 6;
+
 
     private static final float DEFAULT_SCALE = 1.5f;
 
@@ -304,4 +307,15 @@ public class Player extends AnimatedB2dActor {
     }
 
 
+    private Timer shieldResetTimer = new Timer();
+    public void activateShield() {
+        shieldResetTimer.clear();
+        hasShield = true;
+        shieldResetTimer.scheduleTask(new Timer.Task() {
+            @Override
+            public void run() {
+                hasShield = false;
+            }
+        }, SHIELD_TIME);
+    }
 }

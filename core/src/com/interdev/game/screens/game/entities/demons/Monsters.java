@@ -12,20 +12,24 @@ public class Monsters {
     public static class Values {
         public float DEFAULT_LIVES = 100f;
         public float DEFAULT_DAMAGE = 0.5f;
-        public float DEFAULT_CHASING_IMPULSE = 10f;
+        public float DEFAULT_CHASING_IMPULSE = 40f;
         public float DEFAULT_MAX_SPEED = 3f;
         public float DEFAULT_BODY_SHAPE_RADIUS = 40;
         public float DEFAULT_MASS = 10f;
         public float DEFAULT_SCALE = 1f;
+        public float MIN_SCALE = 0.5f;
+        public float MAX_SCALE = 1.5f;
     }
 
     public static class SimpleRed extends AnimatedDemon {
         private static Values values = new Values();
 
         static {
-            values.DEFAULT_SCALE = 1.0f;
-            values.DEFAULT_MASS = 20;
-            values.DEFAULT_CHASING_IMPULSE = 20f;
+            values.DEFAULT_BODY_SHAPE_RADIUS = 30;
+            values.MIN_SCALE = 1.2f;
+            values.MAX_SCALE = 2f;
+            values.DEFAULT_MASS = 10f;
+            values.DEFAULT_CHASING_IMPULSE = 40f;
         }
 
         public SimpleRed(TextureAtlas atlasWithAnimation, Pool<? extends Demon> myPool) {
@@ -73,11 +77,12 @@ public class Monsters {
         private static Values values = new Values();
 
         static {
-            values.DEFAULT_SCALE = 0.5f;
+            values.MIN_SCALE = 0.4f;
+            values.MAX_SCALE = 0.6f;
             values.DEFAULT_MAX_SPEED = 4;
             values.DEFAULT_BODY_SHAPE_RADIUS = 100;
             values.DEFAULT_DAMAGE = 0.3f;
-            values.DEFAULT_CHASING_IMPULSE = 10f;
+            values.DEFAULT_CHASING_IMPULSE = 40f;
         }
 
         public BallGray(TextureAtlas atlasWithSkeleton, SkeletonRenderer skeletonRenderer, Pool<? extends Demon> myPool) {

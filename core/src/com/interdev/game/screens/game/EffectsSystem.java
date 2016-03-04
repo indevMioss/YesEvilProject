@@ -14,6 +14,7 @@ import com.interdev.game.screens.game.entities.Player;
 import com.interdev.game.screens.game.entities.demons.Demon;
 import com.interdev.game.screens.game.entities.demons.Monsters;
 import com.interdev.game.screens.game.levels.LevelsSystem;
+import com.interdev.game.tools.ScalableParticleEffect;
 
 public class EffectsSystem implements Disposable {
 
@@ -51,7 +52,7 @@ public class EffectsSystem implements Disposable {
         evilBlowPool = newPool("effects/demon_blow.p", "effects");
         starBlowPool = newPool("effects/star_blow.p", "effects", 0.5f);
 
-        spiritBulletBlowPool = newPool("effects/bullets/spirit_bullet_blow.p", "effects");
+        spiritBulletBlowPool = newPool("effects/bullets/spirit_bullet_blow2.p", "effects");
         greenFlyBulletBlowPool = newPool("effects/bullets/green_fly_blow.p", "effects");
         greenSharpBulletBlowPool = newPool("effects/bullets/green_sharp_blow.p", "effects");
         blueRicochetBulletBlowPool = newPool("effects/bullets/blue_fly_blow.p", "effects");

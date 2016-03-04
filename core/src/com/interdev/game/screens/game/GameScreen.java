@@ -374,7 +374,7 @@ public class GameScreen implements Screen {
         postProcessor.render();
 
         //fpsLogger.log();
-        box2DDebugRenderer.render(world, camera.combined);
+     //   box2DDebugRenderer.render(world, camera.combined);
     }
 
     private FPSLogger fpsLogger = new FPSLogger();

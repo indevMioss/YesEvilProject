@@ -1,6 +1,8 @@
 package com.interdev.game.screens.game;
 
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
 import com.interdev.game.screens.game.attack.Bullet;
 import com.interdev.game.screens.game.entities.demons.DemonsSystem;
 import com.interdev.game.screens.game.hud.gui.Lives;
@@ -35,7 +37,27 @@ public class WorldContactListener implements ContactListener {
         TROPHY
     }
 
+
+    private Array<Demon> inContactWithDemonsArray = new Array<Demon>();
     private LabeledReferenceList userDatas = new LabeledReferenceList();
+
+
+    public WorldContactListener() {
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                check();
+            }
+        }, 0, 0.25f);
+    }
+
+    private void check() {
+        for (Demon demon : inContactWithDemonsArray) {
+            if (demon.readyToHitAgain) {
+                onDemonContact(demon);
+            }
+        }
+    }
 
     @Override
     public void beginContact(Contact contact) {
@@ -57,7 +79,10 @@ public class WorldContactListener implements ContactListener {
         if (userDatas.contains(ContactLabels.DEMON) &&
                 (userDatas.contains(ContactLabels.PLAYER) || userDatas.contains(ContactLabels.PLAYER_FEET))) {
             Demon demon = userDatas.getFirst(Demon.class);
-            if (demon != null) onDemonContact(demon);
+            if (demon != null) {
+                inContactWithDemonsArray.add(demon);
+                onDemonContact(demon);
+            }
         }
 
         if (userDatas.contains(ContactLabels.BULLET) && userDatas.contains(ContactLabels.DEMON)) {
@@ -77,8 +102,25 @@ public class WorldContactListener implements ContactListener {
                 trophy.pickUp();
             }
         }
+    }
 
 
+    private LabeledReferenceList endUserDatas = new LabeledReferenceList();
+
+    @Override
+    public void endContact(Contact contact) {
+        if (GameScreen.gameStopped) return;
+        endUserDatas.clear();
+
+        for (Fixture fixture : new Fixture[]{contact.getFixtureA(), contact.getFixtureB()}) {
+            if (fixture != null && fixture.getUserData() != null) {
+                if (fixture.getUserData() instanceof LabeledReference)
+                    endUserDatas.add((LabeledReference) fixture.getUserData());
+            }
+        }
+        Demon demon = endUserDatas.getFirst(Demon.class);
+        if (demon == null) return;
+        inContactWithDemonsArray.removeValue(demon, true);
     }
 
     private void onFeetContact() {
@@ -105,24 +147,27 @@ public class WorldContactListener implements ContactListener {
         */
     }
 
-    private void onDemonContact(Demon demon) {
+
+    private void onDemonContact(final Demon demon) {
         if (demon.isVisible()) {
             if (Player.hasSharpShield) {
                 demon.die();
                 SoundSystem.inst.playSound(SoundSystem.Sounds.SHIELD_BREAK);
                 return;
             } else if (Player.hasShield) {
-                Player.hasShield = false;
-                B2dForcePoint.blast(DemonsSystem.inst.demonsList, Player.inst.getX(), Player.inst.getY(), 200, 100);
-                SoundSystem.inst.playSound(SoundSystem.Sounds.SHIELD_BREAK);
+                //Player.hasShield = false;
+                //B2dForcePoint.blast(DemonsSystem.inst.demonsList, Player.inst.getX(), Player.inst.getY(), 200, 100);
+                //SoundSystem.inst.playSound(SoundSystem.Sounds.SHIELD_BREAK);
                 return;
             }
-            if (!demon.readyToHitAgain) return;
+            if (!demon.readyToHitAgain) {
+                return;
+            }
             if (StaminaOrbits.inst.getTotalStamina() > demon.getDamageVal()) {
                 SoundSystem.inst.playSound(SoundSystem.Sounds.HIT_PLAYER);
                 StaminaOrbits.inst.removeStamina(demon.getDamageVal());
-                demon.punchFromPlayer(Player.PUNCH_IMPULSE);
-               // B2dForcePoint.blast(DemonsSystem.inst.demonsList, Player.inst.getX(), Player.inst.getY(), 200, 100);
+                demon.punchFromPlayer(Player.PUNCH_IMPULSE/3f);
+                // B2dForcePoint.blast(DemonsSystem.inst.demonsList, Player.inst.getX(), Player.inst.getY(), 200, 100);
                 return;
             }
 
@@ -135,7 +180,7 @@ public class WorldContactListener implements ContactListener {
             }
 
             // GG
-
+            inContactWithDemonsArray.clear();
             GameScreen.inst.stopGame();
 /*
             // RESET
@@ -156,11 +201,6 @@ public class WorldContactListener implements ContactListener {
         }
     }
 
-
-    @Override
-    public void endContact(Contact contact) {
-
-    }
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {

@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Pool;
 import com.esotericsoftware.spine.*;
 import com.interdev.game.GameMain;
 import com.interdev.game.tools.Log;
+import com.interdev.game.tools.Utils;
 
 public class SpineDemon extends Demon {
 
@@ -37,8 +38,8 @@ public class SpineDemon extends Demon {
 
     @Override
     public void setScale(float scale) {
-        super.setScale(scale*defaultScale);
-        skeleton.getBones().get(0).setScale(scale*defaultScale);
+        super.setScale(scale);
+        skeleton.getBones().get(0).setScale(scale);
     }
 
     @Override

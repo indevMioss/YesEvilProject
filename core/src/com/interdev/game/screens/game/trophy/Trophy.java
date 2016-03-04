@@ -13,6 +13,8 @@ import com.interdev.game.tools.Utils;
 
 public abstract class Trophy extends Actor implements Pool.Poolable {
 
+    private static final float SELF_FREE_TIME = 20f;
+
     protected TrophySystem trophySystem;
     private final Pool<Trophy> myPool;
 
@@ -74,10 +76,24 @@ public abstract class Trophy extends Actor implements Pool.Poolable {
         return this;
     }
 
+    private float selfFreeCounter = 0;
+
     @Override
     public void act(float delta) {
         super.act(delta);
+        if (!isVisible()) return;
         setPosition(body.getPosition().x, body.getPosition().y);
+        System.out.println("333");
+        selfFreeCounter += delta;
+        if (selfFreeCounter >= SELF_FREE_TIME) {
+            selfFreeCounter = 0;
+            if (myPool != null) {
+                myPool.free(this);
+            } else {
+                reset();
+            }
+        }
+
     }
 
     @Override
@@ -114,6 +130,7 @@ public abstract class Trophy extends Actor implements Pool.Poolable {
 
     @Override
     public void reset() {
+        setVisible(false);
         body.setActive(false);
         body.setLinearVelocity(0, 0);
     }

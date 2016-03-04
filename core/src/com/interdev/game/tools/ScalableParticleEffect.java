@@ -76,6 +76,11 @@ public class ScalableParticleEffect extends ParticleEffect {
         }
     }
 
+    @Override
+    public void scaleEffect(float scaleFactor) {
+        setScale(scaleFactor);
+    }
+
     public void setScale(float scaleFactor) {
         int i = 0;
         for (ParticleEmitter particleEmitter : getEmitters()) {

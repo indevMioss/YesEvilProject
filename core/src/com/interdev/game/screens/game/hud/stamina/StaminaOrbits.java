@@ -93,8 +93,6 @@ public class StaminaOrbits extends Group {
         for (Orb orb : allOrbsList) {
             orb.setVisible(false);
         }
-        System.out.println("allOrbsList size " + allOrbsList.size());
-        System.out.println("orbsNow  " + orbsNow);
         for (int i = 0; i < orbsNow; i++) {
             Orb orb = allOrbsList.get(i);
             orb.setPosition(listOfOrbits.get(orbsNow - 1).get(i).x, listOfOrbits.get(orbsNow - 1).get(i).y);

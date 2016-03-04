@@ -43,9 +43,9 @@ public abstract class AnimatedDemon extends Demon {
 
     @Override
     public void setScale(float scale) {
-        super.setScale(scale * defaultScale);
-        setSize(animation.getKeyFrame(0).getRegionWidth() * scale * defaultScale / GameMain.PPM,
-                animation.getKeyFrame(0).getRegionHeight() * scale * defaultScale / GameMain.PPM);
+        super.setScale(scale);
+        setSize(animation.getKeyFrame(0).getRegionWidth() * scale / GameMain.PPM,
+                animation.getKeyFrame(0).getRegionHeight() * scale / GameMain.PPM);
     }
 
 }

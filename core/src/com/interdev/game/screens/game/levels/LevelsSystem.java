@@ -85,7 +85,7 @@ public class LevelsSystem {
                 return;
             }
 
-            if (timePassed >= spawnInterval && monstersToSpawn > 0){
+            if (timePassed >= spawnInterval && monstersToSpawn > 0) {
                 timePassed = 0;
                 spawn();
             }
@@ -105,7 +105,7 @@ public class LevelsSystem {
     }
 
     private void spawn() {
-        if (Utils.roll(0.95f)) {
+        if (true) {//Utils.roll(0.95f)) {
             spawnOne();
         } else {
             spawnBigOne();
@@ -117,9 +117,10 @@ public class LevelsSystem {
     private void spawnOne() {
         DemonsSystem.DemonType type = allowedTypes.get(Utils.randInt(0, allowedTypes.size()));
         System.out.println(type.toString());
-        float size =  1;//Utils.getRand(0.5f, 1f);
-        System.out.println("size " + size);
-        Demon demon = DemonsSystem.inst.createDemon(type, size);
+        float relSize = Utils.getRand(0f, 1f);
+        System.out.println("size " + relSize);
+        Demon demon = DemonsSystem.inst.createDemon(type);
+        demon.setRelScale(relSize);
         DirectionSignFactory.inst.createDirectionSign(demon);
     }
 
@@ -152,9 +153,9 @@ public class LevelsSystem {
         allowedTypes.add(DemonsSystem.DemonType.CLOUD_RED);
 */
 
-       // allowedTypes.add(DemonsSystem.DemonType.BALL_GRAY);
+         allowedTypes.add(DemonsSystem.DemonType.BALL_GRAY);
         //allowedTypes.add(DemonsSystem.DemonType.ANGLER_PURPLE);
-        allowedTypes.add(DemonsSystem.DemonType.SIMPLE_RED);
+       // allowedTypes.add(DemonsSystem.DemonType.SIMPLE_RED);
         //allowedTypes.add(DemonsSystem.DemonType.ANGLER_RED);
 
         if (levelsPassed >= 2) {
@@ -167,9 +168,9 @@ public class LevelsSystem {
     }
 
     private void launchKillLevel() {
-        spawnInterval = 5 - (levelsPassed * 0.25f);
+        spawnInterval = 2;// - (levelsPassed * 0.25f);
         System.out.println("spawnInterval" + spawnInterval);
-        monstersToSpawn = 1;//4 * (levelsPassed);
+        monstersToSpawn = 1 * (levelsPassed);
         System.out.println("monstersToSpawn" + monstersToSpawn);
         currentLevel = Type.KILL;
 

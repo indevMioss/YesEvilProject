@@ -66,7 +66,6 @@ public class MusicSystem implements Disposable {
 
     public void play() {
         currentTrackIndex = random.nextInt(musicList.size());
-        System.out.println("currentTrackIndex" + currentTrackIndex);
         musicList.get(currentTrackIndex).play();
         onTrackChanged();
     }

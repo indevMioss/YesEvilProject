@@ -101,7 +101,7 @@ public class BulletSystem extends Group {
             @Override
             protected Spirit newObject() {
                 final Spirit bullet = new Spirit(world, spiritBulletPool);
-                setBulletHitListener(bullet, 60f, true);
+                setBulletHitListener(bullet);
                 addActor(bullet);
                 return bullet;
             }
@@ -300,8 +300,6 @@ public class BulletSystem extends Group {
             launchAngle -= bullet.projectilesPerShot * bullet.strictAngleSpray / 2;
             int currentProjectileNum = bullet.projectilesPerShot - projectilesToLaunch;
             launchAngle += currentProjectileNum * bullet.strictAngleSpray;
-            System.out.println(launchAngle);
-            System.out.println(projectilesToLaunch);
         }
         if (bullet.projectilesPerShot > 1) {
             int sign = (Utils.roll(0.5f)) ? -1 : 1;

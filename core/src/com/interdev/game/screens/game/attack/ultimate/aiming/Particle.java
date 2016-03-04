@@ -34,7 +34,6 @@ public class Particle extends Actor implements Pool.Poolable {
 
     public Particle(Array<TextureAtlas.AtlasRegion> frames, Pool<Particle> particlePool) {
         this.particlePool = particlePool;
-        System.out.println("new Particle, total amount: " + ++countParticle);
         animation = new OffsetAnimation(1 / 50f, frames, OffsetAnimation.PlayMode.LOOP);
         setSize(animation.getKeyFrame(0).getRegionWidth(), animation.getKeyFrame(0).getRegionHeight());
         setOrigin(getWidth() / 2, getHeight() / 2);
