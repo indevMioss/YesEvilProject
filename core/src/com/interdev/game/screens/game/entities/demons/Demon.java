@@ -270,11 +270,11 @@ public class Demon extends Actor implements Pool.Poolable {
             Vector2 vec = new Vector2(destDeltaX * XYSpeedRatio, destDeltaY * (1 - XYSpeedRatio));
             vec.nor();
 
-            float velocityX = chasingImpulse * vec.x * velocityTimeSlowFactor;
-            float velocityY = chasingImpulse * vec.y * velocityTimeSlowFactor;
+            float velocityX = chasingImpulse * vec.x;
+            float velocityY = chasingImpulse * vec.y;
 
             body.applyLinearImpulse(velocityX, velocityY, defaultBodyShapeRadius / 2, defaultBodyShapeRadius / 2, true);
-            body.setLinearVelocity(body.getLinearVelocity().limit(defaultMaxSpeed));
+            body.setLinearVelocity(body.getLinearVelocity().limit(defaultMaxSpeed*velocityTimeSlowFactor));
 
             if (FLIPPABLE) facingLeft = (destDeltaX < 0);
         }

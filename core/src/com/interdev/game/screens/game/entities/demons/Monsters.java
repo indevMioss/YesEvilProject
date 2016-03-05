@@ -41,7 +41,13 @@ public class Monsters {
         private static Values values = new Values();
 
         static {
-
+            values.DEFAULT_LIVES = 25;
+            values.MIN_SCALE = 0.4f;
+            values.MAX_SCALE = 0.75f;
+            values.DEFAULT_MAX_SPEED = 4;
+            values.DEFAULT_BODY_SHAPE_RADIUS = 70;
+            values.DEFAULT_DAMAGE = 0.3f;
+            values.DEFAULT_CHASING_IMPULSE = 40f;
         }
 
         public AnglerGray(TextureAtlas atlasWithSkeleton, SkeletonRenderer skeletonRenderer, Pool<? extends Demon> myPool) {

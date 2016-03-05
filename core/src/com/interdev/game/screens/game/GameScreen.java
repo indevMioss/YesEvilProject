@@ -490,6 +490,7 @@ public class GameScreen implements Screen {
     public void doEffect(Effect effect) {
         switch (effect) {
             case FLASH:
+                postProcessor.setEnabled(true);
                 bloom.setEnabled(true);
                 Timer.schedule(new Timer.Task() {
                     float destThreshold = -2f;
@@ -509,6 +510,7 @@ public class GameScreen implements Screen {
                         } else if (destIntensity == 0 && newIntensity <= 0) {
                             newIntensity = destIntensity;
                             bloom.setEnabled(false);
+                            postProcessor.setEnabled(false);
                             cancel();
                         }
 

@@ -17,12 +17,12 @@ import com.interdev.game.tools.OffsetAnimation;
 public class Player extends AnimatedB2dActor {
     public static Player inst;
 
-    private static final float MAX_SPEED_FACTOR = 0.65f;
-    private static final float MIN_SPEED_FACTOR = 0.35f;
+    private static final float MAX_SPEED_FACTOR = 1f;
+    private static final float MIN_SPEED_FACTOR = 0.6f;
 
     private static float SPEED_FACTOR = MAX_SPEED_FACTOR;
     public static final float JUMP_DELAY = 0.8f;
-    private static final float MAX_SPEED_X = 15f;
+    private static final float MAX_SPEED_X = 25f;
     private static final float JUMP_IMPULSE = 13f;
     private static final float MOVE_IMPULSE = 15f;
 

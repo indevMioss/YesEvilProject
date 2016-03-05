@@ -153,7 +153,7 @@ public class LevelsSystem {
         allowedTypes.add(DemonsSystem.DemonType.CLOUD_RED);
 */
 
-         allowedTypes.add(DemonsSystem.DemonType.BALL_GRAY);
+         allowedTypes.add(DemonsSystem.DemonType.ANGLER_GRAY);
         //allowedTypes.add(DemonsSystem.DemonType.ANGLER_PURPLE);
        // allowedTypes.add(DemonsSystem.DemonType.SIMPLE_RED);
         //allowedTypes.add(DemonsSystem.DemonType.ANGLER_RED);
@@ -168,9 +168,9 @@ public class LevelsSystem {
     }
 
     private void launchKillLevel() {
-        spawnInterval = 2;// - (levelsPassed * 0.25f);
+        spawnInterval = 1;// - (levelsPassed * 0.25f);
         System.out.println("spawnInterval" + spawnInterval);
-        monstersToSpawn = 1 * (levelsPassed);
+        monstersToSpawn = 10 * (levelsPassed);
         System.out.println("monstersToSpawn" + monstersToSpawn);
         currentLevel = Type.KILL;
 

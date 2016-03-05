@@ -98,7 +98,7 @@ public class TrophySystem extends Group {
        // spawn(11, 8, null);
         inst = this;
 
-        getCorrespondingTrophy(Trophy.Type.SHIELD_BONUS).go(15,5);
+        getCorrespondingTrophy(Trophy.Type.SLOW_ALL_BONUS).go(15,5);
     }
 
     public void setLivesAddListener(OneFloatChangeListener livesAddListener) {
