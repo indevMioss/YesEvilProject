@@ -1,0 +1,26 @@
+
+vit2.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+vit/chap
+  rotate: false
+  xy: 513, 393
+  size: 365, 228
+  orig: 365, 228
+  offset: 0, 0
+  index: -1
+vit/head
+  rotate: false
+  xy: 2, 2
+  size: 509, 619
+  orig: 509, 619
+  offset: 0, 0
+  index: -1
+vit/tongue
+  rotate: false
+  xy: 513, 132
+  size: 138, 259
+  orig: 138, 259
+  offset: 0, 0
+  index: -1

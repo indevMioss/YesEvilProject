@@ -11,6 +11,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -38,7 +39,6 @@ import com.interdev.game.screens.game.hud.gui.*;
 import com.interdev.game.screens.game.hud.stamina.StaminaOrbits;
 import com.interdev.game.screens.game.levels.LevelsSystem;
 import com.interdev.game.screens.game.other.Box2DWorldCreator;
-import com.interdev.game.screens.game.spine.SpineSystem;
 import com.interdev.game.screens.game.trophy.TrophySystem;
 import com.interdev.game.sound.MusicSystem;
 import com.interdev.game.sound.SoundSystem;
@@ -95,7 +95,6 @@ public class GameScreen implements Screen {
     private MusicText musicTextUI;
     private ShieldField shieldField;
     private DirectionSignFactory directionSignFactory;
-    private SpineSystem spineSystem;
 
     private UltimateSystem ultimateSystem;
     private PostProcessor postProcessor;
@@ -188,7 +187,6 @@ public class GameScreen implements Screen {
 
         player = new Player(atlas.findRegions("spirit"), world, aim, soundSystem);
         ammoVisual = new AmmoVisual();
-        player.setFlipListener(ammoVisual.getFlipPlayerListener());
 
         shieldField = new ShieldField(atlas.findRegions("shield"), player);
         effectsSystem = new EffectsSystem(player);
@@ -201,8 +199,6 @@ public class GameScreen implements Screen {
 
         staminaOrbits = new StaminaOrbits(hudWidth * 0.12f, atlas.findRegions("orb"));
         staminaOrbits.addStamina(5.5f);
-        hudStage.addActor(staminaOrbits);
-        hudStage.addActor(ammoVisual);
 
         Lives lives = new Lives();
 
@@ -238,7 +234,6 @@ public class GameScreen implements Screen {
         controlsInput = new ControlsInput(player, gui.movePad, inputMultiplexer);
         Gdx.input.setInputProcessor(inputMultiplexer);
         // musicSystem.play();
-        spineSystem = new SpineSystem(world, player);
 
 
         ShaderLoader.BasePath = "resources/shaders/";
@@ -312,10 +307,10 @@ public class GameScreen implements Screen {
             levelsSystem.update(delta);
             trophySystem.act(delta);
             demonsSystem.update(delta);
-            spineSystem.update(delta);
             bulletSystem.act(delta);
-            camera.position.x = player.getX();
-            camera.position.y = player.getY();
+            staminaOrbits.act(delta);
+            ammoVisual.act(delta);
+            moveCamera();
         } else {
             player.passiveAct(delta);
         }
@@ -331,6 +326,18 @@ public class GameScreen implements Screen {
         parallaxTiledBg.update(camera);
         effectsSystem.update();
 
+    }
+
+    private void moveCamera() {
+        Vector2 deltaDist = new Vector2(player.getX() - camera.position.x, player.getY() - camera.position.y);
+        float len = deltaDist.len();
+
+        float camSpeed = 0.3f;
+        final float maxCamOffset = 5f;
+        float camMoveSpdFactor = Utils.trimValue(0, 1, Interpolation.linear.apply(len / maxCamOffset));
+        camSpeed *= camMoveSpdFactor;
+        camera.position.x = Utils.pull(camera.position.x, player.getX(), camSpeed);
+        camera.position.y = Utils.pull(camera.position.y, player.getY(), camSpeed);
     }
 
 
@@ -357,24 +364,20 @@ public class GameScreen implements Screen {
         //goodStar.draw(mainBatch, 1f);
         trophySystem.draw(mainBatch, 1f);
 
-
         demonsSystem.draw(mainBatch);
-        spineSystem.draw(mainBatch);
-
 
         effectsSystem.draw(mainBatch, delta * 1f);
         bulletSystem.draw(mainBatch, delta);
+        staminaOrbits.draw(mainBatch, 1f);
+        ammoVisual.draw(mainBatch, 1f);
         mainBatch.end();
-
 
         hudStage.draw();
         ultimateSystem.draw();
         hudStage.getBatch().setColor(1f, 1f, 1f, 1f);
-
         postProcessor.render();
-
-        //fpsLogger.log();
-     //   box2DDebugRenderer.render(world, camera.combined);
+      //  fpsLogger.log();
+        //  box2DDebugRenderer.render(world, camera.combined);
     }
 
     private FPSLogger fpsLogger = new FPSLogger();

@@ -2,30 +2,36 @@ package com.interdev.game.screens.game.entities.demons;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Timer;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.interdev.game.screens.game.GameScreen;
+import com.interdev.game.screens.game.entities.demons.bosses.SpineBoss;
+import com.interdev.game.screens.game.entities.demons.bosses.Vis;
 import com.interdev.game.screens.game.hud.directionsigns.DirectionSignFactory;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class DemonsSystem {
 
     public static DemonsSystem inst;
+    private final SkeletonRenderer skeletonRenderer;
 
     public enum DemonType {
         SIMPLE_RED, ANGLER_GRAY, ANGLER_PURPLE, ANGLER_RED,
         BALL_GRAY, BALL_PURPLE, BALL_RED,
         FLY_BLUE, FLY_COLD, FLY_GREEN, FLY_RED,
         HORSE_BLUE, HORSE_GRAY, HORSE_PURPLE, HORSE_RED,
-        CLOUD_GRAY, CLOUD_GREEN, CLOUD_RED,
-        BOSS_VIT
+        CLOUD_GRAY, CLOUD_GREEN, CLOUD_RED
     }
 
-    public List<Demon> demonsList = new ArrayList<Demon>();
+    public enum BossType {
+        VIS
+    }
+
+    public Array<Demon> demonsList = new Array<Demon>();
+    public Array<SpineBoss> bossesList = new Array<SpineBoss>();
 
     private Pool<Monsters.SimpleRed> redSimplePool;
 
@@ -61,7 +67,7 @@ public class DemonsSystem {
 
         inst = this;
 
-        final SkeletonRenderer skeletonRenderer = new SkeletonRenderer();
+        skeletonRenderer = new SkeletonRenderer();
 
         redSimplePool = new Pool<Monsters.SimpleRed>() {
             @Override
@@ -201,75 +207,65 @@ public class DemonsSystem {
 
     public Demon createDemon(DemonType demonType) {
         Pool<? extends Demon> demonPool;
-
-        switch (demonType) {
-
-            case SIMPLE_RED:
-                demonPool = redSimplePool;
-                break;
-            case ANGLER_GRAY:
-                demonPool = anglerGrayPool;
-                break;
-            case ANGLER_RED:
-                demonPool = anglerRedPool;
-                break;
-            case ANGLER_PURPLE:
-                demonPool = anglerPurplePool;
-                break;
-            case BALL_GRAY:
-                demonPool = ballGrayPool;
-                break;
-            case BALL_PURPLE:
-                demonPool = ballPurplePool;
-                break;
-            case BALL_RED:
-                demonPool = ballRedPool;
-                break;
-            case FLY_BLUE:
-                demonPool = flyBluePool;
-                break;
-            case FLY_COLD:
-                demonPool = flyColdPool;
-                break;
-            case FLY_GREEN:
-                demonPool = flyGreenPool;
-                break;
-            case FLY_RED:
-                demonPool = flyRedPool;
-                break;
-            case HORSE_BLUE:
-                demonPool = horseBluePool;
-                break;
-            case HORSE_GRAY:
-                demonPool = horseGrayPool;
-                break;
-            case HORSE_PURPLE:
-                demonPool = horsePurplePool;
-                break;
-            case HORSE_RED:
-                demonPool = horseRedPool;
-                break;
-            case CLOUD_GRAY:
-                demonPool = cloudGrayPool;
-                break;
-            case CLOUD_GREEN:
-                demonPool = cloudGreenPool;
-                break;
-            case CLOUD_RED:
-                demonPool = cloudRedPool;
-                break;
-
-            //   case BOSS_VIT:
-            //      System.out.println("BOSS_VIT BOSS_VIT BOSS_VIT");
-            //     break;
-            default:
-                demonPool = redSimplePool;
-        }
-
+        demonPool = getAppropriatePool(demonType);
         Demon demon = demonPool.obtain();
         demonsList.add(demon);
         demon.go();
         return demon;
+    }
+
+
+    public SpineBoss createBoss(BossType bossType) {
+        switch (bossType) {
+            case VIS:
+                Vis bossVIS = new Vis(skeletonRenderer);
+                bossesList.add(bossVIS);
+                return bossVIS;
+        }
+        return createBoss(BossType.VIS);
+    }
+
+    private Pool<? extends Demon> getAppropriatePool(DemonType type) {
+        switch (type) {
+            case SIMPLE_RED:
+                return redSimplePool;
+            case ANGLER_GRAY:
+                return anglerGrayPool;
+            case ANGLER_RED:
+                return anglerRedPool;
+            case ANGLER_PURPLE:
+                return anglerPurplePool;
+            case BALL_GRAY:
+                return ballGrayPool;
+            case BALL_PURPLE:
+                return ballPurplePool;
+            case BALL_RED:
+                return ballRedPool;
+            case FLY_BLUE:
+                return flyBluePool;
+            case FLY_COLD:
+                return flyColdPool;
+            case FLY_GREEN:
+                return flyGreenPool;
+            case FLY_RED:
+                return flyRedPool;
+            case HORSE_BLUE:
+                return horseBluePool;
+            case HORSE_GRAY:
+                return horseGrayPool;
+            case HORSE_PURPLE:
+                return horsePurplePool;
+            case HORSE_RED:
+                return horseRedPool;
+            case CLOUD_GRAY:
+                return cloudGrayPool;
+            case CLOUD_GREEN:
+                return cloudGreenPool;
+            case CLOUD_RED:
+                return cloudRedPool;
+            default:
+                return redSimplePool;
+        }
     }
 
 
@@ -288,7 +284,7 @@ public class DemonsSystem {
 
 
     public void blowAllTheDemons() {
-        ArrayList<Demon> tempDemonsList = new ArrayList<Demon>(demonsList);
+        Array<Demon> tempDemonsList = new Array<Demon>(demonsList);
         for (Demon demon : tempDemonsList) {
             demon.die();
         }
@@ -330,6 +326,10 @@ public class DemonsSystem {
             demon.velocityTimeSlowFactor = timeFactor;
             demon.act(delta * timeFactor);
         }
+        for (SpineBoss boss : bossesList) {
+            boss.velocityTimeSlowFactor = timeFactor;
+            boss.act(delta * timeFactor);
+        }
     }
 
     public void draw(SpriteBatch batch) {
@@ -338,16 +338,21 @@ public class DemonsSystem {
                 demon.draw(batch, 1f);
             }
         }
+        for (SpineBoss boss : bossesList) {
+            if (GameScreen.inFrustum(boss)) {
+                boss.draw(batch, 1f);
+            }
+        }
     }
 
     public void removeDemon(Demon demon) {
         DirectionSignFactory.inst.removeByTarget(demon);
-        demonsList.remove(demon);
+        demonsList.removeValue(demon, true);
     }
 
 
     public int getDemonsAmount() {
-        return demonsList.size();
+        return demonsList.size;
     }
 }
 

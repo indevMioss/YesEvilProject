@@ -39,7 +39,8 @@ public class LevelsSystem {
 
 
     public void start() {
-        nextLevel();
+    //    DemonsSystem.inst.createBoss(DemonsSystem.BossType.VIS);
+        //nextLevel();
     }
 
     public void nextLevel() {
@@ -153,9 +154,9 @@ public class LevelsSystem {
         allowedTypes.add(DemonsSystem.DemonType.CLOUD_RED);
 */
 
-         allowedTypes.add(DemonsSystem.DemonType.ANGLER_GRAY);
+        allowedTypes.add(DemonsSystem.DemonType.ANGLER_GRAY);
         //allowedTypes.add(DemonsSystem.DemonType.ANGLER_PURPLE);
-       // allowedTypes.add(DemonsSystem.DemonType.SIMPLE_RED);
+        // allowedTypes.add(DemonsSystem.DemonType.SIMPLE_RED);
         //allowedTypes.add(DemonsSystem.DemonType.ANGLER_RED);
 
         if (levelsPassed >= 2) {

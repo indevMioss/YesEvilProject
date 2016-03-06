@@ -1,7 +1,7 @@
 package com.interdev.game.screens.game.entities.demons.bosses;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
@@ -9,21 +9,20 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Timer;
 import com.esotericsoftware.spine.*;
 import com.interdev.game.GameMain;
+import com.interdev.game.screens.game.GameScreen;
 import com.interdev.game.screens.game.WorldContactListener;
-import com.interdev.game.screens.game.other.LabeledReference;
 import com.interdev.game.screens.game.entities.Player;
+import com.interdev.game.screens.game.other.LabeledReference;
 import com.interdev.game.tools.ScalableParticleEffect;
 import com.interdev.game.tools.Utils;
 
-public class SpineBossVIS {
-    private static final float DEFAULT_SCALE = 1.0f;
+public class Vis extends SpineBoss {
+    private static final float DEFAULT_SCALE = 0.75f;
 
     private final AnimationState animationState;
     public final Skeleton skeleton;
 
-    private Player player;
     private final SkeletonRenderer skeletonRenderer;
-    private World world;
     public SkeletonRendererDebug debugRenderer = new SkeletonRendererDebug();
 
     private Body body;
@@ -35,15 +34,13 @@ public class SpineBossVIS {
 
     private ScalableParticleEffect rightEyeEffect, leftEyeEffect, bgFireEffect;
 
-    public SpineBossVIS(String fileName, World world, Player player, SkeletonRenderer skeletonRenderer) {
-        this.world = world;
-        this.player = player;
+    public Vis(SkeletonRenderer skeletonRenderer) {
         this.skeletonRenderer = skeletonRenderer;
 
-        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("spine/" + fileName + ".atlas"));
+        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("spine/vit2.atlas"));
         SkeletonJson json = new SkeletonJson(atlas);
         json.setScale(DEFAULT_SCALE / GameMain.PPM);
-        SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("spine/" + fileName + ".json"));
+        SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("spine/vit.json"));
 
         defineBody();
 
@@ -55,27 +52,35 @@ public class SpineBossVIS {
         animationState.addAnimation(HIDE_ANIM_TRACK, "hide", false, 0);
 
 
-        body.setTransform(new Vector2(18, 5), 0);
+        skeleton.updateWorldTransform();
+        Vector2 offset = new Vector2();
+        Vector2 size = new Vector2();
 
-        body.applyLinearImpulse(new Vector2(-0.005f, 0), new Vector2(BODY_SHAPE_RADIUS, BODY_SHAPE_RADIUS), true);
+        skeleton.getBounds(offset, size);
+        setSize(size.x, size.y);
+        System.out.println("size " + size.x);
+        System.out.println("size " + size.y);
+
+
+        // body.setTransform(new Vector2(18, 5), 0);
+        // body.applyLinearImpulse(new Vector2(-0.005f, 0), new Vector2(BODY_SHAPE_RADIUS, BODY_SHAPE_RADIUS), true);
 
         bgFireEffect = new ScalableParticleEffect();
         bgFireEffect.load(Gdx.files.internal("effects/bosses/red_smoke.p"), Gdx.files.internal("effects"));
-        bgFireEffect.setScale(1 / GameMain.PPM);
+        bgFireEffect.setScale(1.5f * DEFAULT_SCALE / GameMain.PPM);
         bgFireEffect.setPosition(0, 0);
 
         leftEyeEffect = new ScalableParticleEffect();
         leftEyeEffect.load(Gdx.files.internal("effects/bosses/vit_eye.p"), Gdx.files.internal("effects"));
-        leftEyeEffect.setScale(0.8f / GameMain.PPM);
+        leftEyeEffect.setScale(0.9f * DEFAULT_SCALE / GameMain.PPM);
         leftEyeEffect.setPosition(0, 0);
 
         rightEyeEffect = new ScalableParticleEffect();
         rightEyeEffect.load(Gdx.files.internal("effects/bosses/vit_eye.p"), Gdx.files.internal("effects"));
-        rightEyeEffect.setScale(1 / GameMain.PPM);
+        rightEyeEffect.setScale(1.3f * DEFAULT_SCALE / GameMain.PPM);
         rightEyeEffect.setPosition(0, 0);
 
         startAnimCycle();
-
     }
 
 
@@ -102,7 +107,7 @@ public class SpineBossVIS {
                         public void run() {
                             startAnimCycle();
                         }
-                    }, Utils.getRand(1,6));
+                    }, Utils.getRand(1, 6));
                     animationState.removeListener(this);
                 }
             }
@@ -138,29 +143,37 @@ public class SpineBossVIS {
         yInterpolatedOffset = Interpolation.pow2.apply(yRelOffset);
     }
 
-    private static final float BG_FIRE_X_OFFSET = 70 / GameMain.PPM;
-    private static final float BG_FIRE_Y_OFFSET = 40 / GameMain.PPM;
-
-    private static final float LEFT_EYE_X_OFFSET = -115 / GameMain.PPM;
-    private static final float LEFT_EYE_Y_OFFSET = 120 / GameMain.PPM;
-
-    private static final float RIGHT_EYE_X_OFFSET = -18 / GameMain.PPM;
-    private static final float RIGHT_EYE_Y_OFFSET = 125 / GameMain.PPM;
-
-    public void update(float delta) {
+    @Override
+    public void act(float delta) {
         updateFloat(delta);
         calcLocalToPlayerDest(delta);
-        body.setTransform(player.getX() + locToPlayerXdest, player.getY() + locToPlayerYdest, 0);
 
+
+      //  body.setTransform(Player.inst.getX() + locToPlayerXdest, Player.inst.getY() + locToPlayerYdest, 0);
+
+        System.out.println(body.getPosition().x + " " + body.getPosition().y);
+
+        float deltaX = (Player.inst.getX() + locToPlayerXdest) - body.getPosition().x;
+        float deltaY = (Player.inst.getY() + locToPlayerYdest) - body.getPosition().y;
+
+        Vector2 vec = new Vector2(deltaX, deltaY);
+        vec.nor();
+        vec.scl(10f);
+
+        body.applyLinearImpulse(vec.x, vec.y, getWidth() / 2, getHeight() / 2, false);
+        body.setLinearVelocity(body.getLinearVelocity().limit(10f));
 
         skeleton.setPosition(body.getTransform().getPosition().x,
                 body.getTransform().getPosition().y + yInterpolatedOffset * FLOAT_AMPLITUDE - FLOAT_AMPLITUDE);
+
         leftEyeEffect.update(delta);
-        leftEyeEffect.setPosition(skeleton.getX() + LEFT_EYE_X_OFFSET, skeleton.getY() + LEFT_EYE_Y_OFFSET);
+        leftEyeEffect.setPosition(skeleton.getX() - getWidth() * 0.235f, skeleton.getY() + getHeight() * 0.25f);
+
         rightEyeEffect.update(delta);
-        rightEyeEffect.setPosition(skeleton.getX() + RIGHT_EYE_X_OFFSET, skeleton.getY() + RIGHT_EYE_Y_OFFSET);
+        rightEyeEffect.setPosition(skeleton.getX() + getWidth() * 0.04f, skeleton.getY() + getHeight() * 0.265f);
+
         bgFireEffect.update(delta);
-        bgFireEffect.setPosition(skeleton.getX() + BG_FIRE_X_OFFSET, skeleton.getY() + BG_FIRE_Y_OFFSET);
+        bgFireEffect.setPosition(skeleton.getX() + getWidth() * 0.25f, skeleton.getY() + 0.25f);
 
         animationState.update(delta * 1f);
         animationState.apply(skeleton);
@@ -168,7 +181,8 @@ public class SpineBossVIS {
     }
 
 
-    public void draw(SpriteBatch batch) {
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
         bgFireEffect.draw(batch);
         skeletonRenderer.draw(batch, skeleton);
         leftEyeEffect.draw(batch);
@@ -183,9 +197,9 @@ public class SpineBossVIS {
         bodyDef.active = true;
         bodyDef.type = BodyDef.BodyType.DynamicBody;
 
-        body = world.createBody(bodyDef);
+        body = GameScreen.world.createBody(bodyDef);
         MassData massData = new MassData();
-        massData.mass = 0.01f;
+        massData.mass = 10f;
         massData.center.set(BODY_SHAPE_RADIUS, BODY_SHAPE_RADIUS);
         body.setMassData(massData);
 

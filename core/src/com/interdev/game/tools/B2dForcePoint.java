@@ -2,13 +2,14 @@ package com.interdev.game.tools;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.utils.Array;
 import com.interdev.game.screens.game.entities.demons.Demon;
 
 import java.util.List;
 
 public class B2dForcePoint {
 
-    public static void blast(List<? extends Demon> list, float pointX, float pointY, float maxRadius, float blastPower) {
+    public static void blast(Array<? extends Demon> list, float pointX, float pointY, float maxRadius, float blastPower) {
         float dX, dY, distance;
         for (Demon demon : list) {
             dX = pointX - demon.getX();

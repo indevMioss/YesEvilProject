@@ -83,7 +83,7 @@ public abstract class Trophy extends Actor implements Pool.Poolable {
         super.act(delta);
         if (!isVisible()) return;
         setPosition(body.getPosition().x, body.getPosition().y);
-        System.out.println("333");
+        //System.out.println("333");
         selfFreeCounter += delta;
         if (selfFreeCounter >= SELF_FREE_TIME) {
             selfFreeCounter = 0;

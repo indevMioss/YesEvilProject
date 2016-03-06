@@ -75,6 +75,7 @@ public class Player extends AnimatedB2dActor {
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(startPosition.x, startPosition.y);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.linearDamping = 2f;
         body = world.createBody(bodyDef);
 
         bodyDef.position.set(startPosition.x, startPosition.y);
@@ -174,7 +175,7 @@ public class Player extends AnimatedB2dActor {
 
         if (facedRightSideFrameAgo != facingRightSide) {
             facedRightSideFrameAgo = facingRightSide;
-            flipListener.onValueChange(facingRightSide);
+            //if (flipListener != null)flipListener.onValueChange(facingRightSide);
         }
 
         return region;

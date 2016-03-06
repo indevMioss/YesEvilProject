@@ -2,6 +2,8 @@ package com.interdev.game.screens.game.hud.gui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
+import com.badlogic.gdx.graphics.g3d.particles.emitters.Emitter;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -35,11 +37,9 @@ public class AmmoVisual extends Group {
         }
 
         setCurrent(BulletSystem.Type.SPIRIT);
-        onPlayerFlip(Player.inst.facingRightSide);
     }
 
     public void setCurrent(BulletSystem.Type type) {
-        System.out.println("cet type " + type);
         for (final ObjectMap.Entry<BulletSystem.Type, WeaponEffectVis> entry : weaponVisMap) {
             entry.value.setVisible(entry.key.equals(type));
         }
@@ -55,24 +55,6 @@ public class AmmoVisual extends Group {
         return weaponVisMap.get(type);
     }
 
-    public BooleanArgChangeListener getFlipPlayerListener() {
-        return new BooleanArgChangeListener() {
-            @Override
-            public void onValueChange(boolean facingRightSide) {
-                onPlayerFlip(facingRightSide);
-            }
-        };
-    }
-
-    private void onPlayerFlip(boolean facingRightSide) {
-
-        float offsetX = facingRightSide ? Player.inst.getWidth() * xOffVal
-                : -Player.inst.getWidth() * xOffVal;
-        float offsetY = Player.inst.getHeight() * yOffVal;
-
-        setPosition(GameScreen.hudWidth / 2 + offsetX * GameMain.PPM / GameScreen.zoom,
-                GameScreen.hudHeight / 2 + offsetY * GameMain.PPM / GameScreen.zoom);
-    }
 
     public static class WeaponEffectVis extends Actor {
         private float visFullness = 1;
@@ -81,19 +63,24 @@ public class AmmoVisual extends Group {
         public WeaponEffectVis(final String effectPath) {
             effect = new ScalableParticleEffect();
             effect.load(Gdx.files.internal(effectPath), Gdx.files.internal("effects"));
-            //effect.scaleEffect(1 / GameMain.PPM);
+            effect.scaleEffect(1 / GameMain.PPM);
+            for (ParticleEmitter emmiter : effect.getEmitters()) {
+                emmiter.setAttached(true);
+            }
             effect.start();
         }
 
         public void setVisFullness(float fullness) { //[0;1]
             visFullness = fullness;
-            effect.setScale(fullness);
+            effect.setScale(fullness / GameMain.PPM);
         }
 
         @Override
         public void act(float delta) {
             super.act(delta);
-            effect.setPosition(getX(), getY());
+            effect.setPosition((Player.inst.getX() + (Player.inst.facingRightSide ?
+                            Player.inst.getWidth() * xOffVal : -Player.inst.getWidth() * xOffVal)),
+                    Player.inst.getY() + Player.inst.getHeight() * yOffVal);
             effect.update(delta);
         }
 

@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.interdev.game.GameMain;
 import com.interdev.game.screens.game.GameScreen;
+import com.interdev.game.screens.game.entities.Player;
 import com.interdev.game.tools.ActorParticleEffect;
 import com.interdev.game.tools.ScalableParticleEffect;
 
@@ -41,25 +42,15 @@ public class StaminaOrbits extends Group {
             addActor(orb);
             allOrbsList.add(orb);
         }
-
         lifeDrainEffect = new ActorParticleEffect("effects/life_drain3.p", "effects");
-
-        for (ParticleEmitter emitter : lifeDrainEffect.effect.getEmitters()) {
-       //     emitter.setContinuous(true);
-        }
         addActor(lifeDrainEffect);
-      //  lifeDrainEffect.setPosition(-diameter, lifeDrainEffect.getY());
-      //  lifeDrainEffect.effect.start();
-
-        //lifeDrainEffect.setScale(5f);
-        //lifeDrainEffect.allowCompletion();
-
         resize();
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
+        setPosition(Player.inst.getX(), Player.inst.getY());
         float rotationDelta = ROTATION_SPEED * delta;
         setRotation(getRotation() + rotationDelta);
 
@@ -154,8 +145,8 @@ public class StaminaOrbits extends Group {
     }
 
     public void resize() {
-        setScale(1 + (1 - GameScreen.zoom));
-        setPosition(GameScreen.hudWidth * SCREEN_POS.x, GameScreen.hudHeight * SCREEN_POS.y);
+        setScale(1 / GameMain.PPM);
+        setPosition(Player.inst.getX(), Player.inst.getY());
     }
 
 }
