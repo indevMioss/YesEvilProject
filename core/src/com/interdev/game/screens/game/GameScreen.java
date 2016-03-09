@@ -329,15 +329,27 @@ public class GameScreen implements Screen {
     }
 
     private void moveCamera() {
+        camera.position.x = player.getX();
+        camera.position.y = player.getY();
+        /*
         Vector2 deltaDist = new Vector2(player.getX() - camera.position.x, player.getY() - camera.position.y);
         float len = deltaDist.len();
 
-        float camSpeed = 0.3f;
-        final float maxCamOffset = 5f;
-        float camMoveSpdFactor = Utils.trimValue(0, 1, Interpolation.linear.apply(len / maxCamOffset));
-        camSpeed *= camMoveSpdFactor;
+        float camSpeed = 0.15f;
+        final float maxCamOffset = 1f;
+        camSpeed += len - maxCamOffset;
+
+        if (camSpeed <= 0) {
+            float camMoveSpdFactor = Utils.trimValue(0, 1, Interpolation.linear.apply(len / maxCamOffset));
+            camSpeed = 0.15f * camMoveSpdFactor;
+        }
+
+        //camSpeed *= camMoveSpdFactor;
+        System.out.println("old " + camera.position.x);
         camera.position.x = Utils.pull(camera.position.x, player.getX(), camSpeed);
         camera.position.y = Utils.pull(camera.position.y, player.getY(), camSpeed);
+        System.out.println("new " + camera.position.x);
+        */
     }
 
 
@@ -376,7 +388,7 @@ public class GameScreen implements Screen {
         ultimateSystem.draw();
         hudStage.getBatch().setColor(1f, 1f, 1f, 1f);
         postProcessor.render();
-      //  fpsLogger.log();
+        //  fpsLogger.log();
         //  box2DDebugRenderer.render(world, camera.combined);
     }
 

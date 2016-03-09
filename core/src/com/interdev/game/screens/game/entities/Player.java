@@ -187,13 +187,6 @@ public class Player extends AnimatedB2dActor {
         flipListener = listener;
     }
 
-    public void activateSharpShield() {
-        sharpShieldTimeCounter = SHARP_SHIELD_TIME;
-        hasSharpShield = true;
-    }
-
-    private float sharpShieldTimeCounter;
-
     private float jumpTimeCounter = 0;
 
 
@@ -226,15 +219,6 @@ public class Player extends AnimatedB2dActor {
             if (jumpTimeCounter >= JUMP_DELAY) {
                 jumpTimeCounter = 0;
                 canJump = true;
-            }
-        }
-
-        if (hasSharpShield) {
-            if (sharpShieldTimeCounter > 0) {
-                sharpShieldTimeCounter -= delta;
-            } else {
-                hasSharpShield = false;
-                hasShield = true;
             }
         }
 
@@ -305,6 +289,19 @@ public class Player extends AnimatedB2dActor {
 
     public boolean isWalking() {
         return walkingRight || walkingLeft;
+    }
+
+    private Timer sharpShieldResetTimer = new Timer();
+    public void activateSharpShield() {
+        sharpShieldResetTimer.clear();
+        hasSharpShield = true;
+        sharpShieldResetTimer.scheduleTask(new Timer.Task() {
+            @Override
+            public void run() {
+                hasSharpShield = false;
+                activateShield();
+            }
+        }, SHARP_SHIELD_TIME);
     }
 
 

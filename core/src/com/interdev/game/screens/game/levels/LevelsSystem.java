@@ -39,8 +39,8 @@ public class LevelsSystem {
 
 
     public void start() {
-    //    DemonsSystem.inst.createBoss(DemonsSystem.BossType.VIS);
-        //nextLevel();
+        DemonsSystem.inst.createBoss(DemonsSystem.BossType.VIS);
+      //  nextLevel();
     }
 
     public void nextLevel() {
