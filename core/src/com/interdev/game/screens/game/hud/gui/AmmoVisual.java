@@ -3,19 +3,15 @@ package com.interdev.game.screens.game.hud.gui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
-import com.badlogic.gdx.graphics.g3d.particles.emitters.Emitter;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.utils.OrderedMap;
 import com.interdev.game.GameMain;
-import com.interdev.game.screens.game.GameScreen;
-import com.interdev.game.screens.game.attack.BulletSystem;
+import com.interdev.game.screens.game.attack.BulletParamsEnum;
 import com.interdev.game.screens.game.entities.Player;
-import com.interdev.game.tools.BooleanArgChangeListener;
-import com.interdev.game.tools.ScalableParticleEffect;
-import com.interdev.game.tools.TwoFloatsChangeListener;
-
-import java.util.Map;
+import com.interdev.game.tools.ScalableEffect;
+import com.interdev.game.tools.Utils;
 
 
 public class AmmoVisual extends Group {
@@ -24,55 +20,76 @@ public class AmmoVisual extends Group {
     public static float xOffVal = 0.4f;
     public static float yOffVal = 0.05f;
 
-
     private WeaponEffectVis currentWeaponEffectVis;
-    private ObjectMap<BulletSystem.Type, WeaponEffectVis> weaponVisMap = new ObjectMap<BulletSystem.Type, WeaponEffectVis>();
+    private ObjectMap<BulletParamsEnum, WeaponEffectVis> weaponVisMap = new ObjectMap<BulletParamsEnum, WeaponEffectVis>();
+
+    public ObjectMap<BulletParamsEnum, float[]> scaleFactors = new OrderedMap<BulletParamsEnum, float[]>();
+
+    {
+        /* TYPE , MIN EFFECT SCALE , MAX EFFECT SCALE */
+        scaleFactors.put(BulletParamsEnum.SPIRIT, new float[]{0.25f, 2f});
+        scaleFactors.put(BulletParamsEnum.GREEN_FLY, new float[]{0.25f, 1f});
+        scaleFactors.put(BulletParamsEnum.GREEN_SHARP, new float[]{0.25f, 1.5f});
+        scaleFactors.put(BulletParamsEnum.BLUE_RICOCHET_BULLET, new float[]{0.25f, 1.5f});
+        scaleFactors.put(BulletParamsEnum.MINI_FIRE, new float[]{0.25f, 2f});
+        scaleFactors.put(BulletParamsEnum.SCATTER_YELLOW, new float[]{1f, 3f});
+    }
 
     public AmmoVisual() {
         inst = this;
-        for (ObjectMap.Entry<BulletSystem.Type, String> entry : BulletSystem.effectsPathMap.entries()) {
-            WeaponEffectVis weaponEffectVis = new WeaponEffectVis(entry.value);
+        for (ObjectMap.Entry<BulletParamsEnum, String> entry : BulletParamsEnum.effectsPathMap.entries()) {
+            WeaponEffectVis weaponEffectVis = new WeaponEffectVis(entry.value, entry.key);
             weaponVisMap.put(entry.key, weaponEffectVis);
             addActor(weaponEffectVis);
         }
 
-        setCurrent(BulletSystem.Type.SPIRIT);
+        setCurrent(BulletParamsEnum.SPIRIT);
     }
 
-    public void setCurrent(BulletSystem.Type type) {
-        for (final ObjectMap.Entry<BulletSystem.Type, WeaponEffectVis> entry : weaponVisMap) {
+    public void updateVisualFullnessOf(BulletParamsEnum type) {
+        weaponVisMap.get(type).setVisFullness(type.getAmmoRest() / type.ammoMax);
+    }
+
+    public void setCurrent(BulletParamsEnum type) {
+        for (final ObjectMap.Entry<BulletParamsEnum, WeaponEffectVis> entry : weaponVisMap) {
             entry.value.setVisible(entry.key.equals(type));
         }
         currentWeaponEffectVis = weaponVisMap.get(type);
+        updateVisualFullnessOf(type);
     }
 
-    public WeaponEffectVis getCurrent(BulletSystem.Type type) {
+    public WeaponEffectVis getCurrent(BulletParamsEnum type) {
         return currentWeaponEffectVis;
     }
 
 
-    public WeaponEffectVis getWeaponEffectVis(BulletSystem.Type type) {
+    public WeaponEffectVis getWeaponEffectVis(BulletParamsEnum type) {
         return weaponVisMap.get(type);
     }
 
 
     public static class WeaponEffectVis extends Actor {
+        private ScalableEffect effect;
+        private BulletParamsEnum bulletType;
         private float visFullness = 1;
-        private ScalableParticleEffect effect;
 
-        public WeaponEffectVis(final String effectPath) {
-            effect = new ScalableParticleEffect();
+        public WeaponEffectVis(final String effectPath, BulletParamsEnum bulletType) {
+            this.bulletType = bulletType;
+            effect = new ScalableEffect();
             effect.load(Gdx.files.internal(effectPath), Gdx.files.internal("effects"));
             effect.scaleEffect(1 / GameMain.PPM);
-            for (ParticleEmitter emmiter : effect.getEmitters()) {
-                emmiter.setAttached(true);
+            for (ParticleEmitter emitter : effect.getEmitters()) {
+                emitter.setAttached(true);
             }
             effect.start();
         }
 
-        public void setVisFullness(float fullness) { //[0;1]
-            visFullness = fullness;
-            effect.setScale(fullness / GameMain.PPM);
+        public void setVisFullness(float fullness) {
+            fullness = Utils.trimValue(0, 1, fullness);
+            float minScale = AmmoVisual.inst.scaleFactors.get(bulletType)[0];
+            float maxScale = AmmoVisual.inst.scaleFactors.get(bulletType)[1];
+            visFullness = minScale + (maxScale - minScale) * fullness;
+            effect.setScale(visFullness / GameMain.PPM);
         }
 
         @Override

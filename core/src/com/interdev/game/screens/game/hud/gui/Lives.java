@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Disposable;
 import com.interdev.game.tools.OneFloatChangeListener;
-import com.interdev.game.tools.ScalableParticleEffect;
+import com.interdev.game.tools.ScalableEffect;
 import com.interdev.game.tools.Utils;
 
 import java.util.ArrayList;
@@ -125,10 +125,10 @@ public class Lives extends Group implements Disposable {
     class Heart extends Actor implements Disposable {
         public float fullness = 1f;
         private Image image;
-        private ScalableParticleEffect particleEffect;
+        private ScalableEffect particleEffect;
 
         public Heart(Texture texture) {
-            particleEffect = new ScalableParticleEffect();
+            particleEffect = new ScalableEffect();
             particleEffect.load(Gdx.files.internal("effects/lives_heart.p"), Gdx.files.internal("effects"));
             particleEffect.setScale(1.25f);
 

@@ -5,10 +5,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class ActorParticleEffect extends Actor {
-    public ScalableParticleEffect effect;
+    public ScalableEffect effect;
 
     public ActorParticleEffect(String effectPath, String assetsPath) {
-        effect = new ScalableParticleEffect();
+        effect = new ScalableEffect();
         effect.load(Gdx.files.internal(effectPath), Gdx.files.internal(assetsPath));
     }
 

@@ -1,17 +1,12 @@
 package com.interdev.game.screens.game.hud.stamina;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.graphics.g3d.particles.emitters.Emitter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Timer;
 import com.interdev.game.GameMain;
-import com.interdev.game.screens.game.GameScreen;
 import com.interdev.game.screens.game.entities.Player;
 import com.interdev.game.tools.ActorParticleEffect;
-import com.interdev.game.tools.ScalableParticleEffect;
 
 import java.util.ArrayList;
 import java.util.ListIterator;

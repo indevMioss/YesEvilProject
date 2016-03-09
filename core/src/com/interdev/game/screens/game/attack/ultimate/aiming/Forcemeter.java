@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Timer;
 import com.interdev.game.screens.game.GameScreen;
 import com.interdev.game.tools.OneFloatChangeListener;
-import com.interdev.game.tools.ScalableParticleEffect;
+import com.interdev.game.tools.ScalableEffect;
 import com.interdev.game.tools.Utils;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class Forcemeter extends Group implements Disposable {
     private static final float SPAWN_INTERVAL_DISPERSION = 0.8f;
     private final Collar collar;
 
-    private final ScalableParticleEffect attractorEffect;
+    private final ScalableEffect attractorEffect;
 
     private final float effectDefaultLowEmission;
     private final float effectEmissionDelta;
@@ -90,7 +90,7 @@ public class Forcemeter extends Group implements Disposable {
             }
         };
 
-        attractorEffect = new ScalableParticleEffect();
+        attractorEffect = new ScalableEffect();
         attractorEffect.load(Gdx.files.internal("effects/ultimate/attractor.p"), Gdx.files.internal("effects"));
         attractorEffect.setPosition(getWidth() / 2, getHeight() / 2);
 

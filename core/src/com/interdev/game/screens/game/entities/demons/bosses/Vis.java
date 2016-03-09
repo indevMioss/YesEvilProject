@@ -13,7 +13,7 @@ import com.interdev.game.screens.game.GameScreen;
 import com.interdev.game.screens.game.WorldContactListener;
 import com.interdev.game.screens.game.entities.Player;
 import com.interdev.game.screens.game.other.LabeledReference;
-import com.interdev.game.tools.ScalableParticleEffect;
+import com.interdev.game.tools.ScalableEffect;
 import com.interdev.game.tools.Utils;
 
 public class Vis extends SpineBoss {
@@ -32,7 +32,7 @@ public class Vis extends SpineBoss {
     private static final int SHAKE_ANIM_TRACK = 1;
     private static final int SHOW_ANIM_TRACK = 2;
 
-    private ScalableParticleEffect rightEyeEffect, leftEyeEffect, bgFireEffect;
+    private ScalableEffect rightEyeEffect, leftEyeEffect, bgFireEffect;
 
     public Vis(SkeletonRenderer skeletonRenderer) {
         this.skeletonRenderer = skeletonRenderer;
@@ -65,17 +65,17 @@ public class Vis extends SpineBoss {
         // body.setTransform(new Vector2(18, 5), 0);
         // body.applyLinearImpulse(new Vector2(-0.005f, 0), new Vector2(BODY_SHAPE_RADIUS, BODY_SHAPE_RADIUS), true);
 
-        bgFireEffect = new ScalableParticleEffect();
+        bgFireEffect = new ScalableEffect();
         bgFireEffect.load(Gdx.files.internal("effects/bosses/red_smoke.p"), Gdx.files.internal("effects"));
         bgFireEffect.setScale(1.5f * DEFAULT_SCALE / GameMain.PPM);
         bgFireEffect.setPosition(0, 0);
 
-        leftEyeEffect = new ScalableParticleEffect();
+        leftEyeEffect = new ScalableEffect();
         leftEyeEffect.load(Gdx.files.internal("effects/bosses/vit_eye.p"), Gdx.files.internal("effects"));
         leftEyeEffect.setScale(0.9f * DEFAULT_SCALE / GameMain.PPM);
         leftEyeEffect.setPosition(0, 0);
 
-        rightEyeEffect = new ScalableParticleEffect();
+        rightEyeEffect = new ScalableEffect();
         rightEyeEffect.load(Gdx.files.internal("effects/bosses/vit_eye.p"), Gdx.files.internal("effects"));
         rightEyeEffect.setScale(1.3f * DEFAULT_SCALE / GameMain.PPM);
         rightEyeEffect.setPosition(0, 0);

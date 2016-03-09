@@ -8,6 +8,8 @@ import com.badlogic.gdx.utils.Timer;
 import com.interdev.game.GameMain;
 import com.interdev.game.screens.game.GameScreen;
 import com.interdev.game.screens.game.WorldContactListener;
+import com.interdev.game.screens.game.attack.BulletSystem;
+import com.interdev.game.screens.game.attack.bullets.GreenFly;
 import com.interdev.game.screens.game.other.LabeledReference;
 import com.interdev.game.tools.Utils;
 
@@ -34,7 +36,13 @@ public abstract class Trophy extends Actor implements Pool.Poolable {
         BOMB_BONUS,
         ATTACK_SPEED_BONUS,
         SLOW_ALL_BONUS,
-        RESURRECT_BONUS
+        RESURRECT_BONUS,
+
+        AMMO_GREEN_FLY,
+        AMMO_GREEN_SHARP,
+        AMMO_MINI_FIRE,
+        AMMO_RICOCHET_BLUE,
+        AMMO_SCATTER_YELLOW
     }
 
     private Body body;
@@ -76,6 +84,7 @@ public abstract class Trophy extends Actor implements Pool.Poolable {
         return this;
     }
 
+
     private float selfFreeCounter = 0;
 
     @Override
@@ -83,7 +92,6 @@ public abstract class Trophy extends Actor implements Pool.Poolable {
         super.act(delta);
         if (!isVisible()) return;
         setPosition(body.getPosition().x, body.getPosition().y);
-        //System.out.println("333");
         selfFreeCounter += delta;
         if (selfFreeCounter >= SELF_FREE_TIME) {
             selfFreeCounter = 0;

@@ -12,14 +12,14 @@ import com.interdev.game.screens.game.WorldContactListener;
 import com.interdev.game.screens.game.entities.Player;
 import com.interdev.game.screens.game.other.LabeledReference;
 import com.interdev.game.tools.ActionListener;
-import com.interdev.game.tools.ScalableParticleEffect;
+import com.interdev.game.tools.ScalableEffect;
 
 import java.util.UUID;
 
 public abstract class Bullet extends Actor implements Pool.Poolable {
 
     public Actor target;
-    public BulletSystem.Type type;
+    public BulletParamsEnum type;
 
     public int projectilesPerShot = 1;
     public float strictAngleSpray;
@@ -40,7 +40,7 @@ public abstract class Bullet extends Actor implements Pool.Poolable {
     protected int amountOfSpearedEnemies;
 
     public Body body;
-    private ScalableParticleEffect particleEffect;
+    private ScalableEffect particleEffect;
     protected Pool<Bullet> myPool;
 
     protected ActionListener hitListener;
@@ -59,7 +59,7 @@ public abstract class Bullet extends Actor implements Pool.Poolable {
     private float removalCounter;
 
 
-    public Bullet(BulletSystem.Type type, World world, String effectFile, String imagesDir, Pool<? extends Bullet> myPool) {
+    public Bullet(BulletParamsEnum type, World world, String effectFile, String imagesDir, Pool<? extends Bullet> myPool) {
         this.type = type;
 
         requiresStamina = type.ammoCost;
@@ -72,7 +72,7 @@ public abstract class Bullet extends Actor implements Pool.Poolable {
         this.myPool = (Pool<Bullet>) myPool;
         body = defineBody(world);
 
-        particleEffect = new ScalableParticleEffect();
+        particleEffect = new ScalableEffect();
         particleEffect.load(Gdx.files.internal(effectFile), Gdx.files.internal(imagesDir));
         particleEffect.setScale(1 / GameMain.PPM);
         particleEffect.start();

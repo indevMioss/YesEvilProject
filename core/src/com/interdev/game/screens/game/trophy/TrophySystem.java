@@ -29,10 +29,16 @@ public class TrophySystem extends Group {
 
     public static TrophySystem inst;
 
+    public OneFloatChangeListener redCryChangeListener;
+    public OneFloatChangeListener blueCryChangeListener;
+    public OneFloatChangeListener livesAddListener;
+
     public Map<Trophy.Type, TextureRegion> trophyTRMap = new HashMap<Trophy.Type, TextureRegion>();
     public Map<Trophy.Type, OffsetAnimation> trophyAnimMap = new HashMap<Trophy.Type, OffsetAnimation>();
 
     public Pool<AnimTrophy> animTrophyPool;
+    public Pool<EffectTrophy> effectTrophyPool;
+
     private SpineTrophy moveSpeedBonus;
     private SpineTrophy attackSpeedBonus;
     private SpineTrophy bombBonus;
@@ -51,8 +57,10 @@ public class TrophySystem extends Group {
         trophyTRMap.put(Trophy.Type.SHARP_SHIELD_BONUS, trophiesAtlas.findRegion("shield_bg"));
         trophyTRMap.put(Trophy.Type.SHIELD_BONUS, trophiesAtlas.findRegion("shield_bg"));
 
-        OffsetAnimation liveAnimation = new OffsetAnimation(0.04f, animAtlas.findRegions("orb"), OffsetAnimation.PlayMode.LOOP);
-        OffsetAnimation shieldAnimation = new OffsetAnimation(0.04f, animAtlas.findRegions("shield"), OffsetAnimation.PlayMode.LOOP);
+        OffsetAnimation liveAnimation = new OffsetAnimation(0.04f, animAtlas.findRegions("orb"),
+                OffsetAnimation.PlayMode.LOOP);
+        OffsetAnimation shieldAnimation = new OffsetAnimation(0.04f, animAtlas.findRegions("shield"),
+                OffsetAnimation.PlayMode.LOOP);
 
         trophyAnimMap.put(Trophy.Type.LIVE, liveAnimation);
         trophyAnimMap.put(Trophy.Type.SHIELD_BONUS, shieldAnimation);
@@ -63,6 +71,15 @@ public class TrophySystem extends Group {
             @Override
             protected AnimTrophy newObject() {
                 AnimTrophy trophy = new AnimTrophy(TrophySystem.this, animTrophyPool, world);
+                addActor(trophy);
+                return trophy;
+            }
+        };
+
+        effectTrophyPool = new Pool<EffectTrophy>() {
+            @Override
+            protected EffectTrophy newObject() {
+                EffectTrophy trophy = new EffectTrophy(TrophySystem.this, effectTrophyPool, world);
                 addActor(trophy);
                 return trophy;
             }
@@ -94,49 +111,63 @@ public class TrophySystem extends Group {
         addActor(resurrectBonus);
         addActor(slowAllBonus);
 
-
-       // spawn(11, 8, null);
         inst = this;
 
-        getCorrespondingTrophy(Trophy.Type.SLOW_ALL_BONUS).go(15,5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_RICOCHET_BLUE).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_RICOCHET_BLUE).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_GREEN_FLY).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_GREEN_SHARP).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_SCATTER_YELLOW).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_MINI_FIRE).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_MINI_FIRE).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_RICOCHET_BLUE).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_RICOCHET_BLUE).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_GREEN_FLY).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_GREEN_SHARP).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_SCATTER_YELLOW).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_MINI_FIRE).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_MINI_FIRE).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_RICOCHET_BLUE).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_RICOCHET_BLUE).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_GREEN_FLY).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_GREEN_SHARP).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_SCATTER_YELLOW).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_MINI_FIRE).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_MINI_FIRE).go(15, 5);
     }
-
-    public void setLivesAddListener(OneFloatChangeListener livesAddListener) {
-        this.livesAddListener = livesAddListener;
-    }
-
-    public void setRedCryChangeListener(OneFloatChangeListener redCryChangeListener) {
-        this.redCryChangeListener = redCryChangeListener;
-    }
-
-    public void setBlueCryChangeListener(OneFloatChangeListener blueCryChangeListener) {
-        this.blueCryChangeListener = blueCryChangeListener;
-    }
-
-    public OneFloatChangeListener redCryChangeListener;
-    public OneFloatChangeListener blueCryChangeListener;
-    public OneFloatChangeListener livesAddListener;
-
 
     private Trophy getCorrespondingTrophy(Trophy.Type type) {
         switch (type) {
+            case RED_CRY:
+            case BLUE_CRY:
+            case LIVE:
+            case LIVES_BOTTLE:
+            case POWER_BOTTLE:
+            case RESURRECT_BOTTLE:
+            case TIME_BOTTLE:
+            case SHIELD_BONUS:
+            case SHARP_SHIELD_BONUS:
+                return animTrophyPool.obtain().setType(type);
+
             case MOVE_SPEED_BONUS:
-                System.out.println("MOVE_SPEED_BONUS");
                 return moveSpeedBonus;
             case ATTACK_SPEED_BONUS:
-                System.out.println("ATTACK_SPEED_BONUS");
                 return attackSpeedBonus;
             case BOMB_BONUS:
-                System.out.println("BOMB_BONUS");
                 return bombBonus;
             case RESURRECT_BONUS:
-                System.out.println("RESURRECT_BONUS");
                 return resurrectBonus;
             case SLOW_ALL_BONUS:
-                System.out.println("SLOW_ALL_BONUS");
                 return slowAllBonus;
+
+            case AMMO_GREEN_FLY:
+            case AMMO_GREEN_SHARP:
+            case AMMO_MINI_FIRE:
+            case AMMO_RICOCHET_BLUE:
+            case AMMO_SCATTER_YELLOW:
+                return effectTrophyPool.obtain().setType(type);
         }
-        return animTrophyPool.obtain().setType(type);
+        return animTrophyPool.obtain().setType(Trophy.Type.RED_CRY);
     }
 
 
@@ -157,34 +188,6 @@ public class TrophySystem extends Group {
             if (Utils.roll(0.01f)) trophyBundle.add(type);
         }
 
-       // addToTrophyBundle(Trophy.Type.RED_CRY, Utils.randInt(0, 2));
-       // addToTrophyBundle(Trophy.Type.BLUE_CRY, Utils.randInt(0, 2));
-       // addToTrophyBundle(Trophy.Type.RESURRECT_BONUS, Utils.randInt(1, 2));
-
-        /*
-        if (demon instanceof AnglerGray) {
-            if (Utils.roll(0.25f)) addToTrophyBundle(Trophy.Type.RED_CRY, Utils.randInt(0, 5));
-            if (Utils.roll(0.1f)) addToTrophyBundle(Trophy.Type.RED_CRY, Utils.randInt(3, 5));
-            if (Utils.roll(0.05f)) addToTrophyBundle(Trophy.Type.BLUE_CRY, Utils.randInt(1, 4));
-            if (Utils.roll(0.1f)) addToTrophyBundle(Trophy.Type.LIVE, Utils.randInt(1, 3));
-        } else if (demon instanceof AnglerRed) {
-            if (Utils.roll(0.25f)) addToTrophyBundle(Trophy.Type.RED_CRY, Utils.randInt(0, 5));
-            if (Utils.roll(0.1f)) addToTrophyBundle(Trophy.Type.RED_CRY, Utils.randInt(3, 5));
-            if (Utils.roll(0.05f)) addToTrophyBundle(Trophy.Type.BLUE_CRY, Utils.randInt(1, 4));
-            if (Utils.roll(0.1f)) addToTrophyBundle(Trophy.Type.LIVE, Utils.randInt(1, 3));
-
-            if (Utils.roll(0.02f)) addToTrophyBundle(Trophy.Type.LIVES_BOTTLE, 1);
-            if (Utils.roll(0.02f)) addToTrophyBundle(Trophy.Type.POWER_BOTTLE, 1);
-        } else if (demon instanceof AnglerPurple) {
-            if (Utils.roll(0.25f)) addToTrophyBundle(Trophy.Type.RED_CRY, Utils.randInt(0, 5));
-            if (Utils.roll(0.1f)) addToTrophyBundle(Trophy.Type.RED_CRY, Utils.randInt(3, 5));
-            if (Utils.roll(0.05f)) addToTrophyBundle(Trophy.Type.BLUE_CRY, Utils.randInt(1, 4));
-            if (Utils.roll(0.1f)) addToTrophyBundle(Trophy.Type.LIVE, Utils.randInt(1, 3));
-
-            if (Utils.roll(0.005f)) addToTrophyBundle(Trophy.Type.RESURRECT_BOTTLE, 1);
-            if (Utils.roll(0.005f)) addToTrophyBundle(Trophy.Type.TIME_BOTTLE, 1);
-        }
-*/
 
         for (Trophy.Type trophyType : trophyBundle) {
             getCorrespondingTrophy(trophyType).go(x, y);
@@ -272,7 +275,27 @@ public class TrophySystem extends Group {
             case SHARP_SHIELD_BONUS:
                 SoundSystem.inst.playSound(SoundSystem.Sounds.SHARP_SHIELD_PICK_UP);
                 Player.inst.activateSharpShield();
+
+            case AMMO_GREEN_FLY:
+            case AMMO_GREEN_SHARP:
+            case AMMO_MINI_FIRE:
+            case AMMO_RICOCHET_BLUE:
+            case AMMO_SCATTER_YELLOW:
+                BulletSystem.inst.addAmmo(type);
+                break;
         }
+    }
+
+    public void setLivesAddListener(OneFloatChangeListener livesAddListener) {
+        this.livesAddListener = livesAddListener;
+    }
+
+    public void setRedCryChangeListener(OneFloatChangeListener redCryChangeListener) {
+        this.redCryChangeListener = redCryChangeListener;
+    }
+
+    public void setBlueCryChangeListener(OneFloatChangeListener blueCryChangeListener) {
+        this.blueCryChangeListener = blueCryChangeListener;
     }
 }
 

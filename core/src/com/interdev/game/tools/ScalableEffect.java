@@ -5,9 +5,17 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
-public class ScalableParticleEffect extends ParticleEffect {
+public class ScalableEffect extends ParticleEffect {
 
     private ScalableValues[] snapshot;
+
+    public ScalableEffect(ScalableEffect effect) {
+        super(effect);
+    }
+
+    public ScalableEffect() {
+
+    }
 
     @Override
     public void load(FileHandle effectFile, TextureAtlas atlas, String atlasPrefix) {
@@ -22,7 +30,7 @@ public class ScalableParticleEffect extends ParticleEffect {
     }
 
     @Override
-    public void  load(FileHandle effectFile, FileHandle imagesDir) {
+    public void load(FileHandle effectFile, FileHandle imagesDir) {
         super.load(effectFile, imagesDir);
         makeSnapshot();
     }

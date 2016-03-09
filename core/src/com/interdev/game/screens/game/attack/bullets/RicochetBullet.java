@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Timer;
 import com.interdev.game.screens.game.GameScreen;
 import com.interdev.game.screens.game.attack.Bullet;
-import com.interdev.game.screens.game.attack.BulletSystem;
+import com.interdev.game.screens.game.attack.BulletParamsEnum;
 import com.interdev.game.screens.game.entities.demons.Demon;
 import com.interdev.game.screens.game.entities.demons.DemonsSystem;
 import com.interdev.game.tools.B2dForcePoint;
@@ -16,7 +16,7 @@ import com.interdev.game.tools.Utils;
 public class RicochetBullet extends Bullet {
 
     public RicochetBullet(World world, Pool<? extends Bullet> pool) {
-        super(BulletSystem.Type.BLUE_RICOCHET_BULLET, world, "effects/bullets/blue_fly_bullet.p", "effects", pool);
+        super(BulletParamsEnum.BLUE_RICOCHET_BULLET, world, "effects/bullets/blue_fly_bullet.p", "effects", pool);
     }
 
     @Override

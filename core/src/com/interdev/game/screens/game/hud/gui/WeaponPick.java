@@ -14,13 +14,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.Timer;
 import com.interdev.game.screens.game.GameScreen;
+import com.interdev.game.screens.game.attack.BulletParamsEnum;
 import com.interdev.game.screens.game.attack.BulletSystem;
 import com.interdev.game.tools.Utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 public class WeaponPick extends Group {
     private ArrayList<EffectButton> effectButtons = new ArrayList<EffectButton>();
@@ -39,7 +37,7 @@ public class WeaponPick extends Group {
         float buttonWidth = width / 10f;
         float buttonHeight = buttonWidth;
 
-        int buttonsAmount = BulletSystem.effectsPathMap.size;
+        int buttonsAmount = BulletParamsEnum.effectsPathMap.size;
 
         float overallButtonsWidth = buttonsAmount * buttonWidth;
 
@@ -48,13 +46,13 @@ public class WeaponPick extends Group {
 
         int i = 0;
 
-        for (final ObjectMap.Entry<BulletSystem.Type, String> entry : BulletSystem.effectsPathMap) {
+        for (final ObjectMap.Entry<BulletParamsEnum, String> entry : BulletParamsEnum.effectsPathMap) {
             ParticleEffect effect = new ParticleEffect();
             effect.load(Gdx.files.internal(entry.value), Gdx.files.internal("effects"));
             effect.start();
             EffectButton effectButton = new EffectButton(buttonWidth, buttonHeight, effect);
             effectButton.addListener(new InputListener() {
-                private BulletSystem.Type tempType = entry.key;
+                private BulletParamsEnum tempType = entry.key;
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                     BulletSystem.setType(tempType);

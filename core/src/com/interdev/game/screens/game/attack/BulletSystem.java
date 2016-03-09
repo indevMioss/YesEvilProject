@@ -4,73 +4,26 @@ package com.interdev.game.screens.game.attack;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ObjectMap;
-import com.badlogic.gdx.utils.OrderedMap;
 import com.badlogic.gdx.utils.Pool;
 import com.interdev.game.screens.game.EffectsSystem;
 import com.interdev.game.screens.game.attack.bullets.*;
 import com.interdev.game.screens.game.entities.Player;
 import com.interdev.game.screens.game.hud.gui.AmmoVisual;
+import com.interdev.game.screens.game.trophy.Trophy;
 import com.interdev.game.sound.SoundSystem;
 import com.interdev.game.tools.ActionListener;
 import com.interdev.game.tools.TwoFloatsChangeListener;
 import com.interdev.game.tools.Utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class BulletSystem extends Group {
-
-    private static final float ammoMax = 20;
-    public static ObjectMap<Type, String> effectsPathMap = new OrderedMap<Type, String>();
     public static BulletSystem inst;
-
-    static {
-        effectsPathMap.put(BulletSystem.Type.SPIRIT, "effects/bullets/spirit_bullet.p");
-        effectsPathMap.put(BulletSystem.Type.GREEN_FLY, "effects/bullets/green_fly_bullet.p");
-        effectsPathMap.put(BulletSystem.Type.GREEN_SHARP, "effects/bullets/green_sharp_bullet.p");
-        effectsPathMap.put(BulletSystem.Type.BLUE_RICOCHET_BULLET, "effects/bullets/blue_fly_bullet.p");
-        effectsPathMap.put(BulletSystem.Type.MINI_FIRE, "effects/bullets/mini_fire_bullet.p");
-        effectsPathMap.put(BulletSystem.Type.SCATTER_YELLOW, "effects/bullets/yellow_bullet.p");
-    }
 
     public static float timeFactor = 1f;
 
-    private static Type currentType = Type.SPIRIT;
-
-    public enum Type {
-
-        SPIRIT(6, 0.12f, 0, 10, 10, 2),
-        GREEN_FLY(10, 0.4f, 0.4f, 10, 10, 5),
-        GREEN_SHARP(10, 0.3f, 0.3f, 10, 10, 5),
-        BLUE_RICOCHET_BULLET(10, 0.25f, 0.25f, 10, 10, 2),
-        MINI_FIRE(10, 0.2f, 0.2f, 10, 10, 2),
-        SCATTER_YELLOW(3, 0.5f, 0.5f, 10, 20, 3);
-
-        public float ammoRest = 20;
-
-        public final float shootInterval;
-        public final float damage;
-        public final float ammoCost;
-        public final float bodyShapeRadius;
-        public final float bodyImpulse;
-        public final float punchForce;
-
-        Type(float damage, float shootInterval, float ammoCost, float bodyShapeRadius, float bodyImpulse, float punchForce) {
-            this.damage = damage;
-            this.shootInterval = shootInterval;
-            this.ammoCost = ammoCost;
-            this.bodyShapeRadius = bodyShapeRadius;
-            this.bodyImpulse = bodyImpulse;
-            this.punchForce = punchForce;
-        }
-
-        public boolean hasAmmoToShoot() {
-            return ammoRest >= ammoCost;
-        }
-    }
+    private static BulletParamsEnum currentType = BulletParamsEnum.SPIRIT;
 
     private static final float walkingSlowShootFactor = 1.25f;
     private Player player;
@@ -183,7 +136,7 @@ public class BulletSystem extends Group {
     public void act(float delta) {
         super.act(delta);
         if (shooting) {
-            if (currentType.ammoRest < currentType.ammoCost) {
+            if (!currentType.hasAmmoToShoot()) {
                 setNextTypeWithAmmo();
                 return;
             }
@@ -191,32 +144,32 @@ public class BulletSystem extends Group {
             float interval = currentType.shootInterval;
             interval *= (player.isWalking()) ? walkingSlowShootFactor : 1;
             if (fireDelayCounter >= interval * timeFactor) {
-                currentType.ammoRest -= currentType.ammoCost;
-                AmmoVisual.inst.getWeaponEffectVis(currentType).setVisFullness(currentType.ammoRest / ammoMax);
+                currentType.shotAmmo();
+                AmmoVisual.inst.updateVisualFullnessOf(currentType);
                 launch();
                 fireDelayCounter = 0;
             }
         }
     }
 
-    private List<Type> typesPowerOrderList = new ArrayList<Type>();
+    private List<BulletParamsEnum> typesPowerOrderList = new ArrayList<BulletParamsEnum>();
 
     {
-        typesPowerOrderList.add(Type.GREEN_FLY);
-        typesPowerOrderList.add(Type.GREEN_SHARP);
-        typesPowerOrderList.add(Type.BLUE_RICOCHET_BULLET);
-        typesPowerOrderList.add(Type.SCATTER_YELLOW);
-        typesPowerOrderList.add(Type.MINI_FIRE);
+        typesPowerOrderList.add(BulletParamsEnum.GREEN_FLY);
+        typesPowerOrderList.add(BulletParamsEnum.GREEN_SHARP);
+        typesPowerOrderList.add(BulletParamsEnum.BLUE_RICOCHET_BULLET);
+        typesPowerOrderList.add(BulletParamsEnum.SCATTER_YELLOW);
+        typesPowerOrderList.add(BulletParamsEnum.MINI_FIRE);
     }
 
     private void setNextTypeWithAmmo() {
-        for (Type type : typesPowerOrderList) {
+        for (BulletParamsEnum type : typesPowerOrderList) {
             if (type.hasAmmoToShoot()) {
                 setType(type);
                 return;
             }
         }
-        setType(Type.SPIRIT);
+        setType(BulletParamsEnum.SPIRIT);
     }
 
     public void setAngle(float angle) {
@@ -231,7 +184,7 @@ public class BulletSystem extends Group {
         shooting = false;
     }
 
-    public static void setType(Type type) {
+    public static void setType(BulletParamsEnum type) {
         currentType = type;
         AmmoVisual.inst.setCurrent(type);
     }
@@ -311,6 +264,29 @@ public class BulletSystem extends Group {
         if (projectilesToLaunch > 0) launchNewBullet(pool, false);
     }
 
+    public void addAmmo(Trophy.Type type) {
+        float valueAdd = 10;
+        BulletParamsEnum bulletType = getCorrespondingBulletType(type);
+        bulletType.addAmmo(valueAdd);
+        AmmoVisual.inst.updateVisualFullnessOf(bulletType);
+
+    }
+
+    private BulletParamsEnum getCorrespondingBulletType(Trophy.Type type) {
+        switch (type) {
+            case AMMO_GREEN_FLY:
+                return BulletParamsEnum.GREEN_FLY;
+            case AMMO_GREEN_SHARP:
+                return BulletParamsEnum.GREEN_SHARP;
+            case AMMO_MINI_FIRE:
+                return BulletParamsEnum.MINI_FIRE;
+            case AMMO_RICOCHET_BLUE:
+                return BulletParamsEnum.BLUE_RICOCHET_BULLET;
+            case AMMO_SCATTER_YELLOW:
+                return BulletParamsEnum.SCATTER_YELLOW;
+        }
+        return BulletParamsEnum.GREEN_FLY;
+    }
 
 }
 

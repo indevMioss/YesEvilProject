@@ -32,39 +32,43 @@ public class AnimTrophy extends Trophy {
         yOffset = 0;
         animAlpha = 1f;
         drawAnimOnTop = false;
-
         animation = trophySystem.trophyAnimMap.get(type);
         textureRegion = trophySystem.trophyTRMap.get(type);
+        setSize(textureRegion.getRegionWidth() / GameMain.PPM, textureRegion.getRegionHeight() / GameMain.PPM);
 
-        System.out.println("---- " + (textureRegion == null));
-        setSize(textureRegion.getRegionWidth() / GameMain.PPM,
-                textureRegion.getRegionHeight() / GameMain.PPM);
-        System.out.println(getWidth());
-        System.out.println(getHeight());
         setOrigin(getWidth() / 2, getHeight() / 2);
-        // setScale(Utils.getRand(0.5f, 0.75f));
+        //setScale(Utils.getRand(0.5f, 0.75f));
 
-        if (type == Type.RED_CRY || type == Type.BLUE_CRY) {
-            if (Utils.roll(0.5f)) {
-                setRotation(Utils.getRand(0, 30));
-            } else {
-                setRotation(Utils.getRand(330, 359));
-            }
-        } else {
-            setRotation(0);
+        switch (type) {
+            case RED_CRY:
+            case BLUE_CRY:
+                if (Utils.roll(0.5f)) {
+                    setRotation(Utils.getRand(0, 30));
+                } else {
+                    setRotation(Utils.getRand(330, 359));
+                }
+                break;
+            default:
+                setRotation(0);
+                break;
         }
-        if (type == Type.SHIELD_BONUS) {
-            animScale = 0.7f;
-            animAlpha = 0.8f;
-            drawAnimOnTop = false;
-        } else if (type == Type.SHARP_SHIELD_BONUS) {
-            animScale = 0.7f;
-            animAlpha = 0.8f;
-            drawAnimOnTop = false;
-        } else if (type == Type.LIVE) {
-            animScale = 1.8f;
-            yOffset = 0.02f;
-            animAlpha = 0.6f;
+
+        switch (type) {
+            case SHIELD_BONUS:
+                animScale = 0.7f;
+                animAlpha = 0.8f;
+                drawAnimOnTop = false;
+                break;
+            case SHARP_SHIELD_BONUS:
+                animScale = 0.7f;
+                animAlpha = 0.8f;
+                drawAnimOnTop = false;
+                break;
+            case LIVE:
+                animScale = 1.8f;
+                yOffset = 0.02f;
+                animAlpha = 0.6f;
+                break;
         }
 
 
