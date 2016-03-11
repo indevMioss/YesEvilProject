@@ -49,7 +49,6 @@ public class AlphaCrystals extends Group {
         return new OneFloatChangeListener() {
             @Override
             public void onValueChange(float val) {
-                System.out.println("blue listener");
                 blueCrystTable.upd(GameMain.blueCrystals);
             }
         };
@@ -59,7 +58,6 @@ public class AlphaCrystals extends Group {
         return new OneFloatChangeListener() {
             @Override
             public void onValueChange(float val) {
-                System.out.println("redCrystTable listener");
                 redCrystTable.upd(GameMain.redCrystals);
             }
         };
@@ -169,7 +167,6 @@ public class AlphaCrystals extends Group {
             disappearTimer.scheduleTask(new Timer.Task() {
                 @Override
                 public void run() {
-                    System.out.println("HIDE");
                     hide();
                 }
             }, HIDE_AFTER);
@@ -212,7 +209,6 @@ public class AlphaCrystals extends Group {
                         alpha = 0;
                         plusAmount = 0;
                         cancel();
-                        System.out.println("cancel");
                     }
                     CrystTable.this.setColor(1f, 1f, 1f, alpha);
                 }

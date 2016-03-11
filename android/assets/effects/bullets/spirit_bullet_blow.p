@@ -101,7 +101,7 @@ timelineCount: 3
 timeline0: 0.0
 timeline1: 0.7191781
 timeline2: 0.999
-- Rotation - 
+- Rotation -
 active: false
 - Wind - 
 active: false

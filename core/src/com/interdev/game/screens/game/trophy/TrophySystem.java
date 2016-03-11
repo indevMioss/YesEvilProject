@@ -113,8 +113,14 @@ public class TrophySystem extends Group {
 
         inst = this;
 
-        getCorrespondingTrophy(Trophy.Type.AMMO_RICOCHET_BLUE).go(15, 5);
-        getCorrespondingTrophy(Trophy.Type.AMMO_RICOCHET_BLUE).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_GREEN_FLY).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_GREEN_FLY).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_GREEN_FLY).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_GREEN_FLY).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_GREEN_FLY).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_GREEN_FLY).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_GREEN_FLY).go(15, 5);
+       /* getCorrespondingTrophy(Trophy.Type.AMMO_RICOCHET_BLUE).go(15, 5);
         getCorrespondingTrophy(Trophy.Type.AMMO_GREEN_FLY).go(15, 5);
         getCorrespondingTrophy(Trophy.Type.AMMO_GREEN_SHARP).go(15, 5);
         getCorrespondingTrophy(Trophy.Type.AMMO_SCATTER_YELLOW).go(15, 5);
@@ -133,7 +139,8 @@ public class TrophySystem extends Group {
         getCorrespondingTrophy(Trophy.Type.AMMO_GREEN_SHARP).go(15, 5);
         getCorrespondingTrophy(Trophy.Type.AMMO_SCATTER_YELLOW).go(15, 5);
         getCorrespondingTrophy(Trophy.Type.AMMO_MINI_FIRE).go(15, 5);
-        getCorrespondingTrophy(Trophy.Type.AMMO_MINI_FIRE).go(15, 5);
+        getCorrespondingTrophy(Trophy.Type.AMMO_MINI_FIRE).go(15, 5);*/
+
     }
 
     private Trophy getCorrespondingTrophy(Trophy.Type type) {

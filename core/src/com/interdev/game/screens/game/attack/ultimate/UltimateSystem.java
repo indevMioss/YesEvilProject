@@ -99,7 +99,6 @@ public class UltimateSystem implements InputProcessor {
                 radialAim.start(new OneFloatChangeListener() {
                     @Override
                     public void onValueChange(float angle) {
-                        System.out.println(angle);
                         gun.shoot(angle, power, Gun.WeaponType.LIGHTNING);
                         active = false;
                     }

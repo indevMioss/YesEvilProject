@@ -69,7 +69,6 @@ public class RadialAim implements Disposable {
 
     public void onTouchDown() {
         if (!active) return;
-        System.out.println("RADIAL AIM TOUCH DOWN " + rotation);
         end();
     }
 

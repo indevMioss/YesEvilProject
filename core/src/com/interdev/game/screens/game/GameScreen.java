@@ -425,7 +425,6 @@ public class GameScreen implements Screen {
         gameStopped = false;
         musicSystem.setVolume(MusicSystem.DEFAULT_VOLUME);
 
-        System.out.println("red cry : " + GameMain.redCrystals);
         restartUI.hide();
         player.resetPosition();
         player.setColor(1f, 1f, 1f, 1f);
@@ -529,8 +528,6 @@ public class GameScreen implements Screen {
                             cancel();
                         }
 
-                        System.out.println("newIntensity" + newIntensity);
-                        System.out.println("setThreshold" + newIntensity / 4f * (destThreshold - 1) + 1);
                         bloom.setThreshold(newIntensity / 4f * (destThreshold - 1) + 1);
 
                         bloom.setBloomIntesity(newIntensity);

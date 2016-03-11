@@ -27,7 +27,7 @@ public class AmmoVisual extends Group {
 
     {
         /* TYPE , MIN EFFECT SCALE , MAX EFFECT SCALE */
-        scaleFactors.put(BulletParamsEnum.SPIRIT, new float[]{0.25f, 2f});
+        scaleFactors.put(BulletParamsEnum.SPIRIT, new float[]{0.25f, 1.5f});
         scaleFactors.put(BulletParamsEnum.GREEN_FLY, new float[]{0.25f, 1f});
         scaleFactors.put(BulletParamsEnum.GREEN_SHARP, new float[]{0.25f, 1.5f});
         scaleFactors.put(BulletParamsEnum.BLUE_RICOCHET_BULLET, new float[]{0.25f, 1.5f});

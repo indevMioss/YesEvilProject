@@ -58,9 +58,6 @@ public class Vis extends SpineBoss {
 
         skeleton.getBounds(offset, size);
         setSize(size.x, size.y);
-        System.out.println("size " + size.x);
-        System.out.println("size " + size.y);
-
 
         // body.setTransform(new Vector2(18, 5), 0);
         // body.applyLinearImpulse(new Vector2(-0.005f, 0), new Vector2(BODY_SHAPE_RADIUS, BODY_SHAPE_RADIUS), true);
@@ -151,7 +148,6 @@ public class Vis extends SpineBoss {
 
       //  body.setTransform(Player.inst.getX() + locToPlayerXdest, Player.inst.getY() + locToPlayerYdest, 0);
 
-        System.out.println(body.getPosition().x + " " + body.getPosition().y);
 
         float deltaX = (Player.inst.getX() + locToPlayerXdest) - body.getPosition().x;
         float deltaY = (Player.inst.getY() + locToPlayerYdest) - body.getPosition().y;

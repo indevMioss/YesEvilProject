@@ -52,7 +52,6 @@ public class RestartUI {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (bg.getColor().a != 0) {
-                    System.out.println("reset game");
                     gameScreen.resetGame();
                     return true;
                 }

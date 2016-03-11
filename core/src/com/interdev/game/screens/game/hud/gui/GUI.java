@@ -45,7 +45,6 @@ public class GUI extends Group implements Disposable {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 ultimateSystem.start();
-                System.out.println("clicked");
             }
 
             @Override
@@ -54,7 +53,6 @@ public class GUI extends Group implements Disposable {
             }
         });
 
-        System.out.println("attackButton.getWidth()" + attackButton.getWidth());
         attackButton.setPosition(GameScreen.hudWidth - attackButton.getWidth() * 1.5f,
                 GameScreen.hudHeight / 2 - attackButton.getHeight() / 2);
         //   addActor(attackButton);

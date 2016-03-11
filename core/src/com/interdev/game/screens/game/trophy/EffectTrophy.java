@@ -1,13 +1,15 @@
 package com.interdev.game.screens.game.trophy;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Pool;
+import com.interdev.game.GameMain;
 import com.interdev.game.screens.game.EffectsSystem;
 import com.interdev.game.tools.ScalableEffect;
 
 public class EffectTrophy extends Trophy {
-    private ScalableEffect effect;
+    private ParticleEffect effect;
 
     public EffectTrophy(TrophySystem trophySystem, Pool<? extends Trophy> myPool, World world) {
         super(trophySystem, myPool, world);
@@ -38,7 +40,7 @@ public class EffectTrophy extends Trophy {
                 scale = 2f;
                 break;
         }
-        //effect.setScale(scale);
+        effect.scaleEffect(scale);
         return this;
     }
 

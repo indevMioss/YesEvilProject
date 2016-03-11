@@ -5,12 +5,12 @@ import com.badlogic.gdx.utils.OrderedMap;
 
 public enum BulletParamsEnum {
 
-    SPIRIT(6, 0.12f, 20f, 0, 10, 10, 2),
-    GREEN_FLY(10, 0.4f, 0, 0.4f, 10, 10, 5),
-    GREEN_SHARP(10, 0.3f, 0, 0.3f, 10, 10, 5),
-    BLUE_RICOCHET_BULLET(10, 0.25f, 0, 0.25f, 10, 10, 2),
-    MINI_FIRE(10, 0.2f, 0, 0.2f, 10, 10, 2),
-    SCATTER_YELLOW(3, 0.5f, 0, 0.5f, 10, 20, 3);
+    SPIRIT                  (6 , 0.12f, 20f, 0,     10, 10, 2),
+    MINI_FIRE               (10, 0.2f,  1,   0.2f,  10, 10, 2),
+    SCATTER_YELLOW          (3 , 0.5f,  1,   0.5f,  10, 20, 3),
+    BLUE_RICOCHET_BULLET    (10, 0.25f, 1,   0.25f, 10, 10, 2),
+    GREEN_FLY               (10, 0.4f,  1,   0.4f,  10, 10, 5),
+    GREEN_SHARP             (10, 0.3f,  1,   0.3f,  10, 10, 5);
 
     private static final float AMMO_MAX = 20;
     public static ObjectMap<BulletParamsEnum, String> effectsPathMap = new OrderedMap<BulletParamsEnum, String>();
@@ -42,8 +42,8 @@ public enum BulletParamsEnum {
 
         this.damage = damage;
         this.shootInterval = shootInterval;
-        this.ammoCost = ammoCost;
         this.ammoRest = ammoRest;
+        this.ammoCost = ammoCost;
         this.bodyShapeRadius = bodyShapeRadius;
         this.bodyImpulse = bodyImpulse;
         this.punchForce = punchForce;

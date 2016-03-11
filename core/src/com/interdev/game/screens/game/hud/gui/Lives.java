@@ -166,7 +166,6 @@ public class Lives extends Group implements Disposable {
         }
 
         public float fill(float percent) {
-            System.out.println("percent in: " + percent);
             fullness += percent;
             float rest = 0;
             if (fullness > 1) {

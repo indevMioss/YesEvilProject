@@ -95,7 +95,6 @@ public class Demon extends Actor implements Pool.Poolable {
         damage = defaultDamage * scale;
         scaleBody(scale);
         float mass = defaultMass * scale;
-        System.out.println("mass" + mass);
         setMass(mass);
         resetSpeed();
     }

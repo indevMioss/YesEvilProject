@@ -40,7 +40,7 @@ public class LevelsSystem {
 
     public void start() {
         //DemonsSystem.inst.createBoss(DemonsSystem.BossType.VIS);
-      //  nextLevel();
+        nextLevel();
     }
 
     public void nextLevel() {
@@ -95,7 +95,6 @@ public class LevelsSystem {
 
     private void onLevelDone() {
         currentLevel = Type.BREAK;
-        System.out.println("onLevelDone");
         final float pauseTime = 5f;
         Timer.schedule(new Timer.Task() {
             @Override
@@ -117,9 +116,7 @@ public class LevelsSystem {
 
     private void spawnOne() {
         DemonsSystem.DemonType type = allowedTypes.get(Utils.randInt(0, allowedTypes.size()));
-        System.out.println(type.toString());
         float relSize = Utils.getRand(0f, 1f);
-        System.out.println("size " + relSize);
         Demon demon = DemonsSystem.inst.createDemon(type);
         demon.setRelScale(relSize);
         DirectionSignFactory.inst.createDirectionSign(demon);
@@ -169,10 +166,8 @@ public class LevelsSystem {
     }
 
     private void launchKillLevel() {
-        spawnInterval = 1;// - (levelsPassed * 0.25f);
-        System.out.println("spawnInterval" + spawnInterval);
-        monstersToSpawn = 10 * (levelsPassed);
-        System.out.println("monstersToSpawn" + monstersToSpawn);
+        spawnInterval = 0.5f;// - (levelsPassed * 0.25f);
+        monstersToSpawn = 15 * (levelsPassed);
         currentLevel = Type.KILL;
 
     }

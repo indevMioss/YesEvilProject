@@ -1,10 +1,13 @@
 package com.interdev.game.screens.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.Timer;
 import com.interdev.game.GameMain;
 import com.interdev.game.screens.game.attack.Bullet;
 import com.interdev.game.screens.game.attack.BulletParamsEnum;
@@ -25,6 +28,7 @@ public class EffectsSystem implements Disposable {
     private final ScalableEffectPool blueRicochetAmmoPool;
     private final ScalableEffectPool miniFireAmmoPool;
     private final ScalableEffectPool scatterYellowAmmoPool;
+
 
     public enum Type {
         RED_DEMON,
@@ -55,10 +59,11 @@ public class EffectsSystem implements Disposable {
         inst = this;
         this.player = player;
 
-        evilBlowPool = newPool("effects/demon_blow.p", "effects");
-        starBlowPool = newPool("effects/star_blow.p", "effects", 0.5f);
+        starBlowPool = newPool("effects/star_blow.p", "effects");
 
-        spiritBulletBlowPool = newPool("effects/bullets/spirit_bullet_blow2.p", "effects");
+        evilBlowPool = newPool("effects/db3.p", "effects");
+
+        spiritBulletBlowPool = newPool("effects/bullets/spirit_bullet_blow.p", "effects");
 
         greenFlyBulletBlowPool = newPool("effects/bullets/green_fly_blow.p", "effects");
         greenSharpBulletBlowPool = newPool("effects/bullets/green_sharp_blow.p", "effects");
@@ -84,6 +89,7 @@ public class EffectsSystem implements Disposable {
         resurrectEffect = new ScalableEffect();
         resurrectEffect.load(Gdx.files.internal("effects/resurrection.p"), Gdx.files.internal("effects"));
         resurrectEffect.scaleEffect(1 / GameMain.PPM);
+
     }
 
     public ScalableEffectPool newPool(String effectPath, String assetsPath) {
@@ -130,14 +136,13 @@ public class EffectsSystem implements Disposable {
         if (tempPool == null) return;
 
         ScalableEffectPool.PooledEffect effect = tempPool.obtain();
-        effect.reset();
+        // effect.reset();
         if (angleRange != 0) {
             for (ParticleEmitter emitter : effect.getEmitters()) {
                 emitter.getAngle().setLow(angle - angleRange / 2, angle + angleRange / 2);
                 emitter.getAngle().setHigh(angle - angleRange / 2, angle + angleRange / 2);
             }
         }
-
         effect.setPosition(bullet.getX(), bullet.getY());
         effects.add(effect);
     }
@@ -145,8 +150,8 @@ public class EffectsSystem implements Disposable {
     public void doDemonBlow(Demon demon) {
         ScalableEffectPool tempPool = getCorrespondingPool(demon);
         ScalableEffectPool.PooledEffect effect = tempPool.obtain();
-        effect.reset();
         effect.setPosition(demon.getX(), demon.getY());
+        //effect.setScale(1f/GameMain.PPM);
         effects.add(effect);
     }
 
@@ -160,7 +165,7 @@ public class EffectsSystem implements Disposable {
         ScalableEffect tempEffect = null;
         switch (type) {
             case RED_DEMON:
-                tempPool = evilBlowPool;
+                //  tempPool = evilBlowPool;
                 break;
             case BLUE_STAR:
                 tempPool = starBlowPool;
@@ -174,31 +179,29 @@ public class EffectsSystem implements Disposable {
                 break;
         }
         if (tempPool == null) {
-            if (tempEffect == null) {
-                return;
-            }
+            if (tempEffect == null) return;
         } else {
             tempEffect = tempPool.obtain();
         }
 
-        tempEffect.reset();
+        //tempEffect.reset();
         tempEffect.setPosition(x, y);
         effects.add(tempEffect);
     }
 
     private ScalableEffectPool getCorrespondingPool(Trophy.Type type) {
-       switch (type) {
-           case AMMO_GREEN_FLY:
-               return greenFlyAmmoEffectPool;
-           case AMMO_GREEN_SHARP:
-               return greenSharpAmmoPool;
-           case AMMO_RICOCHET_BLUE:
-               return blueRicochetAmmoPool;
-           case AMMO_MINI_FIRE:
-               return miniFireAmmoPool;
-           case AMMO_SCATTER_YELLOW:
-               return scatterYellowAmmoPool;
-       }
+        switch (type) {
+            case AMMO_GREEN_FLY:
+                return greenFlyAmmoEffectPool;
+            case AMMO_GREEN_SHARP:
+                return greenSharpAmmoPool;
+            case AMMO_RICOCHET_BLUE:
+                return blueRicochetAmmoPool;
+            case AMMO_MINI_FIRE:
+                return miniFireAmmoPool;
+            case AMMO_SCATTER_YELLOW:
+                return scatterYellowAmmoPool;
+        }
         return greenFlyAmmoEffectPool;
     }
 

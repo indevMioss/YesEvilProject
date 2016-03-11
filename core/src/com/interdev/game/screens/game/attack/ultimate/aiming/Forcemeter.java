@@ -256,7 +256,6 @@ public class Forcemeter extends Group implements Disposable {
 
     private InterpolationBundle getRandInterpolationBundle() {
         int randInt = random.nextInt(interpolationsMap.size());
-        System.out.println("randint" + randInt);
         return interpolationsMap.get(randInt);
     }
 
@@ -272,12 +271,8 @@ public class Forcemeter extends Group implements Disposable {
 
 
     public void onTouchDown() {
-        System.out.println("TOUCH down Forcemeter");
         particlesCollected += collar.collapse();
-        System.out.println("totalParticlesToSpawn " + totalParticlesToSpawn);
-        System.out.println("particlesCollected " + particlesCollected);
         float factor = (float) particlesCollected / totalParticlesToSpawn;
-        System.out.println("particlesCollected / totalParticlesToSpawn = " + factor);
         setEffectPower(factor);
     }
 

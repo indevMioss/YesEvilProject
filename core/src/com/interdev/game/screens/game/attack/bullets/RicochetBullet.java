@@ -25,19 +25,17 @@ public class RicochetBullet extends Bullet {
 
         B2dForcePoint.blast(DemonsSystem.inst.demonsList, getX(), getY(), 100, 20);
 
-        if (Utils.roll(0.75f)) {
+        if (Utils.roll(0.9f)) {
             Actor targetForChild = null;
             for (Demon demon : DemonsSystem.inst.demonsList) {
                 if (demon == target || !demon.isVisible()) continue;
-                float currSqDist = (demon.getX() - getX()) * (demon.getX() - getX()) +
-                        (demon.getY() - getY()) * (demon.getY() - getY());
+                float currSqDist = Utils.sqDist(this, demon);
                 if (sqDist > currSqDist) {
                     sqDist = currSqDist;
                     targetForChild = demon;
                 }
             }
             if (targetForChild != null) {
-                // System.out.println("creating child buller, my id : " + id);
                 final Actor finalTargetForChild = targetForChild;
                 GameScreen.addAfterWorldStepRunnable(new Timer.Task() {
                     @Override
@@ -48,9 +46,7 @@ public class RicochetBullet extends Bullet {
                         child.launchAfterWorldStep(getX(), getY(), finalTargetForChild);
                     }
                 });
-                //  System.out.println("child id: " + child.id + " child parentId: " + child.parentId);
-                //    System.out.println("child parentId after init: " + child.parentId);
-                //    System.out.println("=====================");
+
             }
         }
         amountOfSpearedEnemies++;

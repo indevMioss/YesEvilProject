@@ -119,7 +119,6 @@ public class GameMain extends Game {
         Preferences prefs = Gdx.app.getPreferences("settings");
         boolean incrementedAlready = prefs.getBoolean(("incrementedStats"), false);
         if (!incrementedAlready) {
-            System.out.println("---incrementedStats == false");
             parseCom.incrementStats();
             prefs.putBoolean("incrementedStats", true);
             prefs.flush();

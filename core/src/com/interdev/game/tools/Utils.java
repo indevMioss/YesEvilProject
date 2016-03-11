@@ -143,5 +143,12 @@ public class Utils {
         }, delay, interval);
     }
 
+    public static float sqDist(Actor from, Actor to) {
+        return (to.getX() - from.getX()) * (to.getX() - from.getX()) +
+                (to.getY() - from.getY()) * (to.getY() - from.getY());
+    }
 
+    public static float dist(Actor from, Actor to) {
+        return (float) Math.pow(sqDist(from, to), 0.5);
+    }
 }
