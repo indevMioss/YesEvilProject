@@ -1,16 +1,19 @@
 package com.interdev.game.screens.game.entities;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.interdev.game.GameMain;
+import com.interdev.game.screens.game.GameScreen;
 import com.interdev.game.screens.game.WorldContactListener;
 import com.interdev.game.screens.game.attack.Aim;
+import com.interdev.game.screens.game.hud.gui.AmmoVisual;
+import com.interdev.game.screens.game.hud.stamina.StaminaOrbits;
 import com.interdev.game.screens.game.other.LabeledReference;
 import com.interdev.game.sound.SoundSystem;
-import com.interdev.game.tools.ActionListener;
 import com.interdev.game.tools.BooleanArgChangeListener;
 import com.interdev.game.tools.OffsetAnimation;
 
@@ -30,7 +33,6 @@ public class Player extends AnimatedB2dActor {
 
     public static float PUNCH_IMPULSE = 80f;
 
-
     private static final float FEET_FRICTION_RATE = 0.95f;
     private static final float BODY_SHAPE_RADIUS = 30f;
     private static final float BODY_SHIELD_RADIUS = 80f;
@@ -47,10 +49,7 @@ public class Player extends AnimatedB2dActor {
     public boolean facingRightSide = true;
 
     private Body body, shieldBody;
-    private World world;
     private boolean wannaChangePosition;
-    private Aim aim;
-    private SoundSystem soundSystem;
 
     private float maxUpFloatSpeed = 3f;
     public boolean floatingMode = true;
@@ -62,12 +61,23 @@ public class Player extends AnimatedB2dActor {
     public static boolean hasShield = false;
     public static boolean hasSharpShield = false;
 
-    public Player(Array<TextureAtlas.AtlasRegion> regions, World world, Aim aim, SoundSystem soundSystem) {
+    public boolean shumpoJumping = false;
+    private float maxShumpoJumpTime = 0.25f;
+    private float shumpoJumpSpeed = 100;
+
+    private float shumpoJumpTime;
+    private float shumpoJumpTimeCounter;
+    public boolean hitInWall = false;
+    private Vector2 shumpoDirVector = new Vector2();
+
+    private OffsetAnimation shumpoAnim;
+
+    public Player(Array<TextureAtlas.AtlasRegion> regions, Array<TextureAtlas.AtlasRegion> shumpoRegions) {
         super(new OffsetAnimation(0.04f, regions, OffsetAnimation.PlayMode.LOOP), DEFAULT_SCALE);
-        this.world = world;
-        this.aim = aim;
-        this.soundSystem = soundSystem;
         defineBody();
+
+        shumpoAnim = new OffsetAnimation(0.02f, shumpoRegions, OffsetAnimation.PlayMode.LOOP);
+
         inst = this;
     }
 
@@ -76,13 +86,17 @@ public class Player extends AnimatedB2dActor {
         bodyDef.position.set(startPosition.x, startPosition.y);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.linearDamping = 2f;
-        body = world.createBody(bodyDef);
+        body = GameScreen.world.createBody(bodyDef);
+
+        MassData massData = new MassData();
+        massData.mass = 50f;
+        body.setMassData(massData);
 
         bodyDef.position.set(startPosition.x, startPosition.y);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.gravityScale = 0f;
 
-        shieldBody = world.createBody(bodyDef);
+        shieldBody = GameScreen.world.createBody(bodyDef);
 
         float bRadius = BODY_SHAPE_RADIUS / GameMain.PPM;
         float offset = BODY_SHAPE_RADIUS * 0.5f / GameMain.PPM;
@@ -131,6 +145,8 @@ public class Player extends AnimatedB2dActor {
         fixtureDef.friction = FEET_FRICTION_RATE;
         body.createFixture(fixtureDef).setUserData(new LabeledReference(WorldContactListener.ContactLabels.PLAYER_FEET, this));
 
+        body.setBullet(true);
+
         CircleShape shape = new CircleShape();
         shape.setRadius(BODY_SHIELD_RADIUS / GameMain.PPM);
         fixtureDef.shape = shape;
@@ -147,37 +163,41 @@ public class Player extends AnimatedB2dActor {
 
     @Override
     public TextureAtlas.AtlasSprite getFrame(float stateTime) {
-        TextureAtlas.AtlasSprite region = animation.getKeyFrame(stateTime);
-        if (aim.destAlpha != 0) {
-            if (((aim.getRotation() >= 90 && aim.getRotation() < 270) || !facingRightSide) && !region.isFlipX()) {
-                region.flip(true, false);
-                facingRightSide = false;
-                // goingBackwards = body.getLinearVelocity().x > 1.5f;
-            } else if (((aim.getRotation() < 90 || aim.getRotation() >= 270) || facingRightSide) && region.isFlipX()) {
-                region.flip(true, false);
-                facingRightSide = true;
-                // goingBackwards = body.getLinearVelocity().x < -1.5f;
+        TextureAtlas.AtlasSprite region;
+        if (!shumpoJumping) {
+            region = animation.getKeyFrame(stateTime);
+            if (Aim.inst.destAlpha != 0) {
+                if (((Aim.inst.getRotation() >= 90 && Aim.inst.getRotation() < 270) || !facingRightSide) && !region.isFlipX()) {
+                    region.flip(true, false);
+                    facingRightSide = false;
+                    // goingBackwards = body.getLinearVelocity().x > 1.5f;
+                } else if (((Aim.inst.getRotation() < 90 || Aim.inst.getRotation() >= 270) || facingRightSide) && region.isFlipX()) {
+                    region.flip(true, false);
+                    facingRightSide = true;
+                    // goingBackwards = body.getLinearVelocity().x < -1.5f;
+                }
+            } else {
+                if ((body.getLinearVelocity().x < -1.5f || !facingRightSide) && !region.isFlipX()) {
+                    region.flip(true, false);
+                    facingRightSide = false;
+
+                } else if ((body.getLinearVelocity().x > 1.5f || facingRightSide) && region.isFlipX()) {
+                    region.flip(true, false);
+                    facingRightSide = true;
+                }
+            }
+
+            walkingLeft = body.getLinearVelocity().x < -1.5f;
+            walkingRight = body.getLinearVelocity().x > 1.5f;
+            goingBackwards = facingRightSide && walkingLeft || !facingRightSide && walkingRight;
+
+            if (facedRightSideFrameAgo != facingRightSide) {
+                facedRightSideFrameAgo = facingRightSide;
+                //if (flipListener != null)flipListener.onValueChange(facingRightSide);
             }
         } else {
-            if ((body.getLinearVelocity().x < -1.5f || !facingRightSide) && !region.isFlipX()) {
-                region.flip(true, false);
-                facingRightSide = false;
-
-            } else if ((body.getLinearVelocity().x > 1.5f || facingRightSide) && region.isFlipX()) {
-                region.flip(true, false);
-                facingRightSide = true;
-            }
+            region = shumpoAnim.getKeyFrame(stateTime);
         }
-
-        walkingLeft = body.getLinearVelocity().x < -1.5f;
-        walkingRight = body.getLinearVelocity().x > 1.5f;
-        goingBackwards = facingRightSide && walkingLeft || !facingRightSide && walkingRight;
-
-        if (facedRightSideFrameAgo != facingRightSide) {
-            facedRightSideFrameAgo = facingRightSide;
-            //if (flipListener != null)flipListener.onValueChange(facingRightSide);
-        }
-
         return region;
     }
 
@@ -188,8 +208,6 @@ public class Player extends AnimatedB2dActor {
     }
 
     private float jumpTimeCounter = 0;
-
-
     private float xSecAgo = 0;
     private float ySecAgo = 0;
 
@@ -204,6 +222,11 @@ public class Player extends AnimatedB2dActor {
     private float secAgoCounter = 0;
 
     @Override
+    protected boolean drawWithRotation() {
+        return shumpoJumping;
+    }
+
+    @Override
     public void act(float delta) {
         super.act(delta);
         secAgoCounter += delta;
@@ -214,7 +237,7 @@ public class Player extends AnimatedB2dActor {
             ySecAgo = getY();
         }
 
-        if (!canJump) {
+        if (!floatingMode || !canJump) {
             jumpTimeCounter += delta;
             if (jumpTimeCounter >= JUMP_DELAY) {
                 jumpTimeCounter = 0;
@@ -222,12 +245,72 @@ public class Player extends AnimatedB2dActor {
             }
         }
 
+        if (hitInWall) {
+            hitInWall = false;
+            stopShumpo();
+        }
+
+        if (shumpoJumping) {
+            shumpoJumpTimeCounter += delta;
+
+            float complete = shumpoJumpTimeCounter / shumpoJumpTime;
+
+            float zoomDiff = 0.5f;
+            GameScreen.inst.changeZoom(GameScreen.DEFAULT_ZOOM - (0.5f - Math.abs(complete - 0.5f)) * 2 * zoomDiff);
+
+            Vector2 vec = new Vector2(shumpoDirVector.x, shumpoDirVector.y);
+            vec.nor();
+            vec.scl(shumpoJumpSpeed * Interpolation.linear.apply(complete));
+            body.setLinearVelocity(vec);
+
+            if (shumpoJumpTimeCounter >= shumpoJumpTime) {
+                stopShumpo();
+            }
+        }
+
         shieldBody.setTransform(getX(), getY(), 0);
         if (wannaChangePosition) {
             body.setTransform(startPosition, body.getAngle());
             wannaChangePosition = false;
+
         }
     }
+
+    private void stopShumpo() {
+        setShumpoJumping(false);
+        shumpoJumpTimeCounter = 0;
+        body.setLinearVelocity(0, 0);
+        GameScreen.inst.changeZoom(GameScreen.DEFAULT_ZOOM);
+
+    }
+
+    public void setShumpoJumping(boolean shumpo) {
+        shumpoJumping = shumpo;
+        if (shumpo) {
+            StaminaOrbits.inst.compact();
+            AmmoVisual.inst.setVisible(false);
+        } else {
+            setRotation(0);
+            StaminaOrbits.inst.uncompact();
+            AmmoVisual.inst.setVisible(true);
+        }
+    }
+
+
+    public void shumpoJump(float angle, float distanceRate) {
+        System.out.println(angle);
+        System.out.println(distanceRate);
+        shumpoJumpTime = maxShumpoJumpTime * distanceRate;
+        shumpoDirVector.x = (float) Math.cos(angle);
+        shumpoDirVector.y = (float) Math.sin(angle);
+        facingRightSide = (shumpoDirVector.x > 0);
+        angle = (float) Math.toDegrees(angle);
+        angle += 180;
+        if (angle >= 360) angle -= 360;
+        setRotation(angle);
+        setShumpoJumping(true);
+    }
+
 
     public void resetPosition() {
         wannaChangePosition = true;
@@ -250,10 +333,11 @@ public class Player extends AnimatedB2dActor {
         if (canJump) {
             canJump = false;
             body.setLinearVelocity(body.getLinearVelocity().x, JUMP_IMPULSE);
-            soundSystem.playSound(SoundSystem.Sounds.JUMP);
+            SoundSystem.inst.playSound(SoundSystem.Sounds.JUMP);
         }
 
     }
+
 
     public void move(float accelFactor) {
         float signum = Math.signum(accelFactor);
@@ -292,6 +376,7 @@ public class Player extends AnimatedB2dActor {
     }
 
     private Timer sharpShieldResetTimer = new Timer();
+
     public void activateSharpShield() {
         sharpShieldResetTimer.clear();
         hasSharpShield = true;
@@ -306,6 +391,7 @@ public class Player extends AnimatedB2dActor {
 
 
     private Timer shieldResetTimer = new Timer();
+
     public void activateShield() {
         shieldResetTimer.clear();
         hasShield = true;

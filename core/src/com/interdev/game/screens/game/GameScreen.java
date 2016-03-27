@@ -28,6 +28,7 @@ import com.interdev.game.camera.MultipleVirtualViewportBuilder;
 import com.interdev.game.camera.OrthographicCameraWithVirtualViewport;
 import com.interdev.game.camera.VirtualViewport;
 import com.interdev.game.screens.game.attack.Aim;
+import com.interdev.game.screens.game.attack.BulletParamsEnum;
 import com.interdev.game.screens.game.attack.BulletSystem;
 import com.interdev.game.screens.game.attack.ultimate.UltimateSystem;
 import com.interdev.game.screens.game.entities.Player;
@@ -52,7 +53,7 @@ import java.util.List;
 public class GameScreen implements Screen {
     public static GameScreen inst;
 
-    private static final float DEFAULT_ZOOM = 0.8f;
+    public static final float DEFAULT_ZOOM = 0.75f;
     public static float zoom = DEFAULT_ZOOM;
 
     private static final float SLOWEST_TIME_FACTOR = 1f;
@@ -68,7 +69,8 @@ public class GameScreen implements Screen {
     private static OrthographicCameraWithVirtualViewport camera;
     private static OrthographicCameraWithVirtualViewport hudCamera;
 
-    private TextureAtlas atlas, atlas2, trophiesAtlas, anglerAtlas, ballAtlas, flyAtlas, horseAtlas, cloudAtlas;
+    private TextureAtlas atlas, atlas2, trophiesAtlas, anglerAtlas,
+            ballAtlas, flyAtlas, horseAtlas, cloudAtlas, shumpoAtlas;
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer tiledMapRenderer;
 
@@ -163,6 +165,7 @@ public class GameScreen implements Screen {
         flyAtlas = new TextureAtlas("spine/monster_fly.atlas");
         horseAtlas = new TextureAtlas("spine/monster_horse.atlas");
         cloudAtlas = new TextureAtlas("spine/cloud_demon.atlas");
+        shumpoAtlas = new TextureAtlas("atlases/shumpo.txt");
 
         Utils.applyLinearFilter(atlas);
         Utils.applyLinearFilter(atlas2);
@@ -172,6 +175,7 @@ public class GameScreen implements Screen {
         Utils.applyLinearFilter(flyAtlas);
         Utils.applyLinearFilter(horseAtlas);
         Utils.applyLinearFilter(cloudAtlas);
+        Utils.applyLinearFilter(shumpoAtlas);
 
 
         box2DDebugRenderer = new Box2DDebugRenderer();
@@ -185,7 +189,7 @@ public class GameScreen implements Screen {
         aim.setPosition(hudWidth / 2, hudHeight / 2);
         hudStage.addActor(aim);
 
-        player = new Player(atlas.findRegions("spirit"), world, aim, soundSystem);
+        player = new Player(atlas.findRegions("spirit"), shumpoAtlas.findRegions("shumpo"));
         ammoVisual = new AmmoVisual();
 
         shieldField = new ShieldField(atlas.findRegions("shield"), player);
@@ -233,7 +237,9 @@ public class GameScreen implements Screen {
 
         controlsInput = new ControlsInput(player, gui.movePad, inputMultiplexer);
         Gdx.input.setInputProcessor(inputMultiplexer);
-        // musicSystem.play();
+
+
+        //   musicSystem.play();
 
 
         ShaderLoader.BasePath = "resources/shaders/";
@@ -320,11 +326,11 @@ public class GameScreen implements Screen {
 
         ultimateSystem.update(delta);
 
-        //timeFactor = calcTimeFactor(directionSignFactory.getClosestDistPercent());
+        timeFactor = calcTimeFactor(directionSignFactory.getClosestDistPercent());
         restartUI.update(delta);
         musicTextUI.update(delta);
         parallaxTiledBg.update(camera);
-        effectsSystem.update();
+        effectsSystem.update(delta);
 
     }
 
@@ -431,7 +437,7 @@ public class GameScreen implements Screen {
     }
 
     private void handleTouchInput() {
-        controlsInput.checkInput();
+        //controlsInput.checkInput();
     }
 
     private void handleKeyboardInput() {
@@ -538,7 +544,7 @@ public class GameScreen implements Screen {
     }
 
 
-    private void changeZoom(float newZoom) {
+    public void changeZoom(float newZoom) {
         zoom = newZoom;
         camera.zoom = newZoom;
     }

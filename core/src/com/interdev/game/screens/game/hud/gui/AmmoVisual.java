@@ -29,8 +29,8 @@ public class AmmoVisual extends Group {
         /* TYPE , MIN EFFECT SCALE , MAX EFFECT SCALE */
         scaleFactors.put(BulletParamsEnum.SPIRIT, new float[]{0.25f, 1.5f});
         scaleFactors.put(BulletParamsEnum.GREEN_FLY, new float[]{0.25f, 1f});
-        scaleFactors.put(BulletParamsEnum.GREEN_SHARP, new float[]{0.25f, 1.5f});
-        scaleFactors.put(BulletParamsEnum.BLUE_RICOCHET_BULLET, new float[]{0.25f, 1.5f});
+        scaleFactors.put(BulletParamsEnum.GREEN_SHARP, new float[]{0.25f, 1.25f});
+        scaleFactors.put(BulletParamsEnum.BLUE_RICOCHET_BULLET, new float[]{0.25f, 1.25f});
         scaleFactors.put(BulletParamsEnum.MINI_FIRE, new float[]{0.25f, 2f});
         scaleFactors.put(BulletParamsEnum.SCATTER_YELLOW, new float[]{1f, 3f});
     }
@@ -44,6 +44,12 @@ public class AmmoVisual extends Group {
         }
 
         setCurrent(BulletParamsEnum.SPIRIT);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if (isVisible())
+        super.draw(batch, parentAlpha);
     }
 
     public void updateVisualFullnessOf(BulletParamsEnum type) {

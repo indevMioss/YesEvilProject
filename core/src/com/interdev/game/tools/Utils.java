@@ -144,11 +144,18 @@ public class Utils {
     }
 
     public static float sqDist(Actor from, Actor to) {
-        return (to.getX() - from.getX()) * (to.getX() - from.getX()) +
-                (to.getY() - from.getY()) * (to.getY() - from.getY());
+        return sqDist(from.getX(), from.getY(), to.getX(), to.getY());
     }
 
     public static float dist(Actor from, Actor to) {
-        return (float) Math.pow(sqDist(from, to), 0.5);
+        return dist(from.getX(), from.getY(), to.getX(), to.getY());
+    }
+
+    public static float sqDist(float fromX, float fromY, float toX, float toY) {
+        return (toX - fromX) * (toX - fromX) + (toY - fromY) * (toY - fromY);
+    }
+
+    public static float dist(float fromX, float fromY, float toX, float toY) {
+        return (float) Math.pow(sqDist(fromX, fromY, toX, toY), 0.5);
     }
 }

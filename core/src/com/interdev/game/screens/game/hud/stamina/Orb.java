@@ -23,12 +23,12 @@ public class Orb extends Actor {
         setVisible(false);
         animation = new Animation(1 / 40f, orbRegions, Animation.PlayMode.LOOP);
         setPosition(x, y);
+        setSize(animation.getKeyFrame(0).getRegionWidth(), animation.getKeyFrame(0).getRegionHeight());
         updateSizeFromFullness();
     }
 
     private void updateSizeFromFullness() {
         setScale(MIN_SIZE + (MAX_SIZE - MIN_SIZE) * fullnessPercent);
-        setSize(animation.getKeyFrame(0).getRegionWidth() * getScaleX(), animation.getKeyFrame(0).getRegionHeight() * getScaleY());
     }
 
     public float fill(float percent) {
@@ -54,7 +54,8 @@ public class Orb extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (isVisible()) {
-            batch.draw(animation.getKeyFrame(timePassed), getX() - getWidth() / 2, getY() - getHeight() / 2, getWidth(), getHeight());
+            batch.draw(animation.getKeyFrame(timePassed), getX() - getWidth() / 2, getY() - getHeight() / 2,
+                    getWidth() / 2, getHeight() / 2, getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
         }
     }
 

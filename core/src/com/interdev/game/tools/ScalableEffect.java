@@ -4,19 +4,19 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g3d.particles.emitters.Emitter;
 import com.badlogic.gdx.utils.Array;
-import com.interdev.game.screens.game.attack.ultimate.aiming.Particle;
 
 public class ScalableEffect extends ParticleEffect {
 
     private Array<ParticleEmitter> snapshot = new Array<ParticleEmitter>();
+    private float timeFactor = 1;
 
     public ScalableEffect() {
     }
 
     public ScalableEffect(ScalableEffect effect) {
         super(effect);
+        setTimeFactor(effect.getTimeFactor());
         makeSnapshot();
     }
 
@@ -53,7 +53,6 @@ public class ScalableEffect extends ParticleEffect {
 
     @Override
     public void scaleEffect(float scaleFactor) {
-        System.out.println("scaleFactor " + scaleFactor);
         setScale(scaleFactor);
     }
 
@@ -88,6 +87,18 @@ public class ScalableEffect extends ParticleEffect {
         }
     }
 
+    public float getTimeFactor() {
+        return timeFactor;
+    }
+
+    public void setTimeFactor(float timeFactor) {
+        this.timeFactor = timeFactor;
+    }
+
+    @Override
+    public void update(float delta) {
+        super.update(delta * timeFactor);
+    }
 }
 
 

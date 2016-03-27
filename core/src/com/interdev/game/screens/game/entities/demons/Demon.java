@@ -177,10 +177,8 @@ public class Demon extends Actor implements Pool.Poolable {
             }
         }, MIN_INTER_BETWEEN_TAKING_DMG);
 
-        lives -= bullet.getDamage();
+        applyDamage(bullet.getDamage());
 
-
-        if (lives <= 0) die();
     }
 
     public boolean readyToHitAgain = true;
@@ -312,6 +310,12 @@ public class Demon extends Actor implements Pool.Poolable {
         float revScale = 1 - getScaleX();
         chasingImpulse = defaultChasingImpulse;//* (1 + revScale * 1.5f) * Utils.getRand(0.8f, 1.2f);
         XYSpeedRatio = Utils.getRand(0.25f, 0.75f);
+    }
+
+    public void applyDamage(float damage) {
+        damage = Math.abs(damage);
+        lives -= damage;
+        if (lives <= damage) die();
     }
 
     public void die() {

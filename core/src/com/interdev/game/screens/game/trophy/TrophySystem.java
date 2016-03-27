@@ -191,10 +191,26 @@ public class TrophySystem extends Group {
 
     private void spawn(float x, float y, Demon demon) {
         trophyBundle.clear();
+
+        if (Utils.roll(0.03f)) {
+            addToTrophyBundle(Trophy.Type.RED_CRY, Utils.randInt(1, 3));
+        } else {
+            if (Utils.roll(0.01f)) {
+                addToTrophyBundle(Trophy.Type.RED_CRY, Utils.randInt(4, 10));
+            }
+        }
+
+        if (Utils.roll(0.02f)) {
+            addToTrophyBundle(Trophy.Type.RED_CRY, Utils.randInt(1, 2));
+        } else {
+            if (Utils.roll(0.01f)) {
+                addToTrophyBundle(Trophy.Type.RED_CRY, Utils.randInt(3, 5));
+            }
+        }
+
         for (Trophy.Type type : Trophy.Type.values()) {
             if (Utils.roll(0.01f)) trophyBundle.add(type);
         }
-
 
         for (Trophy.Type trophyType : trophyBundle) {
             getCorrespondingTrophy(trophyType).go(x, y);
@@ -273,7 +289,12 @@ public class TrophySystem extends Group {
             case BOMB_BONUS:
                 SoundSystem.inst.playSound(SoundSystem.Sounds.BOMB);
                 GameScreen.inst.doEffect(GameScreen.Effect.FLASH);
-                DemonsSystem.inst.blowAllTheDemons();
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        DemonsSystem.inst.blowAllTheDemons();
+                    }
+                }, 0.25f);
                 break;
             case SHIELD_BONUS:
                 SoundSystem.inst.playSound(SoundSystem.Sounds.SHIELD_PICK_UP);

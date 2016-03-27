@@ -1,11 +1,9 @@
 package com.interdev.game.tools;
 
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.utils.Pool;
 
-
 public class ScalableEffectPool extends Pool<ScalableEffectPool.PooledEffect> {
-    private final ScalableEffect effectPrototype;
+    public final ScalableEffect effectPrototype;
 
     public ScalableEffectPool(ScalableEffect prototype, int initialCapacity, int max) {
         super(initialCapacity, max);
@@ -23,7 +21,7 @@ public class ScalableEffectPool extends Pool<ScalableEffectPool.PooledEffect> {
     }
 
     public class PooledEffect extends ScalableEffect {
-        PooledEffect(ParticleEffect effect) {
+        PooledEffect(ScalableEffect effect) {
             super(effect);
         }
 

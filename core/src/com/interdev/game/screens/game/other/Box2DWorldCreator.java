@@ -9,7 +9,12 @@ import com.interdev.game.GameMain;
 import com.interdev.game.screens.game.WorldContactListener;
 
 public class Box2DWorldCreator {
+    public static Box2DWorldCreator inst;
+
+
     public Box2DWorldCreator(World world, MapLayer tiledMapLayer) {
+        inst = this;
+
         BodyDef bodyDef = new BodyDef();
         PolygonShape polygonShape = new PolygonShape();
         FixtureDef fixtureDef = new FixtureDef();
@@ -26,7 +31,7 @@ public class Box2DWorldCreator {
             polygonShape.setAsBox(width / GameMain.PPM, height / GameMain.PPM);
             fixtureDef.shape = polygonShape;
             fixtureDef.filter.categoryBits = WorldContactListener.BIT_CATEGORY_PLATFORM;
-            body.createFixture(fixtureDef);
+            body.createFixture(fixtureDef).setUserData(new LabeledReference(WorldContactListener.ContactLabels.WALL, body));
         }
     }
 }

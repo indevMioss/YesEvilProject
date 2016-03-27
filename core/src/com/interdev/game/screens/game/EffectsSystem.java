@@ -66,6 +66,7 @@ public class EffectsSystem implements Disposable {
         spiritBulletBlowPool = newPool("effects/bullets/spirit_bullet_blow.p", "effects");
 
         greenFlyBulletBlowPool = newPool("effects/bullets/green_fly_blow.p", "effects");
+        greenFlyBulletBlowPool.effectPrototype.setTimeFactor(2f);
         greenSharpBulletBlowPool = newPool("effects/bullets/green_sharp_blow.p", "effects");
         blueRicochetBulletBlowPool = newPool("effects/bullets/blue_fly_blow.p", "effects");
         miniFireBulletBlowPool = newPool("effects/bullets/mini_fire_blow.p", "effects");
@@ -103,9 +104,13 @@ public class EffectsSystem implements Disposable {
         return new ScalableEffectPool(effectPrototype, 0, 50);
     }
 
-    public void update() {
+    public void update(float delta) {
         if (Player.hasSharpShield) {
             sharpShield.setPosition(player.getX(), player.getY());
+        }
+
+        for (ScalableEffect effect : effects) {
+            effect.update(delta);
         }
     }
 
@@ -113,10 +118,9 @@ public class EffectsSystem implements Disposable {
         if (Player.hasSharpShield) {
             sharpShield.draw(batch, delta);
         }
-        playerDeadBlow.draw(batch, delta);
 
         for (ScalableEffect effect : effects) {
-            effect.draw(batch, delta);
+            effect.draw(batch);
             if (effect.isComplete()) {
                 effects.removeValue(effect, true);
                 if (effect instanceof ScalableEffectPool.PooledEffect)

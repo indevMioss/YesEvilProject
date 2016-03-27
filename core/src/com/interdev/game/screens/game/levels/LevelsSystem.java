@@ -39,7 +39,7 @@ public class LevelsSystem {
 
 
     public void start() {
-        //DemonsSystem.inst.createBoss(DemonsSystem.BossType.VIS);
+        //   DemonsSystem.inst.createBoss(DemonsSystem.BossType.VIS);
         nextLevel();
     }
 
@@ -134,7 +134,7 @@ public class LevelsSystem {
     private void updateAllowedDemons() {
         allowedTypes.clear();
 
-        /*
+
         allowedTypes.add(DemonsSystem.DemonType.BALL_GRAY);
         allowedTypes.add(DemonsSystem.DemonType.BALL_PURPLE);
         allowedTypes.add(DemonsSystem.DemonType.BALL_RED);
@@ -149,12 +149,11 @@ public class LevelsSystem {
         allowedTypes.add(DemonsSystem.DemonType.CLOUD_GRAY);
         allowedTypes.add(DemonsSystem.DemonType.CLOUD_GREEN);
         allowedTypes.add(DemonsSystem.DemonType.CLOUD_RED);
-*/
 
         allowedTypes.add(DemonsSystem.DemonType.ANGLER_GRAY);
-        //allowedTypes.add(DemonsSystem.DemonType.ANGLER_PURPLE);
-        // allowedTypes.add(DemonsSystem.DemonType.SIMPLE_RED);
-        //allowedTypes.add(DemonsSystem.DemonType.ANGLER_RED);
+        allowedTypes.add(DemonsSystem.DemonType.ANGLER_PURPLE);
+         allowedTypes.add(DemonsSystem.DemonType.SIMPLE_RED);
+        allowedTypes.add(DemonsSystem.DemonType.ANGLER_RED);
 
         if (levelsPassed >= 2) {
         }
@@ -166,8 +165,8 @@ public class LevelsSystem {
     }
 
     private void launchKillLevel() {
-        spawnInterval = 0.5f;// - (levelsPassed * 0.25f);
-        monstersToSpawn = 15 * (levelsPassed);
+        spawnInterval = 2.75f;// - (levelsPassed * 0.25f);
+        monstersToSpawn = 25 * (levelsPassed);
         currentLevel = Type.KILL;
 
     }

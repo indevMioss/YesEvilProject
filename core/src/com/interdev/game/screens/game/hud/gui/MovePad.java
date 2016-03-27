@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.interdev.game.screens.game.entities.Player;
 import com.interdev.game.tools.Utils;
 
 public class MovePad extends Group {
@@ -13,17 +14,15 @@ public class MovePad extends Group {
     public final InputListener inputListener;
     private Image padImage;
 
-    private float relPosX = 0f;
-    private float relPosY = 0f;
+    private Vector2 relPos = new Vector2();
 
     public float getRelPosX() {
-        return relPosX;
+        return relPos.x;
     }
 
     public float getRelPosY() {
-        return relPosY;
+        return relPos.y;
     }
-
 
 
     private boolean touching = false;
@@ -54,19 +53,23 @@ public class MovePad extends Group {
 
                 x -= radius;
                 y -= radius;
-                y = Math.max(0, y);
+                //y = Math.max(0, y);
                 float xSig = Math.signum(x);
                 float ySig = Math.signum(y);
                 Vector2 vec = new Vector2(Math.abs(x), Math.abs(y)).limit(radius);
-                vec.scl(xSig,ySig);
-                relPosX = vec.x / radius; // [-1 : 1]
-                relPosY = vec.y / radius; // [-1 : 1]
+                vec.scl(xSig, ySig);
+                relPos.x = vec.x / radius; // [-1 : 1]
+                relPos.y = vec.y / radius; // [-1 : 1]
                 padImage.setX(vec.x + radius - padImage.getWidth() / 2);
                 padImage.setY(vec.y + radius - padImage.getHeight() / 2);
             }
+
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 touching = false;
+                float ang = (float) Math.atan2(relPos.y, relPos.x);
+               // if (ang < 0) ang += 360;
+                Player.inst.shumpoJump(ang, relPos.len());
             }
         };
         addListener(inputListener);
@@ -83,24 +86,24 @@ public class MovePad extends Group {
         super.act(delta);
         if (touching) return;
         boolean changed = false;
-        actTepmVec.set(0,0);
+        actTepmVec.set(0, 0);
 
-        if (relPosX != 0) {
+        if (relPos.x != 0) {
             changed = true;
-            int sign = (relPosX > 0) ? -1 : 1;
-            relPosX += sign * PAD_RETURN_SPEED * delta;
-            if ((sign == -1 && relPosX < 0) || (sign == 1 && relPosX > 0)) relPosX = 0;
+            int sign = (relPos.x > 0) ? -1 : 1;
+            relPos.x += sign * PAD_RETURN_SPEED * delta;
+            if ((sign == -1 && relPos.x < 0) || (sign == 1 && relPos.x > 0)) relPos.x = 0;
         }
 
-        if (relPosY != 0) {
+        if (relPos.y != 0) {
             changed = true;
-            int sign = (relPosY > 0) ? -1 : 1;
-            relPosY += sign * PAD_RETURN_SPEED * delta;
-            if ((sign == -1 && relPosY < 0) || (sign == 1 && relPosY > 0)) relPosY = 0;
+            int sign = (relPos.y > 0) ? -1 : 1;
+            relPos.y += sign * PAD_RETURN_SPEED * delta;
+            if ((sign == -1 && relPos.y < 0) || (sign == 1 && relPos.y > 0)) relPos.y = 0;
         }
 
         if (changed) {
-            actTepmVec.set(relPosX, relPosY).limit(radius);
+            actTepmVec.set(relPos.x, relPos.y).limit(radius);
 
             padImage.setX(actTepmVec.x * radius + radius - padImage.getWidth() / 2);
             padImage.setY(actTepmVec.y * radius + radius - padImage.getHeight() / 2);

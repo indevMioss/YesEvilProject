@@ -270,6 +270,10 @@ public class BulletSystem extends Group {
         bulletType.addAmmo(valueAdd);
         AmmoVisual.inst.updateVisualFullnessOf(bulletType);
 
+      //  for (Trophy.Type typee : Trophy.Type.values()) {
+       //     3+-
+     //   }
+
     }
 
     private BulletParamsEnum getCorrespondingBulletType(Trophy.Type type) {

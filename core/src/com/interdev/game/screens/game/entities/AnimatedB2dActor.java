@@ -23,9 +23,17 @@ public abstract class AnimatedB2dActor extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
         TextureAtlas.AtlasSprite spriteFrame = getFrame(timePassed);
-        spriteFrame.setBounds(getX() - getWidth() / 2, getY() - getHeight() / 2,
-                getWidth(), getHeight());
-        spriteFrame.draw(batch);
+        spriteFrame.setBounds(getX() - getWidth() / 2, getY() - getHeight() / 2, getWidth(), getHeight());
+        if (drawWithRotation()) {
+            batch.draw(spriteFrame.getAtlasRegion(), spriteFrame.getX(), spriteFrame.getY(),
+                    spriteFrame.getWidth() / 2,
+                    spriteFrame.getHeight() / 2,
+                    spriteFrame.getWidth(), spriteFrame.getHeight(),
+                    spriteFrame.getScaleX(), spriteFrame.getScaleY(), getRotation());
+        } else {
+            spriteFrame.draw(batch);
+        }
+
     }
 
     public TextureAtlas.AtlasSprite getFrame(float stateTime) {
@@ -63,4 +71,7 @@ public abstract class AnimatedB2dActor extends Actor {
 
     public abstract Body getBody();
 
+    protected boolean drawWithRotation() {
+        return false;
+    }
 }

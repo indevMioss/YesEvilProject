@@ -10,6 +10,7 @@ import com.interdev.game.screens.game.GameScreen;
 import com.interdev.game.screens.game.entities.demons.bosses.SpineBoss;
 import com.interdev.game.screens.game.entities.demons.bosses.Vis;
 import com.interdev.game.screens.game.hud.directionsigns.DirectionSignFactory;
+import com.interdev.game.tools.Utils;
 
 import java.util.*;
 
@@ -272,6 +273,15 @@ public class DemonsSystem {
     private float timeFactor = 1f;
     private float destTimeFactor = timeFactor;
 
+    public void splashDamage(float x, float y, float maxRadius, float maxDamage) {
+        for (Demon demon : demonsList) {
+            float sqDist = Utils.sqDist(demon.getX(), demon.getY(), x, y);
+            if (sqDist > maxRadius * maxRadius) continue;
+            float rate = sqDist / (maxRadius * maxRadius);
+            demon.applyDamage(maxDamage * (1 - rate));
+        }
+    }
+
     public void slowAllTheDemons(float toTimeFactor, float forTime) {
         destTimeFactor = toTimeFactor;
         Timer.schedule(new Timer.Task() {
@@ -281,7 +291,6 @@ public class DemonsSystem {
             }
         }, forTime);
     }
-
 
     public void blowAllTheDemons() {
         Array<Demon> tempDemonsList = new Array<Demon>(demonsList);

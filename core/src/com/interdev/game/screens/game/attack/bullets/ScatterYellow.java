@@ -10,8 +10,8 @@ public class ScatterYellow extends Bullet {
 
     public ScatterYellow(World world, Pool<? extends Bullet> myPool) {
         super(BulletParamsEnum.SCATTER_YELLOW, world, "effects/bullets/yellow_bullet.p", "effects", myPool);
-        projectilesPerShot = 5;
-        strictAngleSpray = 35f;
+        projectilesPerShot = 10;
+        strictAngleSpray = 60f;
         amountOfEnemiesCanSpear = 3;
     }
 

@@ -12,7 +12,7 @@ import com.interdev.game.tools.TwoFloatsChangeListener;
 import com.interdev.game.tools.Utils;
 
 public class Aim extends Group {
-
+    public static Aim inst;
     private static final float ANGLE_CHANGE_SPEED = 800; // per sec
     private static final float ALPHA_CHANGE_SPEED = 3f;
     private final Image aimImage;
@@ -27,6 +27,7 @@ public class Aim extends Group {
     }
 
     public Aim() {
+        inst = this;
         Texture texture = new Texture("aim.png");
         Utils.applyLinearFilter(texture);
         aimImage = new Image(texture);

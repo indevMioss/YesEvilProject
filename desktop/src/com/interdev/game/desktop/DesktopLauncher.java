@@ -14,14 +14,14 @@ public class DesktopLauncher {
   //     config.height = 1080;
   //     config.width = 1920;
 
- //       config.width = 960;
- //       config.height = 560;
-//
-//        config.width = 480;
-//        config.height = 240;
+    //    config.width = 960;
+    //    config.height = 560;
 
-   //     config.width = 1600;
-   //     config.height = 900;
+    //    config.width = 480;
+    //    config.height = 240;
+
+        config.width = 1600;
+        config.height = 900;
 
 //           config.x = 2561;
 //           config.y = 0;

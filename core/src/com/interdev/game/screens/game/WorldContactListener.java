@@ -34,7 +34,8 @@ public class WorldContactListener implements ContactListener {
         GOODSTAR,
         SHIELD,
         BULLET,
-        TROPHY
+        TROPHY,
+        WALL
     }
 
 
@@ -102,6 +103,12 @@ public class WorldContactListener implements ContactListener {
                 trophy.pickUp();
             }
         }
+
+        if (userDatas.contains(ContactLabels.WALL) &&
+                (userDatas.contains(ContactLabels.PLAYER) || userDatas.contains(ContactLabels.PLAYER_FEET))) {
+            Player.inst.hitInWall = true;
+            System.out.println("STOP ");
+        }
     }
 
 
@@ -166,7 +173,7 @@ public class WorldContactListener implements ContactListener {
             if (StaminaOrbits.inst.getTotalStamina() > demon.getDamageVal()) {
                 SoundSystem.inst.playSound(SoundSystem.Sounds.HIT_PLAYER);
                 StaminaOrbits.inst.removeStamina(demon.getDamageVal());
-                demon.punchFromPlayer(Player.PUNCH_IMPULSE/3f);
+                demon.punchFromPlayer(Player.PUNCH_IMPULSE / 3f);
                 // B2dForcePoint.blast(DemonsSystem.inst.demonsList, Player.inst.getX(), Player.inst.getY(), 200, 100);
                 return;
             }

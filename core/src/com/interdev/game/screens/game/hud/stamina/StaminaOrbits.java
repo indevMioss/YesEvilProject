@@ -26,6 +26,7 @@ public class StaminaOrbits extends Group {
     private ArrayList<Orb> allOrbsList = new ArrayList<Orb>();
 
     public ActorParticleEffect lifeDrainEffect;
+    private float destScale = 1f/GameMain.PPM;
 
 
     public StaminaOrbits(float minDiameter, Array<? extends TextureRegion> orbRegions) {
@@ -39,12 +40,30 @@ public class StaminaOrbits extends Group {
         }
         lifeDrainEffect = new ActorParticleEffect("effects/life_drain3.p", "effects");
         addActor(lifeDrainEffect);
+        setScale(1/GameMain.PPM);
+
         resize();
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
+
+
+        if (getScaleX() < destScale) {
+            System.out.println(getScaleX());
+            float newScale = getScaleX();
+            newScale += 0.002f;
+            newScale = Math.min(newScale, destScale);
+            setScale(newScale);
+        } else if (getScaleX() > destScale) {
+            System.out.println("scaleee e e " + getScaleX());
+            float newScale = getScaleX();
+            newScale -= 0.004f;
+            newScale = Math.max(newScale, destScale);
+            setScale(newScale);
+        }
+
         setPosition(Player.inst.getX(), Player.inst.getY());
         float rotationDelta = ROTATION_SPEED * delta;
         setRotation(getRotation() + rotationDelta);
@@ -115,11 +134,9 @@ public class StaminaOrbits extends Group {
         }
     }
 
-    private Orb lastInteractedOrb;
-
     public void removeStamina(float negativeStamina) {
         if (negativeStamina > 0) negativeStamina *= -1;
-        lastInteractedOrb = getLastNotEmptyOrb();
+        Orb lastInteractedOrb = getLastNotEmptyOrb();
         if (lastInteractedOrb == null) return;
         lifeDrainEffect.setPosition(lastInteractedOrb.getX(), lastInteractedOrb.getY());
         lifeDrainEffect.effect.reset();
@@ -140,8 +157,16 @@ public class StaminaOrbits extends Group {
     }
 
     public void resize() {
-        setScale(1 / GameMain.PPM);
         setPosition(Player.inst.getX(), Player.inst.getY());
+    }
+
+
+    public void compact() {
+        destScale = 0;
+    }
+
+    public void uncompact() {
+        destScale = 1f / GameMain.PPM;
     }
 
 }

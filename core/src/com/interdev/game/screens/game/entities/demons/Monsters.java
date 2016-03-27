@@ -17,8 +17,8 @@ public class Monsters {
         public float DEFAULT_BODY_SHAPE_RADIUS = 40;
         public float DEFAULT_MASS = 10f;
         public float DEFAULT_SCALE = 1f;
-        public float MIN_SCALE = 0.5f;
-        public float MAX_SCALE = 1.5f;
+        public float MIN_SCALE = 1.0f;
+        public float MAX_SCALE = 1.0f;
     }
 
     public static class SimpleRed extends AnimatedDemon {
@@ -130,6 +130,7 @@ public class Monsters {
 
         public CloudGray(TextureAtlas atlasWithSkeleton, SkeletonRenderer skeletonRenderer, Pool<? extends Demon> myPool) {
             super(values, "spine/cloud_demon.json", atlasWithSkeleton, skeletonRenderer, myPool);
+            byDefaultFacingRight = false;
         }
     }
 
@@ -142,6 +143,7 @@ public class Monsters {
 
         public CloudGreen(TextureAtlas atlasWithSkeleton, SkeletonRenderer skeletonRenderer, Pool<? extends Demon> myPool) {
             super(values, "spine/cloud_demon_green.json", atlasWithSkeleton, skeletonRenderer, myPool);
+            byDefaultFacingRight = false;
         }
     }
 
@@ -154,6 +156,7 @@ public class Monsters {
 
         public CloudRed(TextureAtlas atlasWithSkeleton, SkeletonRenderer skeletonRenderer, Pool<? extends Demon> myPool) {
             super(values, "spine/cloud_demon_red.json", atlasWithSkeleton, skeletonRenderer, myPool);
+            byDefaultFacingRight = false;
         }
     }
 

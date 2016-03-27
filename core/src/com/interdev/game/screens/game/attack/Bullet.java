@@ -18,6 +18,7 @@ import java.util.UUID;
 
 public abstract class Bullet extends Actor implements Pool.Poolable {
 
+    public boolean isChildProjectile;
     public Actor target;
     public BulletParamsEnum type;
 
@@ -34,7 +35,7 @@ public abstract class Bullet extends Actor implements Pool.Poolable {
     public float selfFreeAfter = 3f; //sec
 
     protected float defaultDamage = 200;
-    private float damageMultiplier = 1f;
+    public float damageMultiplier = 1f;
 
     protected int amountOfEnemiesCanSpear = 1;
     protected int amountOfSpearedEnemies;
@@ -48,7 +49,7 @@ public abstract class Bullet extends Actor implements Pool.Poolable {
     public UUID id;
     public UUID parentId;
 
-    private float angle;
+    protected float angle;
 
     private boolean goingToTemporalPoint = true;
     public boolean passedTemporalPoint = false;
@@ -120,12 +121,8 @@ public abstract class Bullet extends Actor implements Pool.Poolable {
                 initedDestTemporalPoint = true;
             }
 
-            boolean interpolatingX = true;
-
-
             // float newX = Interpolation.circle.apply(start.x, destTemporalPoint.x, 0.25f);
             // float newY = Interpolation.circle.apply(start.y, destTemporalPoint.y, 0.25f);
-
             float velocity = 10;
             float deltaX = destTemporalPoint.x - getX();
             float deltaY = destTemporalPoint.y - getY();
@@ -208,7 +205,7 @@ public abstract class Bullet extends Actor implements Pool.Poolable {
         particleEffect.setScale((1 + scale / 2) / GameMain.PPM);
     }
 
-    private void preLaunch() {
+    protected void preLaunch() {
         body.setActive(true);
         body.setTransform(bodyTransformDestX, bodyTransformDestY, 0);
         particleEffect.reset();
@@ -217,7 +214,7 @@ public abstract class Bullet extends Actor implements Pool.Poolable {
     }
 
 
-    private void launch() {
+    protected void launch() {
         Vector2 norVector = new Vector2();
         norVector.x = (float) Math.cos(Math.toRadians(angle));
         norVector.y = (float) Math.sin(Math.toRadians(angle));
@@ -274,6 +271,13 @@ public abstract class Bullet extends Actor implements Pool.Poolable {
         }
     }
 
+    @Override
+    public void setScale(float scaleXY) {
+        super.setScale(scaleXY);
+        particleEffect.setScale(scaleXY/GameMain.PPM);
+
+    }
+
     public float getAngle() {
         return angle;
     }
@@ -281,9 +285,12 @@ public abstract class Bullet extends Actor implements Pool.Poolable {
     @Override
     public void reset() {
         setVisible(false);
+        setScale(1f);
+        damageMultiplier = 1f;
         passedTemporalPoint = false;
         goingToTemporalPoint = false;
         target = null;
+        isChildProjectile = false;
         disappear();
         id = UUID.randomUUID();
         parentId = null;

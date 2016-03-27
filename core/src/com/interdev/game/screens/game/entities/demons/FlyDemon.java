@@ -13,5 +13,6 @@ public abstract class FlyDemon extends SpineDemon {
                     Pool<? extends Demon> myPool) {
 
         super(values, jsonPath, atlasWithSkeleton, skeletonRenderer, myPool);
+        byDefaultFacingRight = false;
     }
 }
