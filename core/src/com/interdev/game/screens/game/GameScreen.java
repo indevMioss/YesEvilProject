@@ -5,18 +5,17 @@ import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.bitfire.postprocessing.PostProcessor;
 import com.bitfire.postprocessing.effects.Bloom;
@@ -28,7 +27,6 @@ import com.interdev.game.camera.MultipleVirtualViewportBuilder;
 import com.interdev.game.camera.OrthographicCameraWithVirtualViewport;
 import com.interdev.game.camera.VirtualViewport;
 import com.interdev.game.screens.game.attack.Aim;
-import com.interdev.game.screens.game.attack.BulletParamsEnum;
 import com.interdev.game.screens.game.attack.BulletSystem;
 import com.interdev.game.screens.game.attack.ultimate.UltimateSystem;
 import com.interdev.game.screens.game.entities.Player;
@@ -39,11 +37,13 @@ import com.interdev.game.screens.game.hud.directionsigns.DirectionSignFactory;
 import com.interdev.game.screens.game.hud.gui.*;
 import com.interdev.game.screens.game.hud.stamina.StaminaOrbits;
 import com.interdev.game.screens.game.levels.LevelsSystem;
-import com.interdev.game.screens.game.other.Box2DWorldCreator;
+import com.interdev.game.screens.game.other.MapBodyBuilder;
+import com.interdev.game.screens.game.other.TextureMapAdvancedRenderer;
 import com.interdev.game.screens.game.trophy.TrophySystem;
 import com.interdev.game.sound.MusicSystem;
 import com.interdev.game.sound.SoundSystem;
 import com.interdev.game.tools.ParallaxTiledBg;
+import com.interdev.game.tools.ScalableEffect;
 import com.interdev.game.tools.Utils;
 
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ import java.util.List;
 public class GameScreen implements Screen {
     public static GameScreen inst;
 
-    public static final float DEFAULT_ZOOM = 0.75f;
+    public static final float DEFAULT_ZOOM = 1f;//0.75f;
     public static float zoom = DEFAULT_ZOOM;
 
     private static final float SLOWEST_TIME_FACTOR = 1f;
@@ -62,8 +62,11 @@ public class GameScreen implements Screen {
 
     public static float worldWidthPx;
     public static float worldHeightPx;
-
     public static float hudWidth, hudHeight;
+    private float halfScreenWidthPoints;
+    private float halfScreenHeightPoints;
+    private float worldWidthPoints;
+    private float worldHeightPoints;
 
     private MultipleVirtualViewportBuilder multipleVirtualViewportBuilder, hudMultipleVirtualViewportBuilder;
     private static OrthographicCameraWithVirtualViewport camera;
@@ -71,8 +74,10 @@ public class GameScreen implements Screen {
 
     private TextureAtlas atlas, atlas2, trophiesAtlas, anglerAtlas,
             ballAtlas, flyAtlas, horseAtlas, cloudAtlas, shumpoAtlas;
+
     private TiledMap tiledMap;
-    private OrthogonalTiledMapRenderer tiledMapRenderer;
+    private TextureMapAdvancedRenderer tiledMapRenderer;
+    private ScalableEffect bgRainEffect;
 
     private SoundSystem soundSystem;
 
@@ -80,8 +85,11 @@ public class GameScreen implements Screen {
     private Box2DDebugRenderer box2DDebugRenderer;
     private SpriteBatch mainBatch;
     private ControlsInput controlsInput;
+
     private ParallaxTiledBg parallaxTiledBg;
-    private TiledMapTileLayer platformsLayer;
+
+    private Array<MapLayer> underPlayerTiledLayers = new Array<MapLayer>();
+    private Array<MapLayer> beforePlayerTiledLayers = new Array<MapLayer>();
 
     private Player player;
     // private GoodStar goodStar;
@@ -136,7 +144,7 @@ public class GameScreen implements Screen {
         hudCamera = new OrthographicCameraWithVirtualViewport(hudVirtualViewport);
         mainBatch = new SpriteBatch();
 
-        tiledMap = new TmxMapLoader().load("maps/map1ver4.tmx");
+        tiledMap = new TmxMapLoader().load("maps/new_map1.tmx");
         for (TiledMapTileSet tileSet : tiledMap.getTileSets()) {
             for (int i = 0; i < tileSet.size(); i++) {
                 if (tileSet.getTile(i) == null) continue;
@@ -148,13 +156,36 @@ public class GameScreen implements Screen {
         worldWidthPx = prop.get("width", Integer.class) * prop.get("tilewidth", Integer.class);
         worldHeightPx = prop.get("height", Integer.class) * prop.get("tileheight", Integer.class);
 
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / GameMain.PPM);
+        halfScreenWidthPoints = hudWidth / (2 * GameMain.PPM);
+        halfScreenHeightPoints = hudHeight / (2 * GameMain.PPM);
+        worldWidthPoints = worldWidthPx / GameMain.PPM;
+        worldHeightPoints = worldHeightPx / GameMain.PPM;
+
+
+        tiledMapRenderer = new TextureMapAdvancedRenderer(tiledMap, 1 / GameMain.PPM);
+
+        System.out.println(tiledMap.getLayers().get("gr_bg") == null);
+        System.out.println(tiledMap.getLayers().get("amb_mid") == null);
+        System.out.println(tiledMap.getLayers().get("gr_fg") == null);
+        System.out.println(tiledMap.getLayers().get("platform_objects_layer") == null);
+
+        underPlayerTiledLayers.add(tiledMap.getLayers().get("gr_bg"));
+        underPlayerTiledLayers.add(tiledMap.getLayers().get("platform_objects_layer"));
+        underPlayerTiledLayers.add(tiledMap.getLayers().get("amb_mid"));
+
+        beforePlayerTiledLayers.add(tiledMap.getLayers().get("gr_fg"));
+
+        bgRainEffect = new ScalableEffect();
+        bgRainEffect.load(Gdx.files.internal("effects/rain.p"), Gdx.files.internal("effects"));
+       // bgRainEffect.setScale(1/GameMain.PPM);
+        bgRainEffect.start();
+       // bgRainEffect.setPosition(hudWidth/2, hudHeight/2);
 
         parallaxTiledBg = new ParallaxTiledBg(tiledMapRenderer, virtualViewport.getWidth(), virtualViewport.getHeight());
-        parallaxTiledBg.addParallaxLayer((TiledMapTileLayer) tiledMap.getLayers().get("Stars"), 0.1f, 1f);
+        //       parallaxTiledBg.addParallaxLayer((TiledMapTileLayer) tiledMap.getLayers().get("Stars"), 0.1f, 1f);
         //parallaxTiledBg.addParallaxLayer((TiledMapTileLayer) tiledMap.getLayers().get("Planets"), 0.1f, 1f);
-        parallaxTiledBg.addParallaxLayer((TiledMapTileLayer) tiledMap.getLayers().get("Clouds"), 0.08f, 0.5f);
-        platformsLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Platforms");
+        //      parallaxTiledBg.addParallaxLayer((TiledMapTileLayer) tiledMap.getLayers().get("Clouds"), 0.08f, 0.5f);
+
 
         world = new World(new Vector2(0, GRAVITY), true);
         atlas = new TextureAtlas("atlases/atlas.txt");
@@ -179,11 +210,11 @@ public class GameScreen implements Screen {
 
 
         box2DDebugRenderer = new Box2DDebugRenderer();
-        new Box2DWorldCreator(world, tiledMap.getLayers().get("Objects"));
+
+        MapBodyBuilder.buildShapes(tiledMap, world);
 
         hudStage = new Stage();
         hudStage.getViewport().setCamera(hudCamera);
-
 
         Aim aim = new Aim();
         aim.setPosition(hudWidth / 2, hudHeight / 2);
@@ -224,7 +255,6 @@ public class GameScreen implements Screen {
         GUI gui = new GUI(ultimateSystem, aim, lives, staminaOrbits);
         gui.setPosition(0, 0);
         hudStage.addActor(gui);
-
 
         trophySystem = new TrophySystem(world, trophiesAtlas, atlas);
         trophySystem.setLivesAddListener(lives.getListenerForTrophyLives());
@@ -334,9 +364,10 @@ public class GameScreen implements Screen {
 
     }
 
+
     private void moveCamera() {
-        camera.position.x = player.getX();
-        camera.position.y = player.getY();
+        camera.position.x = Utils.trimValue(halfScreenWidthPoints, worldWidthPoints - halfScreenWidthPoints, player.getX());
+        camera.position.y = Utils.trimValue(halfScreenHeightPoints, worldHeightPoints - halfScreenHeightPoints, player.getY());
         /*
         Vector2 deltaDist = new Vector2(player.getX() - camera.position.x, player.getY() - camera.position.y);
         float len = deltaDist.len();
@@ -368,15 +399,41 @@ public class GameScreen implements Screen {
         postProcessor.capture();
 
         parallaxTiledBg.draw();
+
+        hudStage.getBatch().begin();
+        bgRainEffect.draw(hudStage.getBatch(), delta);
+        hudStage.getBatch().end();
+
+
         mainBatch.setProjectionMatrix(camera.combined);
+
+        tiledMapRenderer.setView(camera);
+
+        tiledMapRenderer.getBatch().begin();
+        for (MapLayer layer : underPlayerTiledLayers) {
+            tiledMapRenderer.renderLayer(layer);
+        }
+        tiledMapRenderer.getBatch().end();
+
         mainBatch.begin();
         player.draw(mainBatch, 1f);
         mainBatch.end();
 
-        tiledMapRenderer.setView(camera);
         tiledMapRenderer.getBatch().begin();
-        tiledMapRenderer.renderTileLayer(platformsLayer);
+        for (MapLayer layer : beforePlayerTiledLayers) {
+            tiledMapRenderer.renderLayer(layer);
+        }
         tiledMapRenderer.getBatch().end();
+
+        //texureMapObjectRenderer.getBatch().begin();
+        //texureMapObjectRenderer.renderObjects(tiledMap.getLayers().get("platform_objects_layer"));
+        //texureMapObjectRenderer.getBatch().end();
+
+        // tiledMapRenderer.getBatch().begin();
+        //if (platformsLayer != null)
+        //  tiledMapRenderer.renderObjects(platformsLayer);
+        //   tiledMapRenderer.render();
+        //   tiledMapRenderer.getBatch().end();
 
         mainBatch.begin();
         //goodStar.draw(mainBatch, 1f);
@@ -393,6 +450,9 @@ public class GameScreen implements Screen {
         hudStage.draw();
         ultimateSystem.draw();
         hudStage.getBatch().setColor(1f, 1f, 1f, 1f);
+
+
+
         postProcessor.render();
         //  fpsLogger.log();
         //  box2DDebugRenderer.render(world, camera.combined);

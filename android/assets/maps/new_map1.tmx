@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="140" height="60" tilewidth="64" tileheight="64" backgroundcolor="#000000" nextobjectid="56">
+ <tileset firstgid="1" name="gr_Bg" tilewidth="64" tileheight="64" tilecount="15">
+  <image source="new_map_textures/gr_Bg.png" width="320" height="192"/>
+ </tileset>
+ <tileset firstgid="16" name="isl" tilewidth="695" tileheight="195" tilecount="1">
+  <tile id="0">
+   <image width="695" height="195" source="new_map_textures/isl.png"/>
+   <objectgroup draworder="index">
+    <object id="0" x="59" y="83">
+     <polygon points="-18,-16 57,45 318,91 565,34 600,-12"/>
+    </object>
+   </objectgroup>
+  </tile>
+ </tileset>
+ <tileset firstgid="17" name="amb_mid" tilewidth="64" tileheight="64" tilecount="10">
+  <image source="new_map_textures/amb_mid.png" width="64" height="640"/>
+ </tileset>
+ <tileset firstgid="27" name="gr_fg" tilewidth="64" tileheight="64" tilecount="20">
+  <image source="new_map_textures/gr_fg.png" width="320" height="256"/>
+ </tileset>
+ <layer name="gr_bg" width="140" height="60">
+  <data encoding="base64" compression="zlib">
+   eJztyLkNgEAQBMHj/yH/bJkIVsLDqJLa6dYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4ky71aUhjmjyveHNa0pq2tHte8Y50pivd6fG84sEXL2RkDSE=
+  </data>
+ </layer>
+ <layer name="amb_mid" width="140" height="60" opacity="0.48">
+  <data encoding="base64" compression="zlib">
+   eJztw7kNgDAAALGsAOEL+w/KDNdR2JLHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+IdNw13DqeGh4anhpeGt4aPh0vDV8AMFM3WV
+  </data>
+ </layer>
+ <layer name="gr_fg" width="140" height="60">
+  <data encoding="base64" compression="zlib">
+   eJztyLkRg0AABMHLQyBeiZ/8w2MjOBuju2qcKQUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA3+aQmtembOs+rvD4NaUxTmj2v8n7pn5a0ps3zKm9PRzrTlW7Pq7wHjPBP2Q==
+  </data>
+ </layer>
+ <objectgroup name="platform_objects_layer">
+  <object id="31" gid="16" x="1341" y="3397" width="695" height="195"/>
+ </objectgroup>
+ <objectgroup name="world_bounds_objects">
+  <object id="49" x="1392" y="3266.67">
+   <polygon points="-8,1.33333 70.6667,-26.6667 556,-26.6667 618.667,1.33333 521.333,80 278.667,114.667 68,70.6667"/>
+  </object>
+  <object id="51" x="-36" y="3736" width="9336" height="72"/>
+  <object id="52" x="12" y="84" width="68" height="3640"/>
+  <object id="53" x="8902" y="104" width="68" height="3616"/>
+  <object id="55" x="16" y="24" width="8936" height="64"/>
+ </objectgroup>
+</map>

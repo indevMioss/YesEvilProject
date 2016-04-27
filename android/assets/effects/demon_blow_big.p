@@ -181,5 +181,6 @@ continuous: false
 aligned: false
 additive: true
 behind: false
+premultipliedAlpha: false
 - Image Path -
-C:\Work\Motio\android\assets\effects\particle.png
+particle.png
